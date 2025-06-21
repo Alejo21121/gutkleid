@@ -1,0 +1,71 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\InicioController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\RecuperarController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Ruta principal
+Route::get('/', [InicioController::class, 'index'])->name('inicio');
+
+// --- Rutas de Autenticación (Login y Registro) ---
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.procesar');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/registro', [RegistroController::class, 'mostrarFormulario'])->name('registro.form');
+Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.enviar');
+
+// --- Rutas de Perfil de Usuario ---
+Route::get('/producto/{producto}/edit', [ProductoController::class, 'edit'])->name('producto.edit');
+Route::put('/producto/{producto}', [ProductoController::class, 'update'])->name('producto.update');
+
+// --- Rutas Adicionales de Productos (DEBEN IR ANTES de Route::resource) ---
+// Estas rutas son más específicas y podrían ser "tragadas" por el comodín {producto}
+// si Route::resource se declara antes.
+Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExcel'])->name('producto.exportarExcel');
+Route::get('/producto/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('producto.exportarPDF');
+
+// --- Rutas para la gestión de Productos (CRUD completo) ---
+// La línea Route::resource debe ir DESPUÉS de las rutas específicas que comparten el prefijo.
+// Esta línea genera: index, create, store, show, edit, update, destroy.
+Route::resource('producto', ProductoController::class);
+
+// --- Rutas para Vistas Estáticas o que solo retornan una vista ---
+Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
+Route::view('/contraseña', 'contraseña')->name('contraseña');
+Route::view('/recuperar_cuenta', 'recuperar_cuenta')->name('recuperar_cuenta');
+Route::view('/terminos', 'terminos')->name('terminos');
+Route::view('/preguntas', 'preguntas')->name('preguntas');
+Route::view('/mi-cuenta', 'cuenta_cli')->name('cuenta');
+Route::view('/reseñas', 'reseñas')->name('reseñas');
+Route::view('/tiendas', 'tiendas')->name('tiendas');
+Route::view('/redes', 'redes')->name('redes');
+Route::view('/analisis', 'analisis')->name('analisis');
+Route::view('/inicio', 'inicio')->name('inicio_view');
+
+Route::resource('usuarios', UsuarioController::class);
+Route::get('usuarios/exportarExcel', [UsuarioController::class, 'exportarExcel'])->name('usuarios.exportarExcel');
+Route::get('usuarios/exportarPDF', [UsuarioController::class, 'exportarPDF'])->name('usuarios.exportarPDF');
+
+
+Route::get('/perfil/editar', [UsuarioController::class, 'editar'])->name('perfil.editar');
+Route::post('/perfil/actualizar', [UsuarioController::class, 'actualizar'])->name('perfil.actualizar');
+Route::post('/perfil/eliminar-imagen', [UsuarioController::class, 'eliminarImagen'])->name('perfil.eliminarImagen');
+
+
+
+Route::post('/enviar-codigo', [RecuperarController::class, 'enviarCodigo'])->name('enviar.codigo');
+Route::get('/codigo', [RecuperarController::class, 'vistaCodigo'])->name('codigo');
+Route::post('/validar-codigo', [RecuperarController::class, 'validarCodigo'])->name('validar.codigo');
+
+

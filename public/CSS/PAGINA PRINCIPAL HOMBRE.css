@@ -1,0 +1,309 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom, 
+        #6b6b6b9f 10%,  /* Marrón oscuro al inicio */
+        #6b6b6b56 50%,  /* Marrón medio */
+        rgb(194, 149, 106)   /* Marrón claro */
+    ) !important;
+    background-attachment: fixed;
+}
+
+.pie {
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+}
+
+.center-buttons {
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    gap: 20px; /* Espacio entre botones */
+    margin: 10px 0; /* Espaciado superior e inferior */
+}
+
+
+.foot{
+
+    text-align: left;
+    margin-top: auto;
+    position: absolute;
+    margin-top: -5px;
+    width: 100%;
+    height: 65px; /* Ajusta según necesites */
+    
+    background: linear-gradient(
+        to top, 
+        rgb(78, 60, 43) 10%,  /* Marrón oscuro con 90% opacidad */
+        rgba(148, 113, 80, 0.986) 50%,  /* Marrón medio con 60% opacidad */
+        rgba(194, 149, 106, 0) 100%  /* Marrón claro totalmente transparente */
+    );
+}
+
+.cabeza  {
+    background-color: #9B9B9B;
+    padding: 15px;
+        width: 100%;
+        background: linear-gradient(
+            to bottom, 
+            #474747 10%,  /* Color oscuro al inicio (10% de la altura) */
+            #6e6e6e 50%,  /* Se va aclarando al 50% */
+            #6b6b6b00 100%    /* Totalmente transparente al 100% */
+            );
+}
+
+.barras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barra1, .barra2 {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn:hover {
+    background-color: #e6e6e6;
+}
+
+.logo img {
+    height: 50px;
+    position: absolute;
+    right: 650px;
+    margin-top: -10px;
+}
+
+.main {
+    padding: 20px;
+    margin-left: 200px;
+}
+
+.filterbar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.filter-btn {
+    margin-left: 10px;
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mini-carousel {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.mini-carousel-images {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.mini-slide {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.mini-slide.active {
+    opacity: 1;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.0);
+    color: rgb(170, 169, 169);
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.prev { left: 5px; }
+.next { right: 5px; }
+
+.prev:hover, .next:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.productos:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al 110% */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
+}
+
+.filter-btn:hover {
+    background-color: rgb(245, 159, 61);
+}
+
+.gender-btn.active {
+    background-color: #ddd;
+    font-weight: bold;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    margin-left: 10px;
+    padding: 5px 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-busc{
+    margin-left: 10px;
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    float: right;
+}
+
+.productosbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    margin-left: 190px;
+}
+
+.productos {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.productos img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.productos p {
+    margin: 5px 0;
+}
+.producbut{
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+.abaj{
+    color: white;
+    margin: 20px;
+    text-decoration: none;
+}
+.abaj:hover{
+    color: rgb(245, 159, 61);
+}
+/* styles.css */
+.carousel {
+    position: relative;
+    width: 300px;
+    overflow: hidden;
+}
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+.carousel-item {
+    min-width: 100%;
+}
+.carousel img {
+    width: 100%;
+    display: block !important;
+}
+.dots {
+    text-align: center;
+    margin-top: 10px;
+}
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.active {
+    background-color: black;
+}
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center;     /* Alinea los elementos verticalmente */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+input{
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(3, 88, 38, 0.521);
+    width: 150px;
+}
+input:hover{
+    border-color: brown;
+}
+
+/* Estilo del input de búsqueda */
+.search-input {
+    position: relative;
+    padding: 5px;                /* Espaciado interno */
+    font-size: 16px;              /* Tamaño de la fuente */
+    border: none;                 /* Elimina el borde por defecto */
+    outline: none;                /* Elimina el borde de foco por defecto */
+}
+
+/* Estilo del ícono de lupa */
+.search-button i {
+    font-size: 20px;                /* Tamaño del ícono */
+    color: #007bff;                 /* Color azul del ícono */
+}
+
+/* Efecto de hover para el botón */
+.search-button:hover i {
+    color: #0056b3;                 /* Cambia el color del ícono al pasar el ratón */
+}
+.barratext{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;   
+}
+.barratext:hover{
+    color: green;
+}

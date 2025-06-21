@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.cabeza {
+    background-color: #9b9b9b;
+    padding: 15px;
+    width: 100%;
+    background: linear-gradient(
+        to bottom,
+        #474747 10%,
+        /* Color oscuro al inicio (10% de la altura) */ #6e6e6e 50%,
+        /* Se va aclarando al 50% */ #6b6b6b00 100%
+            /* Totalmente transparente al 100% */
+    );
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        #6b6b6b9f 10%,
+        /* Marrón oscuro al inicio */ #6b6b6b56 50%,
+        /* Marrón medio */ rgb(194, 149, 106) /* Marrón claro */
+    ) !important;
+    background-attachment: fixed;
+}
+
+.pie {
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    height: 50px;
+}
+
+.foot {
+    text-align: left;
+    margin-top: auto;
+    position: absolute;
+    margin-top: -5px;
+    width: 100%;
+    height: 50px; /* Ajusta según necesites */
+
+    background: linear-gradient(
+        to top,
+        rgb(78, 60, 43) 10%,
+        /* Marrón oscuro con 90% opacidad */ rgba(148, 113, 80, 0.986) 50%,
+        /* Marrón medio con 60% opacidad */ rgba(194, 149, 106, 0) 100%
+            /* Marrón claro totalmente transparente */
+    );
+}
+
+.barras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barras2 {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Encabezado */
+header {
+    background-color: #b0b2b3;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+}
+
+input:focus,
+textarea:focus {
+    outline: 2px solid #8b4513; /* Cambia el color y grosor del borde */
+    box-shadow: 0 0 5px #8b4513; /* Agrega un efecto de iluminación */
+    transition: all 0.3s ease-in-out;
+}
+
+.logo img {
+    height: 50px;
+    position: absolute;
+    right: 650px;
+    margin-top: -25px;
+}
+
+.barra1,
+.barra2 {
+    display: flex;
+    gap: 10px;
+}
+.filter-btn {
+    margin-left: 10px;
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.filter-btn:hover {
+    background-color: rgb(245, 159, 61);
+}
+
+.filter-bcc {
+    margin-left: 10px;
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: #765036;
+    color: #fff;
+    border: none;
+}
+
+.filter-bccselect {
+    margin-left: 10px;
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(245, 159, 61);
+    color: #fff;
+    border: none;
+}
+
+.filter-bcc:hover {
+    background-color: rgb(245, 159, 61);
+}
+
+.iconos .icono {
+    font-size: 18px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register {
+    float: right;
+        text-decoration: none;
+    color: black;
+}
+
+.recuper {
+    float: left;
+        text-decoration: none;
+    color: black;
+}
+
+.register:hover{
+    color: orange;
+}
+
+.recuper:hover{
+    color: orange;
+}
+
+.container {
+    max-width: 400px;
+    margin: 113px auto;
+    padding: 30px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+}
+
+/* Formulario */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.buttons button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #765036;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttons button:hover {
+    background-color: #9b9b9b;
+}
+
+.buttons button:last-child {
+    background-color: #6c757d;
+}
+
+.buttons button:last-child:hover {
+    background-color: #6c6d6e;
+}
+.abaj {
+    color: white;
+    margin: 20px;
+    text-decoration: none;
+}
+.abaj:hover {
+    color: rgb(245, 159, 61);
+}

@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F2F0E8;
+    color: #333;
+}
+ /* cabeza */
+.cabeza  {
+    background-color: #7F6145;
+    padding: 10px;
+    border-bottom: 10px;
+}
+.logo img {
+    height: 50px;
+}
+.iconos .icono {
+    font-size: 18px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.barras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barra1, .barra2 {
+    display: flex;
+    gap: 10px;
+}
+ 
+
+.botton {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+/* fin cabeza*/
+
+.container {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    border: 3px solid #cccccc;
+    background-color: #f2f0e8;
+    padding: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    justify-items: center;
+}
+table, th, td {
+    border: 2px solid #d3d3d3;
+}
+th, td {
+    padding: 10px;
+    background-color: rgb(248, 246, 243);
+}
+
+td img{
+    height: 100px;
+
+    
+}
+th{
+    background-color: #6a704c;
+}
+.buttons {
+    margin: 20px 0;
+}
+.buttons a{
+    padding: 10px 20px;
+    margin: 5px 0;
+    background-color: #765036;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
