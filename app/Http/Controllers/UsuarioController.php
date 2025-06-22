@@ -112,7 +112,6 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_persona' => 'required|integer|unique:personas,id_persona',
             'documento' => 'required|string|max:20|unique:personas,documento',
             'id_tipo_documento' => 'required',
             'nombres' => 'required|string|max:50',
@@ -126,7 +125,6 @@ class UsuarioController extends Controller
 
 
         Usuario::create([
-            'id_persona' => $request->id_persona,
             'documento' => $request->documento,
             'id_tipo_documento' => $request->id_tipo_documento,
             'nombres' => $request->nombres,

@@ -20,12 +20,6 @@
     @csrf
     <h2>Agregar Usuario</h2>
 
-    <label for="id_persona">ID Persona:</label>
-    <input type="number" name="id_persona" id="id_persona" required value="{{ old('id_persona') }}">
-    @error('id_persona')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-
     <label for="documento">Documento:</label>
     <input type="text" name="documento" id="documento" required value="{{ old('documento') }}">
     @error('documento')
@@ -69,12 +63,22 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-    <label for="password">Contraseña:</label>
-    <input type="password" name="contraseña" id="contraseña" required>
-    @error('contraseña')
-        <div class="alert alert-danger">{{ $message }}</div>
+    <label for="contraseña">Contraseña:</label>
+        <div style="position: relative; margin-bottom: 1rem;">
+            <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
+
+            <button type="button" class="boton-ojo" onclick="togglePassword('contraseña', 'iconoContraseña')">
+                <i id="iconoContraseña" class="bi bi-eye-slash"></i>
+            </button>
+
+        </div>
+
+    @error('contraseña') 
+        <div class="alert alert-danger">{{ $message }}</div> 
     @enderror
 
+
+    
     <label for="direccion">Dirección:</label>
     <input type="text" name="direccion" id="direccion" required value="{{ old('direccion') }}">
     @error('direccion')
@@ -89,3 +93,16 @@
 <br>
 </body>
 </html>
+
+<script>
+function togglePassword(idCampo, idIcono) {
+    const input = document.getElementById(idCampo);
+    const icono = document.getElementById(idIcono);
+
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+
+    icono.classList.toggle('bi-eye');
+    icono.classList.toggle('bi-eye-slash');
+}
+</script>

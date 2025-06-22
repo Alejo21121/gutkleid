@@ -105,3 +105,53 @@ button:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+.boton-ojo {
+    all: unset; /* ✅ Elimina herencia de estilos */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.boton-ojo i {
+    color: black;
+    font-size: 1.2rem;
+}
+
+.boton-ojo:hover {
+    background: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+
+.boton-ojo2 {
+    all: unset; /* ✅ Elimina herencia de estilos */
+    position: absolute;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.boton-ojo2 i {
+    color: black;
+    font-size: 1.2rem;
+}
+
+.boton-ojo2:hover {
+    background: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    filter: none !important;
+}

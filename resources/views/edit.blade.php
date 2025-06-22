@@ -35,16 +35,6 @@
 
         <center><h2>Editar Usuario</h2></center>
 
-        {{-- ID Persona (Lectura) --}}
-        <div class="mb-3">
-            <label for="id_persona" class="form-label">ID Persona:</label>
-            <input type="text" name="id_persona" id="id_persona" value="{{ old('id_persona', $usuario->id_persona) }}" class="form-control" readonly>
-            {{-- El error para id_persona aquí no debería ocurrir si es readonly, pero lo dejamos por si acaso --}}
-            @error('id_persona')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
         {{-- Documento --}}
         <div class="mb-3">
             <label for="documento" class="form-label">Documento:</label>
@@ -104,13 +94,20 @@
         </div>
 
         {{-- Contraseña (opcional para edición) --}}
-        <div class="mb-3">
+        <div class="mb-3" style="position: relative;">
             <label for="contraseña" class="form-label">Contraseña:</label>
-            <input type="password" name="contraseña" id="contraseña" class="form-control" placeholder="Dejar en blanco para no cambiar">
+            <input type="password" name="contraseña" id="contraseña" class="form-control" placeholder="Dejar en blanco para no cambiar" style="padding-right: 40px;">
+            
+            <button type="button" class="boton-ojo2" onclick="togglePassword('contraseña', 'iconoEditarContraseña')"
+            style="bottom: -20px;">
+                <i id="iconoEditarContraseña" class="bi bi-eye-slash"></i>
+            </button>
+
             @error('contraseña')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
 
         {{-- Dirección --}}
         <div class="mb-3">
@@ -128,3 +125,16 @@
 <br>
 </body>
 </html>
+
+<script>
+function togglePassword(idCampo, idIcono) {
+    const input = document.getElementById(idCampo);
+    const icono = document.getElementById(idIcono);
+
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+
+    icono.classList.toggle('bi-eye');
+    icono.classList.toggle('bi-eye-slash');
+}
+</script>
