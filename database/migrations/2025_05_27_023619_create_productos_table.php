@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('color');
             $table->unsignedBigInteger('id_categoria');
             $table->integer('cantidad')->default(0); // nueva columna
-
             $table->timestamps();
 
             // Llave foránea hacia categorías

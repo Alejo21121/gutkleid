@@ -10,20 +10,20 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
           DB::table('categorias')->insert([
-            'Pantalones', 
-            'Abrigos',
-            'Vestidos',
-            'Ropa Casual',
-            'Faldas',
-            'Blusas',
-            'Calzados',
-            'Accesorios',
-            'Gorras',
-            'Ropa interior',
-            'Camisas',
-            'Traje de baño',
-            'Ropa Dormir'
-          ]);
+    ['nombre' => 'Pantalones'],
+    ['nombre' => 'Abrigos'],
+    ['nombre' => 'Vestidos'],
+    ['nombre' => 'Ropa Casual'],
+    ['nombre' => 'Faldas'],
+    ['nombre' => 'Blusas'],
+    ['nombre' => 'Calzados'],
+    ['nombre' => 'Accesorios'],
+    ['nombre' => 'Gorras'],
+    ['nombre' => 'Ropa interior'],
+    ['nombre' => 'Camisas'],
+    ['nombre' => 'Traje de baño'],
+    ['nombre' => 'Ropa Dormir'],
+]);
      
     }
 }
