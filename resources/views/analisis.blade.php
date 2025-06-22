@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análisis de GutKleid</title>
     <link rel="stylesheet" href="{{ asset('css/GESTION ANALISIS.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 <body>
     <header class="cabeza">
         <nav class="barras">
             <div class="barra1">
-                <a href="{{ route('producto.index') }}"><button class="filter-bccselect">Inventario</button></a>
-                <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
+                <a href="{{ route('producto.index') }}"><button class="filter-bcc">Inventario</button></a>
+                <a href="{{ route('analisis') }}"><button class="filter-bccselect">Análisis</button></a>
                 <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
             </div>
             <div class="logo">
@@ -20,7 +23,7 @@
                     <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo" class="logo">
                 </a>
             </div>
-            <div class="barra2">
+             <div class="barra2">
                 <div class="usuario-info">
                     @if (session('usuario'))
                         <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
