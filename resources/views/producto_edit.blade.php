@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="number" name="valor" value="{{ old('valor', $producto->valor) }}" class="form-control" required>
+            <input type="text" name="valor" id="valor" value="{{ old('valor', number_format($producto->valor, 0, ',', '.')) }}" required oninput="formatearNumero(this)">
         </div>
 
         <div class="mb-3">
@@ -42,8 +42,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría:</label>
-            <input type="text" name="categoria" value="{{ old('categoria', $producto->categoria) }}" class="form-control" required>
+            <label for="id_categoria">Categoría:</label>
+                <select name="id_categoria" id="id_categoria" required>
+                    <option value="">Seleccione una categoría</option>
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id_categoria }}" {{ $categoria->id_categoria == $producto->id_categoria ? 'selected' : '' }}>
+                            {{ $categoria->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad" id="cantidad" min="0" value="{{ old('cantidad', $producto->cantidad) }}" class="form-control" required>
         </div>
 
         <button type="submit" class="btn btn-success">Actualizar</button>

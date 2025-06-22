@@ -57,11 +57,12 @@
                         <tr>
                             <th>Referencia</th>
                             <th>Nombre</th>
-                            <th>Valor</th>
+                            <th>Valor U</th>
                             <th>Marca</th>
                             <th>Talla</th>
                             <th>Color</th>
                             <th>Categoría</th>
+                            <th>Cantidad</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -70,11 +71,12 @@
                             <tr>
                                 <td>{{ $producto->id_producto }}</td>
                                 <td>{{ $producto->nombre }}</td>
-                                <td>{{ $producto->valor }}</td>
+                                <td>${{ number_format($producto->valor, 0, ',', '.') }}</td>
                                 <td>{{ $producto->marca }}</td>
                                 <td>{{ $producto->talla }}</td>
                                 <td>{{ $producto->color }}</td>
-                                <td>{{ $producto->categoria }}</td>
+                                <td>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</td>
+                                <td>{{ $producto->cantidad }}</td>
                                 <td>
                                     <a href="{{ route('producto.edit', $producto->id_producto) }}" class="bottedit"><i class="bi bi-pencil"></i></a>
                                     <form action="{{ route('producto.destroy', $producto->id_producto) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este producto?');">

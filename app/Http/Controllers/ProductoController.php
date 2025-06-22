@@ -9,47 +9,53 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\ProductosExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Models\Categoria;
+
 class ProductoController extends Controller
 {
 public function index(Request $request)
 {
     $buscar = $request->input('buscar');
 
-    $query = Producto::query();
+    $query = Producto::with('categoria'); // Cargar relación
 
     if (!empty($buscar)) {
         $query->where('id_producto', $buscar);
     }
 
-    // El método appends(['buscar' => $buscar]) asegura que el filtro se mantenga en la paginación
     $productos = $query->paginate(6)->appends(['buscar' => $buscar]);
 
     $paginaActual = $productos->currentPage();
     $totalPaginas = $productos->lastPage();
 
-    return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas'));
+    // Cargar categorías con conteo de productos
+    $categoriasConCantidad = Categoria::withCount('productos')->get();
+
+    return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad'));
 }
 
 
     public function create()
     {
-        return view('create');
+        $categorias = Categoria::all(); // Traer todas las categorías
+        return view('create', compact('categorias'));
     }
 
     public function store(Request $request)
+
     {
         $request->validate([
-        'id_producto' => 'required|integer',
-        'nombre' => 'required|string|max:255',
-        'valor' => 'required|numeric|min:0',
-        'marca' => 'required|string|max:255',
-        'talla' => 'required|string|max:50',
-        'color' => 'required|string|max:100',
-        'categoria' => 'required|string|max:100',
-    ]);
+            'nombre' => 'required|string|max:255',
+            'valor' => 'required|numeric|min:0',
+            'marca' => 'required|string|max:255',
+            'talla' => 'required|string|max:50',
+            'color' => 'required|string|max:100',
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'cantidad' => 'required|integer|min:0',
+        ]);
 
-      DB::table('productos')->insert($request->only([
-            'id_producto', 'nombre', 'valor', 'marca', 'talla', 'color', 'categoria'
+        DB::table('productos')->insert($request->only([
+            'nombre', 'valor', 'marca', 'talla', 'color', 'id_categoria', 'cantidad'
         ]));
 
         return redirect()->route('producto.index')->with('success', 'Producto agregado exitosamente.');
@@ -62,7 +68,8 @@ public function index(Request $request)
 
 public function edit(Producto $producto)
 {
-    return view('producto_edit', compact('producto'));
+    $categorias = Categoria::all(); // Necesario para llenar el <select>
+    return view('producto_edit', compact('producto', 'categorias'));
 }
 
 public function update(Request $request, Producto $producto)
@@ -73,11 +80,12 @@ public function update(Request $request, Producto $producto)
         'marca' => 'required|string|max:255',
         'talla' => 'required|string|max:50',
         'color' => 'required|string|max:100',
-        'categoria' => 'required|string|max:100',
+        'id_categoria' => 'required|exists:categorias,id_categoria',
+        'cantidad' => 'required|integer|min:0',
     ]);
 
         $producto->update($request->only([
-        'nombre', 'valor', 'marca', 'talla', 'color', 'categoria'
+        'nombre', 'valor', 'marca', 'talla', 'color', 'id_categoria', 'cantidad'
     ]));
 
     return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
