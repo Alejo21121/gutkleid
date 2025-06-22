@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistroController;
@@ -68,4 +69,5 @@ Route::post('/enviar-codigo', [RecuperarController::class, 'enviarCodigo'])->nam
 Route::get('/codigo', [RecuperarController::class, 'vistaCodigo'])->name('codigo');
 Route::post('/validar-codigo', [RecuperarController::class, 'validarCodigo'])->name('validar.codigo');
 
+Route::get('/analisis', [DashboardController::class, 'index'])->name('analisis');
 

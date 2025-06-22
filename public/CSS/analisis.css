@@ -1,0 +1,117 @@
+/* === RESET & BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #6b6b6b9f 10%, #6b6b6b56 50%, rgb(194, 149, 106));
+    background-attachment: fixed;
+    color: #333;
+}
+
+/* === HEADER === */
+.barra-superior {
+    background: linear-gradient(to bottom, #474747 10%, #6e6e6e 50%, #6b6b6b00 100%);
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 60px;
+    display: block;
+    margin-left: 100px;
+}
+
+.barra1 {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-bcc, .filter-bccselect {
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    color: black;
+    transition: 0.3s ease;
+}
+
+.filter-bcc:hover, .filter-bccselect:hover {
+    background-color: rgb(245, 159, 61);
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* === CONTENIDO PRINCIPAL === */
+main {
+    padding: 20px;
+    margin-left: 200px;
+}
+
+.contenedor-graficos {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grafico {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: 300px;
+}
+
+h2 {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .barra-superior {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo {
+        height: 45px;
+        margin-left: 0;
+    }
+
+    .barra1 {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    main {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .contenedor-graficos {
+        grid-template-columns: 1fr;
+    }
+
+    .grafico {
+        padding: 15px;
+    }
+}
