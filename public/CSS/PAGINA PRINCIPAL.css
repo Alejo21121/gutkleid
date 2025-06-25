@@ -447,4 +447,73 @@ body {
         width: 100%;
     }
 }
-
+.containercar {
+    text-align: center;
+    width: 750px;
+    padding: 10px 50px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    background-color: #f9f9f9;
+    margin-left: 100px;
+}
+.bottonagreg{
+    background-color: rgb(44, 102, 44);
+    border-radius: 10px;
+    box-shadow: #000;
+    color: white;
+    padding: 10px;
+    border: none;
+}
+.bottonagreg:hover{
+    color: white;
+    background-color: rgb(26, 61, 26);
+}
+.bottonelim{
+    background-color: rgb(197, 21, 21);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    border: none;
+}
+.bottonelim:hover{
+    color: white;
+    background-color: rgb(128, 14, 14);
+}
+.bottonvaci{
+    background-color: rgb(211, 224, 26);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    border: none;
+    text-decoration: none;
+    margin: 10px;
+}
+.bottonvaci:hover{
+    color: white;
+    background-color: rgb(170, 180, 22);
+}
+.bottonfina{
+    background-color: rgb(80, 160, 64);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    border: none;
+    text-decoration: none;
+        margin: 10px;
+}
+.bottonfina:hover{
+    color: white;
+    background-color: rgb(60, 121, 48);
+}
+.bottonvolve{
+    background-color: rgb(29, 100, 192);
+    border-radius: 5px;
+    color: white;
+    padding: 8px;
+    border: none;
+    text-decoration: none;
+        margin: 15px;
+}
+.bottonvolve:hover{
+    color: white;
+    background-color: rgb(21, 72, 139);
+}

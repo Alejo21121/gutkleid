@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RecuperarController;
+use App\Http\Controllers\CarritoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +72,8 @@ Route::post('/validar-codigo', [RecuperarController::class, 'validarCodigo'])->n
 
 Route::get('/analisis', [DashboardController::class, 'index'])->name('analisis');
 
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
+Route::post('/carrito/finalizar', [CarritoController::class, 'finalizar'])->name('carrito.finalizar');
+Route::delete('/carrito/eliminar/{id_producto}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
+Route::get('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');

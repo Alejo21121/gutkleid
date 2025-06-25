@@ -173,9 +173,7 @@ textarea:focus {
     max-width: 400px;
     margin: 113px auto;
     padding: 30px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
     background-color: #f9f9f9;
     text-align: center;
 }

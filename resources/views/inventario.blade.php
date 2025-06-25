@@ -17,11 +17,9 @@
                 <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
                 <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
             </div>
-            <div class="logo">
-                <a href="{{ route('inicio') }}">
-                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo" class="logo">
-                </a>
-            </div>
+        <div class="logo">
+            <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+        </div>
             <div class="barra2">
                 <div class="usuario-info">
                     @if (session('usuario'))
