@@ -11,8 +11,8 @@ class CategoriaSeeder extends Seeder
     {
           DB::table('categorias')->insert([
     ['nombre' => 'Pantalones'],
-    ['nombre' => 'Abrigos'],
-    ['nombre' => 'Vestidos'],
+    ['nombre' => 'Buzos'],
+    ['nombre' => 'Chaquetas'],
     ['nombre' => 'Ropa Casual'],
     ['nombre' => 'Faldas'],
     ['nombre' => 'Blusas'],

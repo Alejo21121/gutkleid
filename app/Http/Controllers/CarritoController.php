@@ -66,7 +66,7 @@ class CarritoController extends Controller
                 $detalle->id_producto = $producto->id_producto;
                 $detalle->cantidad = $item['cantidad'];
                 $detalle->subtotal = $subtotal;
-                $detalle->impuestos = 0; // Puedes ajustar esto si usas impuestos
+                $detalle->impuestos = 0.19; // Puedes ajustar esto si usas impuestos
                 $detalle->id_impuesto = 1; // Cambia por el ID real del impuesto
                 $detalle->save();
 

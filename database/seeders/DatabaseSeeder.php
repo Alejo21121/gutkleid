@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         RolSeeder::class,
         PersonaSeeder::class,
         ProductoSeeder::class,
+        TipoPagoSeeder::class,
+        ImpuestoSeeder::class,
     ]);
 }
 }
