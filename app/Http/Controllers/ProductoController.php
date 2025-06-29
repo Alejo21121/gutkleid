@@ -13,6 +13,7 @@ use App\Models\Categoria;
 
 use App\Models\Imagen;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProductoController extends Controller
 {
@@ -124,20 +125,28 @@ public function index(Request $request)
     }
 
     // Subir nuevas imágenes
+   
     public function subirImagen(Request $request, $id)
     {
         $request->validate([
-        'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
-    ]);
-
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
 
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $img) {
-                $ruta = $img->store('productos', 'public');
+                $nombreOriginal = $img->getClientOriginalName(); // usa el nombre original
 
+                // Guardar en storage/app/public/productos
+                $img->storeAs('public/productos', $nombreOriginal);
+
+                // Copiar también a public/IMG/imagenes_demo
+                $rutaDestinoPublica = public_path("IMG/imagenes_demo/{$nombreOriginal}");
+                File::copy($img->getRealPath(), $rutaDestinoPublica);
+
+                // Guardar en la base de datos
                 Imagen::create([
                     'id_producto' => $id,
-                    'ruta' => $ruta
+                    'ruta' => 'productos/' . $nombreOriginal
                 ]);
             }
         }

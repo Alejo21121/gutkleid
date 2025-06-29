@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         ProductoSeeder::class,
         TipoPagoSeeder::class,
         ImpuestoSeeder::class,
+        ImagenSeeder::class,
     ]);
 }
 }
