@@ -71,21 +71,20 @@
                     </thead>
                     <tbody>
                         @php $total = 0; @endphp
-                        @foreach($carrito as $item)
-                            <tr>
-                                <td>{{ $item['nombre'] }}</td>
-                                <td>{{ $item['cantidad'] }}</td>
-                                <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
-                                <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
-                                <td>
-                                    <form method="POST" action="{{ route('carrito.eliminar', $item['id_producto']) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="bottonelim"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @php $total += $item['valor'] * $item['cantidad']; @endphp
+                       @foreach($carrito as $id => $item)
+                        <tr>
+                            <td>{{ $item['nombre'] }}</td>
+                            <td>{{ $item['cantidad'] }}</td>
+                            <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
+                            <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="bottonelim"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
                         @endforeach
                         <tr class="table-light">
                             <td colspan="3" class="text-end"><strong>Total</strong></td>
@@ -100,7 +99,7 @@
                     <i class="bi bi-x-circle"></i> Vaciar carrito
                 </a>
 
-               @if(session('usuario'))
+                @if(session('usuario'))
                     <form action="{{ route('carrito.finalizar') }}" method="POST" class="d-inline-block">
                         @csrf
                         <button type="submit" class="bottonfina">
