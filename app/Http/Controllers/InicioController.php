@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Models\Producto;
 
 class InicioController extends Controller
 {
     public function index(Request $request)
     {
-        // Verifica la sesión
         $usuario = Session::get('usuario');
         $inactividad = 300;
 
@@ -22,6 +22,9 @@ class InicioController extends Controller
             Session::put('tiempo', time());
         }
 
-        return view('inicio', compact('usuario'));
+        // ✅ Traer productos con imágenes
+        $productos = Producto::with('imagenes')->take(6)->get();
+
+        return view('inicio', compact('usuario', 'productos'));
     }
 }

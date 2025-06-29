@@ -23,7 +23,8 @@
 
         <div class="mb-3">
             <label for="valor" class="form-label">Valor:</label>
-            <input type="text" name="valor" id="valor" value="{{ old('valor', number_format($producto->valor, 0, ',', '.')) }}" required oninput="formatearNumero(this)">
+           <input type="text" name="valor" id="valor" value="{{ old('valor', $producto->valor) }}" class="form-control" required oninput="formatearNumero(this)">
+
         </div>
 
         <div class="mb-3">
@@ -61,7 +62,7 @@
         <button type="submit" class="btn btn-success">Actualizar</button>
         <center><a href="{{ url('producto') }}" class="btn-menu">Volver al Menú Principal</a></center>
     </form>
-</div>x
+</div>
 <br>
 </body>
 </html>

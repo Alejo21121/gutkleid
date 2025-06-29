@@ -47,51 +47,40 @@
 
 <div class="contenedor">
     <input type="text" id="search" placeholder="Buscar" class="busca">
-    <a href="#">
-        <button class="botonbusca">
-            <i class="bi bi-search"></i>
-        </button>
-    </a>
+    <a href="#"><button class="botonbusca"><i class="bi bi-search"></i></button></a>
 </div>
 
 <main class="main">
     <br>
     <div class="productosbar">
-        @foreach ([
-            ['id' => 1, 'img1' => 'buso sc.jpg', 'img2' => 'buzo sc2.webp', 'img3' => 'buzo sc3.webp', 'nombre' => 'Buzo', 'precio' => 64999],
-            ['id' => 2, 'img1' => 'jeanm1.webp', 'img2' => 'jeanm3.webp', 'img3' => 'jeanm2.webp', 'nombre' => 'Jean', 'precio' => 59999],
-            ['id' => 3, 'img1' => 'chaqueta jeanh.jpg', 'img2' => 'chaqueta jeanh2.webp', 'img3' => 'chaqueta jean3.webp', 'nombre' => 'Chaqueta Jean', 'precio' => 99999],
-            ['id' => 4, 'img1' => 'buzom1.webp', 'img2' => 'buzom2.webp', 'img3' => 'buzom3.webp', 'nombre' => 'Buzo Capotero', 'precio' => 44999],
-            ['id' => 5, 'img1' => 'chaquetapff1.webp', 'img2' => 'chaquetapff2.webp', 'img3' => 'chaquetapff3.webp', 'nombre' => 'Chaqueta', 'precio' => 44999],
-            ['id' => 6, 'img1' => 'jeanh1.webp', 'img2' => 'jeanh2.jpg', 'img3' => 'jeanh3.webp', 'nombre' => 'Jean', 'precio' => 64999],
-            ['id' => 7, 'img1' => 'gorra.jpg', 'img2' => 'gorram2.webp', 'img3' => 'gorram3.webp', 'nombre' => 'Gorra', 'precio' => 24999]
-        ] as $producto)
-        <div class="productos">
-            <div class="mini-carousel">
+       @foreach ($productos as $producto)
+    <div class="productos">
+        <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
+            <div class="mini-carousel" onclick="event.stopPropagation();">
                 <div class="mini-carousel-images">
-                    <img src="IMG/{{ $producto['img1'] }}" class="mini-slide active">
-                    <img src="IMG/{{ $producto['img2'] }}" class="mini-slide">
-                    <img src="IMG/{{ $producto['img3'] }}" class="mini-slide">
+                    @foreach ($producto->imagenes as $imagen)
+                        <img src="{{ asset('storage/' . $imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                    @endforeach
                 </div>
-                <button class="prev" onclick="moverSlide(-1)">&#10094;</button>
-                <button class="next" onclick="moverSlide(1)">&#10095;</button>
+                <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+                <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
             </div>
             <br>
-            <h5>{{ $producto['nombre'] }}</h5>
-            <p>${{ number_format($producto['precio'], 0, ',', '.') }} COP</p>
+            <h5>{{ $producto->nombre }}</h5>
+            <p>${{ number_format($producto->valor, 0, ',', '.') }} COP</p>
+        </a>
 
-            <form action="{{ route('carrito.agregar') }}" method="POST" onsubmit="agregado(event)">
-                @csrf
-                <input type="hidden" name="id_producto" value="{{ $producto['id'] }}">
-                <input type="hidden" name="nombre" value="{{ $producto['nombre'] }}">
-                <input type="hidden" name="precio" value="{{ $producto['precio'] }}">
-                <input type="hidden" name="imagen" value="{{ $producto['img1'] }}">
-                <button type="submit" class="bottonagreg">
-                    Agregar al carrito
-                </button>
-            </form>
-        </div>
-        @endforeach
+        <form action="{{ route('carrito.agregar') }}" method="POST" onsubmit="agregado(event)">
+            @csrf
+            <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
+            <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
+            <input type="hidden" name="precio" value="{{ $producto->valor }}">
+            <input type="hidden" name="imagen" value="{{ $producto->imagenes->first()->ruta ?? 'default.jpg' }}">
+            <button type="submit" class="bottonagreg">Agregar al carrito</button>
+        </form>
+    </div>
+@endforeach
+
     </div>
 </main>
 
@@ -129,6 +118,20 @@
             alert('❌ Error al agregar el producto.');
         });
     }
+
+    function moverSlide(event, direccion) {
+    event.preventDefault();
+    event.stopPropagation(); // <-- Esto evita que se dispare el enlace
+
+    const carousel = event.target.closest('.mini-carousel');
+    const slides = carousel.querySelectorAll('.mini-slide');
+    let index = Array.from(slides).findIndex(s => s.classList.contains('active'));
+
+    slides[index].classList.remove('active');
+    index = (index + direccion + slides.length) % slides.length;
+    slides[index].classList.add('active');
+}
+
 </script>
 
 <script src="{{ asset('JS/script.js') }}"></script>
