@@ -100,12 +100,18 @@
                     <i class="bi bi-x-circle"></i> Vaciar carrito
                 </a>
 
-                <form action="{{ route('carrito.finalizar') }}" method="POST" class="d-inline-block">
-                    @csrf
-                    <button type="submit" class="bottonfina">
-                        <i class="bi bi-cash-coin"></i> Finalizar Compra
-                    </button>
-                </form>
+               @if(session('usuario'))
+                    <form action="{{ route('carrito.finalizar') }}" method="POST" class="d-inline-block">
+                        @csrf
+                        <button type="submit" class="bottonfina">
+                            <i class="bi bi-cash-coin"></i> Finalizar Compra
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="bottonfina">
+                        <i class="bi bi-cash-coin"></i> Inicia sesión para comprar
+                    </a>
+                @endif
             </div>
         @else
             <div class="text-center mt-4">
