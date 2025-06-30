@@ -127,32 +127,40 @@ public function index(Request $request)
     // Subir nuevas imágenes
    
     public function subirImagen(Request $request, $id)
-    {
-        $request->validate([
-            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+{
+    $request->validate([
+        'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+    ]);
+
+    $producto = Producto::with('imagenes')->findOrFail($id);
+    $imagenesActuales = $producto->imagenes->count();
+    $nuevas = $request->file('imagenes') ?? [];
+    $cantidadNueva = count($nuevas);
+
+    if ($producto->imagenes->count() >= 4) {
+    return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
+}
+
+
+    foreach ($nuevas as $img) {
+        $nombreOriginal = $img->getClientOriginalName();
+
+        // Guardar en storage/app/public/productos
+        $img->storeAs('public/productos', $nombreOriginal);
+
+        // Copiar también a public/IMG/imagenes_demo
+        $rutaDestinoPublica = public_path("IMG/imagenes_demo/{$nombreOriginal}");
+        File::copy($img->getRealPath(), $rutaDestinoPublica);
+
+        // Guardar en la base de datos
+        Imagen::create([
+            'id_producto' => $id,
+            'ruta' => 'productos/' . $nombreOriginal
         ]);
-
-        if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $img) {
-                $nombreOriginal = $img->getClientOriginalName(); // usa el nombre original
-
-                // Guardar en storage/app/public/productos
-                $img->storeAs('public/productos', $nombreOriginal);
-
-                // Copiar también a public/IMG/imagenes_demo
-                $rutaDestinoPublica = public_path("IMG/imagenes_demo/{$nombreOriginal}");
-                File::copy($img->getRealPath(), $rutaDestinoPublica);
-
-                // Guardar en la base de datos
-                Imagen::create([
-                    'id_producto' => $id,
-                    'ruta' => 'productos/' . $nombreOriginal
-                ]);
-            }
-        }
-
-        return redirect()->route('producto.imagenes', $id)->with('success', 'Imágenes agregadas.');
     }
+
+    return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
+}
 
     // Eliminar una imagen
     public function eliminarImagen($id)

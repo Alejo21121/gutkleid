@@ -273,7 +273,7 @@ body {
 }
 
 .producto-galeria img {
-    width: 50px; /* Para que las imágenes se adapten */
+    width: 0px; /* Para que las imágenes se adapten */
     height: 150px;
     border-radius: 5px; /* Bordes redondeados opcionales */
     text-align: left;
@@ -290,11 +290,11 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Dos columnas */
     gap: 10px;
-    width: 50%; /* Ocupar la mitad del contenedor */
+    width: 90%; /* Ocupar la mitad del contenedor */
 }
 
 .producto-galeria img {
-    width: 150px;
+    width: 320px;
     height: auto;
     border-radius: 5px;
     object-fit: cover;

@@ -9,20 +9,35 @@
 
     <h2>Imágenes de: {{ $producto->nombre }}</h2>
 
-    <form action="{{ route('producto.imagenes.subir', $producto->id_producto) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3">
-            <label for="imagenes" class="form-label">Subir nuevas imágenes</label>
-            <input type="file" name="imagenes[]" multiple class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Subir</button>
-        <a href="{{ route('producto.index') }}" class="btn btn-secondary">Volver</a>
-    </form>
-
+    {{-- Mensajes de éxito o error --}}
     @if(session('success'))
         <div class="alert alert-success mt-3">{{ session('success') }}</div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+    @endif
+
+    {{-- Mostrar formulario solo si tiene menos de 4 imágenes --}}
+    @if ($producto->imagenes->count() < 4)
+        <form action="{{ route('producto.imagenes.subir', $producto->id_producto) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="imagenes" class="form-label">Subir nuevas imágenes</label>
+                <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*">
+                <small class="text-muted">Puedes subir hasta {{ 4 - $producto->imagenes->count() }} imagen(es) más.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Subir</button>
+            <a href="{{ route('producto.index') }}" class="btn btn-secondary">Volver</a>
+        </form>
+    @else
+        <div class="alert alert-warning mt-3">
+            ⚠️ Este producto ya tiene 4 imágenes. No puedes subir más.
+        </div>
+        <a href="{{ route('producto.index') }}" class="btn btn-secondary mt-2">Volver</a>
+    @endif
+
+    {{-- Mostrar imágenes existentes --}}
     <div class="row mt-4">
         @foreach ($producto->imagenes as $imagen)
             <div class="col-md-3 mb-3">
