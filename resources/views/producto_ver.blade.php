@@ -19,18 +19,22 @@
         <div class="logo">
             <a href="{{ route('inicio') }}"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
         </div>
-        <div class="barra2">
-            @if (session('usuario'))
-                <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
-                <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
-            @else
-                <a href="{{ route('login') }}"><button class="filter-btn">Iniciar sesión</button></a>
-            @endif
-            <div class="iconos">
-                <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
+                <div class="barra2">
+            <div class="usuario-info">
                 @if (session('usuario'))
-                    <a href="{{ route('cuenta') }}"><button class="filter-btn"><i class="bi bi-person-fill"></i> Mi cuenta</button></a>
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                @else
+                    <a href="{{ route('login') }}" class="inis"><p class="filter-btna">Inicia sesión</p></a>
                 @endif
+                <div class="iconos">
+                    <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
+                    @if (session('usuario'))
+                        <a href="{{ route('cuenta') }}">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
     </nav>
@@ -72,7 +76,7 @@
                 <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
                 <input type="hidden" name="precio" value="{{ $producto->valor }}">
                 <input type="hidden" name="imagen" value="{{ $producto->imagenes->first()->ruta ?? 'default.jpg' }}">
-                <button type="submit" class="bottonagreg">Agregar al carrito</button>
+                <button type="submit" class="filter-bcc">Agregar al carrito</button>
             </form>
         </div>
     </div>
@@ -140,7 +144,6 @@
 
 <!-- Bootstrap Bundle (para que funcione bootstrap.Toast) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </body>
 </html>

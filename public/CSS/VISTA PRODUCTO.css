@@ -72,10 +72,32 @@ body {
 }
 
 .logo img {
-    height: 50px;
-    position: absolute;
-    right: 650px;
-    margin-top: -25px;
+    height: 60px;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    margin-left: 100px;
+}
+
+.usuario-info {
+    display: flex;
+    align-items: center;
+    gap: -30px;
+    flex-wrap: wrap;
+}
+
+.perfil-icono {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid white;
+    transition: 0.3s;
+}
+
+.perfil-icono:hover {
+    border-color: orange;
+    transform: scale(1.05);
 }
 
 .filter-bcc:hover {
@@ -311,4 +333,11 @@ body {
     padding: 10px;
     border: none;
     cursor: pointer;
+}
+
+.sesionn {
+    color: white;
+    margin: 0; /* Antes tenías margin-top: 7px */
+    display: flex;
+    align-items: center;
 }
