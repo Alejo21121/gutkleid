@@ -26,7 +26,7 @@
                     <a href="{{ url('/logout') }}"><button class="filter-btn"><i
                                 class="bi bi-door-open"></i></button></a>
                     <div class="iconos">
-                        <a href="#"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
+                        <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
                     </div>
                 </div>
             </div>

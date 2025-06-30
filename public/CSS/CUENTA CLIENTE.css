@@ -158,6 +158,7 @@ header {
     color: rgb(245, 159, 61);
 }
 
-.user.name {
-    background-color: yellow;
+.user-name{
+
+    margin-top: 7px;
 }
