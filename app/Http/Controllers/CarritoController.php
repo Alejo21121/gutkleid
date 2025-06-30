@@ -95,6 +95,9 @@ class CarritoController extends Controller
     $id_producto = $request->input('id_producto');
     $nombre = $request->input('nombre');
     $valor = $request->input('precio');
+    $color = $request->input('color');
+    $talla = $request->input('talla');
+
 
     // Buscar el producto con su imagen relacionada
     $producto = Producto::with('imagenes')->findOrFail($id_producto);
@@ -112,6 +115,8 @@ class CarritoController extends Controller
             "id_producto" => $id_producto,
             "nombre" => $nombre,
             "valor" => $valor,
+            "color" => $color,
+            "talla" => $talla,
             "cantidad" => 1,
             "imagen" => $rutaCompleta
         ];

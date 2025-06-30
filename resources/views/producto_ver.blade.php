@@ -75,7 +75,8 @@
                 <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
                 <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
                 <input type="hidden" name="precio" value="{{ $producto->valor }}">
-                <input type="hidden" name="imagen" value="{{ $producto->imagenes->first()->ruta ?? 'default.jpg' }}">
+                <input type="hidden" name="color" value="{{ $producto->color }}">
+                <input type="hidden" name="talla" value="{{ $producto->talla }}">
                 <button type="submit" class="filter-bcc">Agregar al carrito</button>
             </form>
         </div>

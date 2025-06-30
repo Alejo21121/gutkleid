@@ -16,7 +16,7 @@ class ImagenSeeder extends Seeder
             2 => ['jean.jpg'],
             3 => ['chaqueta jeanh.jpg', 'chaqueta jeanh2.webp'],
             4 => ['buzom1.webp','buzom2.webp'],
-            5 => ['chaqueta puffer.jpg'],
+            5 => ['chaquetapff1.webp', 'chaquetapff2.webp', 'chaquetapff3.webp'],
             6 => ['jeanh1.webp'],
             7 => ['gorram2.webp'],
         ];

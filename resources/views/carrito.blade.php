@@ -62,8 +62,8 @@
                 <table class="table table-bordered table-hover">
                     <thead class="table-dark">
                     <tr>
-                        <th>Imagen</th>
                         <th>Producto</th>
+                        <th>Descripcion</th>
                         <th>Cantidad</th>
                         <th>Precio U.</th>
                         <th>Subtotal</th>
@@ -78,7 +78,7 @@
                         <td>
                             <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
                         </td>
-                        <td>{{ $item['nombre'] }}</td>
+                        <td>{{ $item['nombre'] }} <br> {{ $item['color'] }} <br> {{ $item['talla'] }}</td>
                         <td>{{ $item['cantidad'] }}</td>
                         <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
                         <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
