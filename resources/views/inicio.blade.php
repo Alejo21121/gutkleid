@@ -75,7 +75,6 @@
             <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
             <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
             <input type="hidden" name="precio" value="{{ $producto->valor }}">
-            <input type="hidden" name="imagen" value="{{ $producto->imagenes->first()->ruta ?? 'default.jpg' }}">
             <button type="submit" class="bottonagreg">Agregar al carrito</button>
         </form>
     </div>

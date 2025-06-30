@@ -8,6 +8,7 @@ use App\Models\FacturaVenta;
 use App\Models\DetalleFacturaV;
 use App\Models\MetodoPago;
 use Illuminate\Support\Facades\DB;
+use App\Models\Imagen;
 
 class CarritoController extends Controller
 {
@@ -89,28 +90,37 @@ class CarritoController extends Controller
         }
     }
 
-    public function agregar(Request $request)
-    {
-        $id_producto = $request->input('id_producto');
-        $nombre = $request->input('nombre');
-        $valor = $request->input('precio');
+   public function agregar(Request $request)
+{
+    $id_producto = $request->input('id_producto');
+    $nombre = $request->input('nombre');
+    $valor = $request->input('precio');
 
-        $carrito = session()->get('carrito', []);
+    // Buscar el producto con su imagen relacionada
+    $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
-        if (isset($carrito[$id_producto])) {
-            $carrito[$id_producto]['cantidad'] += 1;
-        } else {
-            $carrito[$id_producto] = [
-                "id_producto" => $id_producto,
-                "nombre" => $nombre,
-                "valor" => $valor,
-                "cantidad" => 1
-            ];
-        }
+    // Obtener la ruta de la primera imagen o imagen por defecto
+    $rutaImagen = $producto->imagenes->first()->ruta ?? 'default.jpg';
+    $rutaCompleta = asset('storage/' . $rutaImagen);
 
-        session()->put('carrito', $carrito);
-        return redirect()->route('carrito.index')->with('success', 'Producto agregado al carrito.');
+    $carrito = session()->get('carrito', []);
+
+    if (isset($carrito[$id_producto])) {
+        $carrito[$id_producto]['cantidad'] += 1;
+    } else {
+        $carrito[$id_producto] = [
+            "id_producto" => $id_producto,
+            "nombre" => $nombre,
+            "valor" => $valor,
+            "cantidad" => 1,
+            "imagen" => $rutaCompleta
+        ];
     }
+
+    session()->put('carrito', $carrito);
+
+    return redirect()->route('carrito.index')->with('success', 'Producto agregado al carrito.');
+}
 
     public function eliminar($id_producto)
     {
