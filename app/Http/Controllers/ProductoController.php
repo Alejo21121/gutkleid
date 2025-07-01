@@ -126,36 +126,33 @@ public function index(Request $request)
 
     // Subir nuevas imágenes
    
-    public function subirImagen(Request $request, $id)
+   public function subirImagen(Request $request, $id)
 {
     $request->validate([
         'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
     ]);
 
     $producto = Producto::with('imagenes')->findOrFail($id);
-    $imagenesActuales = $producto->imagenes->count();
-    $nuevas = $request->file('imagenes') ?? [];
-    $cantidadNueva = count($nuevas);
 
     if ($producto->imagenes->count() >= 4) {
-    return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
-}
+        return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
+    }
 
+    $imagenesNuevas = $request->file('imagenes') ?? [];
 
-    foreach ($nuevas as $img) {
+    foreach ($imagenesNuevas as $img) {
         $nombreOriginal = $img->getClientOriginalName();
+        $rutaDestino = public_path("IMG/imagenes_demo/{$nombreOriginal}");
 
-        // Guardar en storage/app/public/productos
-        $img->storeAs('public/productos', $nombreOriginal);
+        // Si no existe ya la imagen, se guarda
+        if (!File::exists($rutaDestino)) {
+            $img->move(public_path('IMG/imagenes_demo'), $nombreOriginal);
+        }
 
-        // Copiar también a public/IMG/imagenes_demo
-        $rutaDestinoPublica = public_path("IMG/imagenes_demo/{$nombreOriginal}");
-        File::copy($img->getRealPath(), $rutaDestinoPublica);
-
-        // Guardar en la base de datos
+        // Registrar en la base de datos
         Imagen::create([
             'id_producto' => $id,
-            'ruta' => 'productos/' . $nombreOriginal
+            'ruta' => 'IMG/imagenes_demo/' . $nombreOriginal
         ]);
     }
 

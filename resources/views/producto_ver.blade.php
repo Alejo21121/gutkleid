@@ -43,10 +43,19 @@
 <main class="main">
     <div class="product-container">
         <div class="producto-galeria">
-            @foreach ($producto->imagenes as $img)
-                <img src="{{ asset('storage/' . $img->ruta) }}" alt="Imagen del producto">
-            @endforeach
-        </div>
+    <!-- Imagen grande -->
+    <div class="imagen-principal">
+        <img id="imagenGrande" src="{{ asset($producto->imagenes->first()->ruta ?? 'IMG/default.jpg') }}" alt="Imagen principal">
+    </div>
+
+    <!-- Miniaturas -->
+    <div class="miniaturas">
+        @foreach ($producto->imagenes as $img)
+            <img class="miniatura" src="{{ asset($img->ruta) }}" alt="Miniatura" onclick="cambiarImagen('{{ asset($img->ruta) }}')">
+        @endforeach
+    </div>
+</div>
+
 
         <div class="producto-info">
             <h2>{{ $producto->nombre }}</h2>
@@ -145,6 +154,13 @@
 
 <!-- Bootstrap Bundle (para que funcione bootstrap.Toast) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function cambiarImagen(ruta) {
+        document.getElementById('imagenGrande').src = ruta;
+    }
+</script>
+
 
 </body>
 </html>

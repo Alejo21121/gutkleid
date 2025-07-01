@@ -103,8 +103,8 @@ class CarritoController extends Controller
     $producto = Producto::with('imagenes')->findOrFail($id_producto);
 
     // Obtener la ruta de la primera imagen o imagen por defecto
-    $rutaImagen = $producto->imagenes->first()->ruta ?? 'default.jpg';
-    $rutaCompleta = asset('storage/' . $rutaImagen);
+    $rutaImagen = $producto->imagenes->first()->ruta ?? 'IMG/default.jpg';
+    $rutaCompleta = 'IMG/imagenes_demo/' . basename($rutaImagen);
 
     $carrito = session()->get('carrito', []);
 

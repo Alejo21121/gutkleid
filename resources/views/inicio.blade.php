@@ -59,7 +59,7 @@
             <div class="mini-carousel" onclick="event.stopPropagation();">
                 <div class="mini-carousel-images">
                     @foreach ($producto->imagenes as $imagen)
-                        <img src="{{ asset('storage/' . $imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                        <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
                     @endforeach
                 </div>
                 <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
