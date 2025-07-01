@@ -126,43 +126,37 @@ public function index(Request $request)
 
     // Subir nuevas imágenes
    
-    public function subirImagen(Request $request, $id)
+   public function subirImagen(Request $request, $id)
 {
     $request->validate([
         'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
     ]);
 
     $producto = Producto::with('imagenes')->findOrFail($id);
-    $imagenesActuales = $producto->imagenes->count();
-    $nuevas = $request->file('imagenes') ?? [];
 
     if ($producto->imagenes->count() >= 4) {
-        return redirect()->route('producto.imagenes', $id)
-            ->with('error', 'Ya hay 4 imágenes para este producto.');
+        return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
     }
 
-    // Asegurar que la carpeta exista
-    $carpetaDestino = public_path('IMG/imagenes_demo');
-    if (!File::exists($carpetaDestino)) {
-        File::makeDirectory($carpetaDestino, 0755, true);
-    }
+    $imagenesNuevas = $request->file('imagenes') ?? [];
 
-    foreach ($nuevas as $img) {
-        $nombreArchivo = uniqid() . '_' . $img->getClientOriginalName();
-        $rutaCompleta = $carpetaDestino . '/' . $nombreArchivo;
+    foreach ($imagenesNuevas as $img) {
+        $nombreOriginal = $img->getClientOriginalName();
+        $rutaDestino = public_path("IMG/imagenes_demo/{$nombreOriginal}");
 
-        // Copiar imagen al destino
-        File::copy($img->getRealPath(), $rutaCompleta);
+        // Si no existe ya la imagen, se guarda
+        if (!File::exists($rutaDestino)) {
+            $img->move(public_path('IMG/imagenes_demo'), $nombreOriginal);
+        }
 
-        // Guardar en BD la ruta relativa desde /public
+        // Registrar en la base de datos
         Imagen::create([
             'id_producto' => $id,
-            'ruta' => 'IMG/imagenes_demo/' . $nombreArchivo
+            'ruta' => 'IMG/imagenes_demo/' . $nombreOriginal
         ]);
     }
 
-    return redirect()->route('producto.imagenes', $id)
-        ->with('success', '✅ Imágenes agregadas.');
+    return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
 }
 
     // Eliminar una imagen
