@@ -16,12 +16,18 @@ class DashboardController extends Controller
             ->groupBy('categoria')
             ->get();
 
-        // Ventas por mes (si hay datos)
+        // Ventas por mes
         $ventasMensuales = DB::table('factura_ventas')
             ->select(DB::raw('MONTH(fecha_venta) as mes'), DB::raw('SUM(total) as total'))
             ->groupBy(DB::raw('MONTH(fecha_venta)'))
             ->get();
 
-        return view('analisis', compact('porCategoria', 'ventasMensuales'));
+        // Total de clientes
+        $totalClientes = DB::table('personas')->where('id_rol', 2)->count();
+
+        // Total de productos registrados (por ID único)
+        $totalProductos = DB::table('productos')->count();
+
+        return view('analisis', compact('porCategoria', 'ventasMensuales', 'totalClientes', 'totalProductos'));
     }
 }
