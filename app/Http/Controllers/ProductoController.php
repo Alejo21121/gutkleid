@@ -135,31 +135,34 @@ public function index(Request $request)
     $producto = Producto::with('imagenes')->findOrFail($id);
     $imagenesActuales = $producto->imagenes->count();
     $nuevas = $request->file('imagenes') ?? [];
-    $cantidadNueva = count($nuevas);
 
     if ($producto->imagenes->count() >= 4) {
-    return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
-}
+        return redirect()->route('producto.imagenes', $id)
+            ->with('error', 'Ya hay 4 imágenes para este producto.');
+    }
 
+    // Asegurar que la carpeta exista
+    $carpetaDestino = public_path('IMG/imagenes_demo');
+    if (!File::exists($carpetaDestino)) {
+        File::makeDirectory($carpetaDestino, 0755, true);
+    }
 
     foreach ($nuevas as $img) {
-        $nombreOriginal = $img->getClientOriginalName();
+        $nombreArchivo = uniqid() . '_' . $img->getClientOriginalName();
+        $rutaCompleta = $carpetaDestino . '/' . $nombreArchivo;
 
-        // Guardar en storage/app/public/productos
-        $img->storeAs('public/productos', $nombreOriginal);
+        // Copiar imagen al destino
+        File::copy($img->getRealPath(), $rutaCompleta);
 
-        // Copiar también a public/IMG/imagenes_demo
-        $rutaDestinoPublica = public_path("IMG/imagenes_demo/{$nombreOriginal}");
-        File::copy($img->getRealPath(), $rutaDestinoPublica);
-
-        // Guardar en la base de datos
+        // Guardar en BD la ruta relativa desde /public
         Imagen::create([
             'id_producto' => $id,
-            'ruta' => 'productos/' . $nombreOriginal
+            'ruta' => 'IMG/imagenes_demo/' . $nombreArchivo
         ]);
     }
 
-    return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
+    return redirect()->route('producto.imagenes', $id)
+        ->with('success', '✅ Imágenes agregadas.');
 }
 
     // Eliminar una imagen

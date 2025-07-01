@@ -42,7 +42,7 @@
         @foreach ($producto->imagenes as $imagen)
             <div class="col-md-3 mb-3">
                 <div class="card">
-                    <img src="{{ asset('storage/' . $imagen->ruta) }}" class="card-img-top" alt="Imagen del producto">
+                    <img src="{{ asset($imagen->ruta) }}" class="card-img-top" alt="Imagen del producto">
                     <div class="card-body text-center">
                         <form action="{{ route('imagenes.eliminar', $imagen->id_imagen) }}" method="POST" onsubmit="return confirm('¿Eliminar esta imagen?');">
                             @csrf
