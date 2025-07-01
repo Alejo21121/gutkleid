@@ -92,10 +92,21 @@
                 </table>
 
                 <div class="pagination-container">
-                    <a href="{{ $usuarios->previousPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Anterior</a>
+                    @if ($usuarios->onFirstPage())
+                        <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
+                    @else
+                        <a href="{{ $usuarios->previousPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Anterior</a>
+                    @endif
+
                     <span class="pagina-info">Página {{ $paginaActual }} de {{ $totalPaginas }}</span>
-                    <a href="{{ $usuarios->nextPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Siguiente</a>
+
+                    @if ($usuarios->hasMorePages())
+                        <a href="{{ $usuarios->nextPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Siguiente</a>
+                    @else
+                        <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Siguiente</span>
+                    @endif
                 </div>
+
                 <br>
                 @if(request('buscar'))
                 
