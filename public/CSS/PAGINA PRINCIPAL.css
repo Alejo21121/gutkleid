@@ -57,15 +57,11 @@ body {
     flex-wrap: wrap;
 }
 
-/* === MAIN === */
-.main {
-    padding: 20px;
-    margin-left: 200px;
-}
 
 .filterbar {
     display: flex;
     margin-bottom: 10px;
+    
 }
 
 .filter-btn, .filter-btna, .filter-busc, .inven {
@@ -116,47 +112,63 @@ body {
 /* === PRODUCTOS === */
 .productosbar {
     display: grid;
-    margin: 0 auto;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Aumentado */
-    gap: 30px;
+    grid-template-columns: repeat(6, 1fr); /* Fuerza 6 columnas */
+    gap: 25px;
     text-align: center;
-    margin: 70px auto 40px auto; /* ↓ más espacio arriba y centrado */
-
+    max-width: 1400px;
+    margin: 0 auto;
 }
+
 
 .productos {
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease-in-out;
+    height: 520px; /* Ajustado para imagen grande + texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .productos:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-.productos img {
-    width: 100%;
-    height: 200px; /* o ajusta según necesites */
-    object-fit: cover;
-    border-radius: 5px;
+.productos img {    
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
 }
 
+
+.productos h5 {
+    font-size: 20px;
+    margin: 50px 0 5px;
+}
 
 .productos p {
-    margin: 5px 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.main {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 /* === MINI-CAROUSEL === */
 .mini-carousel {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 250px;
     overflow: hidden;
 }
 

@@ -11,7 +11,7 @@ class ImagenSeeder extends Seeder
     public function run(): void
     {
         $imagenes = [
-            1 => ['buzo sc2.webp', 'buso sc.jpg', 'buzo sc3.webp', 'buzo sc5.webp'],
+            1 => ['buso sc.jpg','buzo sc2.webp', 'buzo sc3.webp', 'buzo sc5.webp'],
             2 => ['jean.jpg'],
             3 => ['chaqueta jeanh.jpg', 'chaqueta jeanh2.webp'],
             4 => ['buzom1.webp', 'buzom2.webp'],
