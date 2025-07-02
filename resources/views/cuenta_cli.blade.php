@@ -9,30 +9,34 @@
 </head>
 
 <body>
-    <header class="cabeza">
-        <nav class="barras">
-            <div class="barra1">
-                <a href="{{ url()->previous() }}">
-                    <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
-                </a>
-                <a href="{{ url('/reseñas') }}"><button class="filter-btn">Acerca de</button></a>
-            </div>
-            <div class="logo">
-                <div class="iconos">
-                    <a href="{{ route('inicio') }}"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
-                </div>
-                <div class="barra2">
-                    <span class="user-name">Hola, {{ session('usuario')['nombres'] ?? 'Invitado' }}</span>
-                    <a href="{{ url('/logout') }}"><button class="filter-btn"><i
-                                class="bi bi-door-open"></i></button></a>
-                    <div class="iconos">
-                        <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+<header class="cabeza">
+    <nav class="barras">
+        <div class="barra1">
+            <a href="{{ url()->previous() }}">
+                <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
+            </a>
+            <a href="{{ url('/reseñas') }}">
+                <button class="filter-btn">Acerca de</button>
+            </a>
+        </div>
 
+        <div class="logo">
+            <a href="{{ route('inicio') }}">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </a>
+        </div>
+
+        <div class="barra2">
+            <span class="user-name">Hola, {{ session('usuario')['nombres'] ?? 'Invitado' }}</span>
+            <a href="{{ url('/logout') }}">
+                <button class="filter-btn"><i class="bi bi-door-open"></i></button>
+            </a>
+            <a href="{{ route('carrito.index') }}">
+                <button class="filter-btn"><i class="bi bi-cart3"></i></button>
+            </a>
+        </div>
+    </nav>
+</header>
     <main class="container">
         <h1 class="title1">Información de tu Cuenta</h1>
         <div class="info">

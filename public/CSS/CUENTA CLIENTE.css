@@ -50,40 +50,76 @@ body {
 }
 
 .cabeza {
-    background-color: #9b9b9b;
-    padding: 15px;
-    width: 100%;
-    background: linear-gradient(
-        to bottom,
-        #474747 10%,
-        /* Color oscuro al inicio (10% de la altura) */ #6e6e6e 50%,
-        /* Se va aclarando al 50% */ #6b6b6b00 100%
-            /* Totalmente transparente al 100% */
-    );
+  padding: 15px;
+  width: 100%;
+  background: linear-gradient(to bottom, #474747 10%, #6e6e6e 50%, #6b6b6b00 100%);
+}
+
+.barras,
+.barra1,
+.barra2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .barras {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.barra1,
-.barra2 {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* necesario para que .logo absolute funcione bien */
 }
 
 .nav-btn:hover {
     background-color: #e6e6e6;
 }
 
-.logo img {
-    height: 50px;
-    position: absolute;
-    right: 650px;
-    margin-top: -10px;
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
+
+.logo img {
+  height: 60px;
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.user-name {
+  color: #fff;
+  padding: 3px 12px;
+  font-weight: bold;
+}
+
+.user-name{
+
+    margin-top: 7px;
+}
+
+.perfil-icono {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    transition: 0.3s;
+}
+
+.perfil-icono:hover {
+    border-color: orange;
+    box-shadow: 0 0 8px orange;
+    transform: scale(1.05);
+}
+
 
 .filter-btn {
     margin-left: 10px;
@@ -158,7 +194,3 @@ header {
     color: rgb(245, 159, 61);
 }
 
-.user-name{
-
-    margin-top: 7px;
-}

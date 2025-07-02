@@ -20,18 +20,26 @@ body {
 }
 
 .barras {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* necesario para que .logo absolute funcione bien */
 }
 
 .barra1 {
     display: flex;
-    gap: 15px;
 }
 
 .logo img {
-    height: 55px;
+    height: 60px;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .usuario-info {
@@ -46,33 +54,50 @@ body {
 }
 
 .perfil-icono {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
-    border: 2px solid #fff;
+    object-fit: cover;
+    border: 2px solid white;
+    transition: 0.3s;
+}
+
+.perfil-icono:hover {
+    border-color: orange;
+    box-shadow: 0 0 8px orange;
+    transform: scale(1.05);
 }
 
 /* === BOTONES === */
-.filter-bcc, .filter-bccselect, .filter-btn {
-    padding: 6px 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #fff;
-    transition: all 0.3s ease;
-    font-weight: bold;
+
+button,
+a[class^="bott"],
+.filter-btn,
+.filter-bcc,
+.filter-bccselect {
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.filter-bcc {
+  background-color: #765036;
+  color: #fff;
+  border: none;
+}
+
+.filter-bcc:hover {
+  background-color: rgb(245, 159, 61);
 }
 
 .filter-bccselect {
-    background-color: #f59f3d;
-    color: white;
-}
-
-.filter-bcc:hover, .filter-bccselect:hover, .filter-btn:hover {
-    background-color: #e08e2d;
-    color: #fff;
+  background-color: rgb(245, 159, 61);
+  color: #fff;
+  border: none;
 }
 
 /* === CONTENIDO PRINCIPAL === */
