@@ -24,20 +24,20 @@
             </a>
         </div>
         <div class="barra2">
-            <div class="usuario-info">
-                @if (session('usuario'))
-                    <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
-                    <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                             alt="Perfil"
-                             class="perfil-icono">
-                    </a>
-                @else
-                    <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
-                @endif
-            </div>
-        </div>
+                    <div class="usuario-info">
+                        @if (session('usuario'))
+                            <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
+                            <a href="{{ route('cuenta') }}">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                                alt="Perfil"
+                                class="perfil-icono">
+                            </a>
+                            <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a> 
+                        @else
+                            <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
+                        @endif
+                    </div>
+                </div>
     </nav>
 </header>
 
@@ -118,5 +118,14 @@
         chartVentas.draw(dataVentas, optionsVentas);
     }
 </script>
+
+<footer class="pie">
+    <div class="foot">
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    </div>
+    <p>&copy; 2024 - GUT KLEID.</p>
+</footer>
+
 </body>
 </html>

@@ -24,12 +24,12 @@
                     <div class="usuario-info">
                         @if (session('usuario'))
                             <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
-                            <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
                             <a href="{{ route('cuenta') }}">
                             <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
                                 alt="Perfil"
                                 class="perfil-icono">
-                        </a>
+                            </a>
+                            <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a> 
                         @else
                             <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
                         @endif

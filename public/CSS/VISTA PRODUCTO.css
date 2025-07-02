@@ -340,6 +340,7 @@ body {
     margin: 0; /* Antes tenías margin-top: 7px */
     display: flex;
     align-items: center;
+    margin-right: 10px;
 }
 
 .producto-galeria {

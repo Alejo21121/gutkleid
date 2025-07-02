@@ -28,17 +28,17 @@
             <div class="usuario-info">
                 @if (session('usuario'))
                     <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    @if (session('usuario'))
+                        <a href="{{ route('cuenta') }}">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
+                        </a>
+                    @endif                    
                     <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
                 @else
                     <a href="{{ route('login') }}" class="inis"><p class="filter-btna">Inicia sesión</p></a>
                 @endif
                 <div class="iconos">
                     <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
-                    @if (session('usuario'))
-                        <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
-                        </a>
-                    @endif
                 </div>
             </div>
         </div>

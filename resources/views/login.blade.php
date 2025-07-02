@@ -17,9 +17,12 @@
             </a>
             <a href="RESEÑAS.html"><button class="filter-btn">Acerca de</button></a>
         </div>
+
         <div class="logo">
             <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
         </div>
+
+        <div class="barra2"></div> <!-- Este sirve para que el logo quede en el centro real -->
     </nav>
 </header>
 <main class="container mt-5">
