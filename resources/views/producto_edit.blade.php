@@ -33,11 +33,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="talla" class="form-label">Talla:</label>
-            <input type="text" name="talla" value="{{ old('talla', $producto->talla) }}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
             <label for="color" class="form-label">Color:</label>
             <input type="text" name="color" value="{{ old('color', $producto->color) }}" class="form-control" required>
         </div>
@@ -54,15 +49,50 @@
                 </select>
         </div>
 
-        <div class="mb-3">
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" name="cantidad" id="cantidad" min="0" value="{{ old('cantidad', $producto->cantidad) }}" class="form-control" required>
+        <h4>Tallas y cantidades:</h4>
+
+        <div id="contenedor-tallas">
+           @foreach ($producto->tallas as $index => $talla)
+                <div class="fila-talla">
+                    <input type="text" name="tallas[{{ $index }}][talla]" value="{{ $talla->talla }}" class="form-control me-2" placeholder="Talla" required>
+                    <input type="number" name="tallas[{{ $index }}][cantidad]" value="{{ $talla->cantidad }}" class="form-control me-2" placeholder="Cantidad" min="0" required>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            @endforeach            
         </div>
 
-        <button type="submit" class="btn btn-success">Actualizar</button>
+        <div class="botones-acciones">
+            <button type="button" class="btn btn-success" onclick="agregarTalla()">Agregar otra talla</button>
+            <button type="submit" class="btn btn-success">Actualizar</button>
+        </div>
+
         <center><a href="{{ url('producto') }}" class="btn-menu">Volver al Menú Principal</a></center>
     </form>
 </div>
 <br>
+
+<script>
+    let contador = {{ $producto->tallas->count() }};
+
+    function agregarTalla() {
+        const contenedor = document.getElementById('contenedor-tallas');
+        const div = document.createElement('div');
+        div.classList.add('mb-2', 'd-flex', 'align-items-center', 'fila-talla');
+
+        div.innerHTML = `
+            <input type="text" name="tallas[${contador}][talla]" class="form-control me-2" placeholder="Talla" required>
+            <input type="number" name="tallas[${contador}][cantidad]" class="form-control me-2" placeholder="Cantidad" min="0" required>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">
+                <i class="bi bi-x"></i>
+            </button>
+        `;
+
+        contenedor.appendChild(div);
+        contador++;
+    }
+</script>
+
 </body>
 </html>

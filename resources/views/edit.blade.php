@@ -50,7 +50,7 @@
             <select name="id_tipo_documento" id="id_tipo_documento" required>
                 <option value="">Selecciona tipo de documento</option>
                 @foreach ($tipos as $tipo)
-                    <option value="{{ $tipo->id_tipo_documento }}" {{ old('id_tipo_documento') == $tipo->id_tipo_documento ? 'selected' : '' }}>
+                    <option value="{{ $tipo->id_tipo_documento }}" {{ $tipo->id_tipo_documento == $usuario->id_tipo_documento ? 'selected' : '' }}>
                         {{ $tipo->nombre }}
                     </option>
                 @endforeach
@@ -94,20 +94,18 @@
         </div>
 
         {{-- Contraseña (opcional para edición) --}}
-        <div class="mb-3" style="position: relative;">
-            <label for="contraseña" class="form-label">Contraseña:</label>
-            <input type="password" name="contraseña" id="contraseña" class="form-control" placeholder="Dejar en blanco para no cambiar" style="padding-right: 40px;">
-            
-            <button type="button" class="boton-ojo2" onclick="togglePassword('contraseña', 'iconoEditarContraseña')"
-            style="bottom: -20px;">
-                <i id="iconoEditarContraseña" class="bi bi-eye-slash"></i>
+            <label for="contraseña">Contraseña:</label>
+        <div class="grupo-contraseña">
+            <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
+            <button type="button" class="boton-ojo" onclick="togglePassword('contraseña', 'iconoContraseña')">
+                <i id="iconoContraseña" class="bi bi-eye-slash"></i>
             </button>
-
-            @error('contraseña')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
         </div>
 
+
+    @error('contraseña') 
+        <div class="alert alert-danger">{{ $message }}</div> 
+    @enderror
 
         {{-- Dirección --}}
         <div class="mb-3">
@@ -118,7 +116,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-success">Actualizar Usuario</button>
+        <center><button type="submit" class="btn btn-success">Actualizar Usuario</button></center>
         <center><a href="{{ route('usuarios.index') }}" class="btn-menu">Volver a Gestión de Usuarios</a></center>
     </form>
 </div>

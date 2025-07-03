@@ -64,14 +64,13 @@
     @enderror
 
     <label for="contraseña">Contraseña:</label>
-        <div style="position: relative; margin-bottom: 1rem;">
+        <div class="grupo-contraseña">
             <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
-
             <button type="button" class="boton-ojo" onclick="togglePassword('contraseña', 'iconoContraseña')">
                 <i id="iconoContraseña" class="bi bi-eye-slash"></i>
             </button>
-
         </div>
+
 
     @error('contraseña') 
         <div class="alert alert-danger">{{ $message }}</div> 
@@ -87,7 +86,8 @@
 
     {{-- ELIMINADO: Campo 'id_rol' --}}
 
-    <button type="submit">Agregar Usuario</button>
+    <center><button type="submit">Agregar Usuario</button></center>
+
     <center><a href="{{ route('usuarios.index') }}" class="btn-menu">Volver a Gestión de Usuarios</a></center>
 </form>
 <br>

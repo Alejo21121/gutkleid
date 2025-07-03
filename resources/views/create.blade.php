@@ -29,9 +29,6 @@
     <label for="marca">Marca:</label>
     <input type="text" name="marca" id="marca" required>
 
-    <label for="talla">Talla:</label>
-    <input type="text" name="talla" id="talla" required>
-
     <label for="color">Color:</label>
     <input type="text" name="color" id="color" required>
 
@@ -43,12 +40,45 @@
             @endforeach
         </select>
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" name="cantidad" id="cantidad" min="0" required>
+    <label>Tallas y cantidades:</label>
+        <div id="tallas-container">
+            <div class="talla-item">
+                <input type="text" name="tallas[0][talla]" placeholder="Talla" required>
+                <input type="number" name="tallas[0][cantidad]" placeholder="Cantidad" min="0" required>
+                <button type="button" onclick="eliminarTalla(this)">❌</button>
+            </div>
+        </div>
+        <br>
+        <button type="button" onclick="agregarTalla()">➕ Agregar otra talla</button>
 
     <button type="submit">Agregar Producto</button>
     <center><a href="{{ url('producto') }}" class="btn-menu">Volver al Menú Principal</a></center>
 </form>
 <br>
+
+<script>
+let contadorTalla = 1;
+
+function agregarTalla() {
+    const container = document.getElementById('tallas-container');
+
+    const div = document.createElement('div');
+    div.classList.add('talla-item');
+
+    div.innerHTML = `
+        <input type="text" name="tallas[${contadorTalla}][talla]" placeholder="Talla" required>
+        <input type="number" name="tallas[${contadorTalla}][cantidad]" placeholder="Cantidad" min="0" required>
+        <button type="button" onclick="eliminarTalla(this)">❌</button>
+    `;
+
+    container.appendChild(div);
+    contadorTalla++;
+}
+
+function eliminarTalla(boton) {
+    boton.parentElement.remove();
+}
+</script>
+
 </body>
 </html>

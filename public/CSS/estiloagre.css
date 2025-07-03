@@ -1,122 +1,195 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(
-        to bottom, 
-        #6b6b6b9f 10%,  /* Marrón oscuro al inicio */
-        #6b6b6b56 50%,  /* Marrón medio */
-        rgb(194, 149, 106)   /* Marrón claro */
-    ) !important;
-    background-attachment: fixed;
-  }
-  
-  /* 🔸 ENCABEZADO */
-  .cabeza {
-    background-color: #9B9B9B;
-    padding: 15px;
-    width: 100%;
-    background: linear-gradient(
-        to bottom, 
-        #474747 10%,  
-        #6e6e6e 50%,  
-        #6b6b6b00 100%
-    );
-  }
-  
-  /* 🔸 PIE DE PÁGINA */
-  .pie {
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: auto;
-  }
-  
-  .foot {
-    text-align: left;
-    position: absolute;
-    margin-top: -5px;
-    width: 100%;
-    height: 65px;
-    background: linear-gradient(
-        to top, 
-        rgb(78, 60, 43) 10%,  
-        rgba(148, 113, 80, 0.986) 50%,  
-        rgba(194, 149, 106, 0) 100%
-    );
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    to bottom,
+    #6b6b6b9f 10%,
+    #6b6b6b56 50%,
+    rgb(194, 149, 106)
+  ) !important;
+  background-attachment: fixed;
+}
+
+/* 🔸 ENCABEZADO */
+.cabeza {
+  background-color: #9b9b9b;
+  padding: 15px;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    #474747 10%,
+    #6e6e6e 50%,
+    #6b6b6b00 100%
+  );
+}
+
+/* 🔸 PIE DE PÁGINA */
+.pie {
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: auto;
+}
+
+.foot {
+  text-align: left;
+  position: absolute;
+  margin-top: -5px;
+  width: 100%;
+  height: 65px;
+  background: linear-gradient(
+    to top,
+    rgb(78, 60, 43) 10%,
+    rgba(148, 113, 80, 0.986) 50%,
+    rgba(194, 149, 106, 0) 100%
+  );
+}
+
+/* 🔹 FORMULARIO */
 form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: auto;
-    text-align: left;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: left;
 }
+
 label {
-    display: block;
-    margin-top: 10px;
+  display: block;
+  margin-top: 10px;
 }
-input {
-    padding: 5px;
-    margin-top: 2px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-        width: 350px;
+
+input,
+select {
+  padding: 5px;
+  margin-top: 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  background-color: white;
 }
-button {
-    margin-top: 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
+
+select {
+  appearance: none;
 }
-button:hover {
-    background-color: #218838;
+
+/* Botones */
+button,
+.btn-success {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  width: auto;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
 }
+
+button:hover,
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Botón azul */
 .btn-menu {
-    background-color: #007bff;
-    text-decoration: none;
-    color: white;
-    padding: 10px 20px;
-    display: inline-block;
-    margin-top: 10px;
-    border-radius: 4px;
-    font-size: 16px;
+  background-color: #007bff;
+  text-decoration: none;
+  color: white;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-top: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
 }
 .btn-menu:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
-.menuin{
-    width: 95%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+
+/* Grupo de talla + cantidad + eliminar */
+.fila-talla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* Ícono tipo ojo (ocultar contraseña) */
+
+.boton-ojo:hover,
+.boton-ojo2:hover {
+  background: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.botones-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+/* Estilo del botón eliminar X */
+.boton-eliminar-talla {
+  padding: 4px 10px;
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  height: 34px;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.boton-eliminar-talla:hover {
+  background-color: #bb2d3b;
+}
+
+.grupo-contraseña {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.grupo-contraseña input {
+    width: 100%;
+    padding-right: 40px; /* espacio para el icono */
 }
 
 .boton-ojo {
-    all: unset; /* ✅ Elimina herencia de estilos */
+    all: unset;
     position: absolute;
     right: 10px;
-    top: 50%;
+    top: 40%;
     transform: translateY(-50%);
     cursor: pointer;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
 }
 
 .boton-ojo i {
@@ -124,34 +197,34 @@ button:hover {
     font-size: 1.2rem;
 }
 
-.boton-ojo:hover {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: none !important;
-    filter: none !important;
-}
 
+/* ✅ Responsive para pantallas pequeñas */
+@media (max-width: 480px) {
+  form {
+    padding: 15px;
+    max-width: 90%;
+  }
 
-.boton-ojo2 {
-    all: unset; /* ✅ Elimina herencia de estilos */
-    position: absolute;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
-}
+  input,
+  select {
+    width: 100%;
+    max-width: 100%;
+    font-size: 15px;
+  }
 
-.boton-ojo2 i {
-    color: black;
-    font-size: 1.2rem;
-}
+  .fila-talla {
+    flex-direction: column;
+    gap: 5px;
+  }
 
-.boton-ojo2:hover {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: none !important;
-    filter: none !important;
+  .boton-eliminar-talla {
+    width: 100%;
+    height: auto;
+  }
+
+  button,
+  .btn-menu {
+    width: 100%;
+    font-size: 15px;
+  }
 }

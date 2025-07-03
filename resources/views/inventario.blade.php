@@ -72,18 +72,30 @@
                                     <td>{{ $producto->nombre }}</td>
                                     <td>${{ number_format($producto->valor, 0, ',', '.') }}</td>
                                     <td>{{ $producto->marca }}</td>
-                                    <td>{{ $producto->talla }}</td>
+                                    <td>
+                                        @foreach ($producto->tallas as $t)
+                                            <span>{{ $t->talla }} ({{ $t->cantidad }})<br></span>
+                                        @endforeach
+                                    </td>
                                     <td>{{ $producto->color }}</td>
                                     <td>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</td>
-                                    <td>{{ $producto->cantidad }}</td>
                                     <td>
-                                        <a href="{{ route('producto.imagenes', $producto->id_producto) }}" class="bottimg">
-                                            <i class="bi bi-images"></i>
-                                        </a>
+                                        {{ $producto->tallas->sum('cantidad') }}
+                                    </td>
+                                    <td>
+                                        @if ($producto->imagenes->isNotEmpty())
+                                            <a href="{{ route('producto.imagenes', $producto->id_producto) }}">
+                                                <img src="{{ asset($producto->imagenes->first()->ruta) }}" alt="Imagen del producto" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                            </a>
+                                        @else
+                                            <a href="{{ route('producto.imagenes', $producto->id_producto) }}" class="bottimg">
+                                                <i class="bi bi-images"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td>
                                         <a href="{{ route('producto.edit', $producto->id_producto) }}" class="bottedit"><i class="bi bi-pencil"></i></a>
-                                        <form action="{{ route('producto.destroy', $producto->id_producto) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este producto?');">
+                                        <form action="{{ route('producto.destroy', $producto->id_producto) }}?page={{ request('page') }}&buscar={{ request('buscar') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este producto?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="bottbor"><i class="bi bi-trash"></i></button>

@@ -29,5 +29,11 @@ class Producto extends Model
         return $this->hasMany(Imagen::class, 'id_producto');
     }
 
+        public function tallas()
+    {
+        return $this->hasMany(Talla::class, 'id_producto');
+    }
+
+
 }
 

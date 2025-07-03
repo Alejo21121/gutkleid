@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->decimal('valor', 10, 2); // mejor para dinero
             $table->string('marca');
-            $table->string('talla');
             $table->string('color');
             $table->unsignedBigInteger('id_categoria');
-            $table->integer('cantidad')->default(0); // nueva columna
             $table->timestamps();
 
             // Llave foránea hacia categorías

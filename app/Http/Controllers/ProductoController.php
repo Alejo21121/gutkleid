@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Categoria;
 
 use App\Models\Imagen;
+use App\Models\Talla; // Asegúrate de importar el modelo
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
@@ -21,7 +22,8 @@ public function index(Request $request)
 {
     $buscar = $request->input('buscar');
 
-    $query = Producto::with(['categoria', 'imagenes']); // Cargar relación
+    $query = Producto::with(['categoria', 'imagenes', 'tallas']);
+
 
     if (!empty($buscar)) {
         $query->where('id_producto', $buscar);
@@ -45,23 +47,37 @@ public function index(Request $request)
     }
 
     public function store(Request $request)
-
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
-            'talla' => 'required|string|max:50',
             'color' => 'required|string|max:100',
             'id_categoria' => 'required|exists:categorias,id_categoria',
-            'cantidad' => 'required|integer|min:0',
+            'tallas' => 'required|array',
+            'tallas.*.talla' => 'required|string|max:10',
+            'tallas.*.cantidad' => 'required|integer|min:0',
         ]);
 
-        DB::table('productos')->insert($request->only([
-            'nombre', 'valor', 'marca', 'talla', 'color', 'id_categoria', 'cantidad'
-        ]));
+        // Crear el producto
+        $producto = Producto::create([
+            'nombre' => $validated['nombre'],
+            'valor' => $validated['valor'],
+            'marca' => $validated['marca'],
+            'color' => $validated['color'],
+            'id_categoria' => $validated['id_categoria'],
+        ]);
 
-        return redirect()->route('producto.index')->with('success', 'Producto agregado exitosamente.');
+        // Agregar las tallas asociadas
+        foreach ($validated['tallas'] as $talla) {
+            Talla::create([
+                'id_producto' => $producto->id_producto,
+                'talla' => $talla['talla'],
+                'cantidad' => $talla['cantidad'],
+            ]);
+        }
+
+        return redirect()->route('producto.index')->with('success', 'Producto creado con tallas.');
     }
 
     public function show(Producto $producto)
@@ -77,26 +93,47 @@ public function index(Request $request)
 
     public function update(Request $request, Producto $producto)
     {
-            $request->validate([
+        // Validación para los campos principales
+        $request->validate([
             'nombre' => 'required|string|max:255',
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
-            'talla' => 'required|string|max:50',
             'color' => 'required|string|max:100',
             'id_categoria' => 'required|exists:categorias,id_categoria',
-            'cantidad' => 'required|integer|min:0',
+            'tallas' => 'required|array|min:1',
+            'tallas.*.talla' => 'required|string|max:50',
+            'tallas.*.cantidad' => 'required|integer|min:0',
         ]);
 
-            $producto->update($request->only([
-            'nombre', 'valor', 'marca', 'talla', 'color', 'id_categoria', 'cantidad'
+        // Actualizar producto
+        $producto->update($request->only([
+            'nombre', 'valor', 'marca', 'color', 'id_categoria'
         ]));
+
+        // Borrar tallas actuales
+        $producto->tallas()->delete();
+
+        // Agregar nuevas tallas
+        foreach ($request->input('tallas') as $t) {
+            if (!empty($t['talla']) && isset($t['cantidad'])) {
+                $producto->tallas()->create([
+                    'talla' => $t['talla'],
+                    'cantidad' => $t['cantidad'],
+                ]);
+            }
+        }
 
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
     }
+
         public function destroy(Producto $producto)
         {
             $producto->delete();
-            return redirect()->route('producto.index')->with('success', 'Producto eliminado correctamente.');
+            $page = request()->query('page');
+            $buscar = request()->query('buscar');
+
+            return redirect()->route('producto.index', ['page' => $page, 'buscar' => $buscar])
+                            ->with('success', 'Producto eliminado correctamente.');
         }
 
         public function exportarExcel()

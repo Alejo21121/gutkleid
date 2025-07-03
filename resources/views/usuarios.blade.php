@@ -84,7 +84,7 @@
                                 <td>{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
                                 <td>
                                     <a href="{{ route('usuarios.edit', $usuario->id_persona) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
-                                    <form action="{{ route('usuarios.destroy', $usuario->id_persona) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?');">
+                                    <form action="{{ route('usuarios.destroy', $usuario->id_persona) }}?page={{ request('page') }}&buscar={{ request('buscar') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
