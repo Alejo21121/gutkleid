@@ -11,6 +11,7 @@
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 <body>
+
 <header class="cabeza">
     <nav class="barras">
         <div class="barra1">
@@ -24,20 +25,19 @@
             </a>
         </div>
         <div class="barra2">
-                    <div class="usuario-info">
-                        @if (session('usuario'))
-                            <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
-                            <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                                alt="Perfil"
-                                class="perfil-icono">
-                            </a>
-                            <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a> 
-                        @else
-                            <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
-                        @endif
-                    </div>
-                </div>
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil" class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                @else
+                    <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
+                @endif
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -72,11 +72,43 @@
     <div style="display: none;" id="grafico_impuestos"></div>
 </main>
 
+<footer class="pie">
+    <div class="foot">
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    </div>
+    <p>&copy; 2024 - GUT KLEID.</p>
+</footer>
+
 <script>
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawCharts);
 
+    function hslToHex(h, s, l) {
+        s /= 100;
+        l /= 100;
+
+        const k = n => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = n => {
+            const color = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    function generarColoresUnicos(cantidad) {
+        const colores = [];
+        for (let i = 0; i < cantidad; i++) {
+            const hue = Math.floor((360 / cantidad) * i);
+            colores.push(hslToHex(hue, 70, 60));
+        }
+        return colores;
+    }
+
     function drawCharts() {
+        // Datos de Categoría
         var dataCategoria = google.visualization.arrayToDataTable([
             ['Categoría', 'Cantidad'],
             @foreach($porCategoria as $cat)
@@ -84,18 +116,22 @@
             @endforeach
         ]);
 
+        const totalCategorias = dataCategoria.getNumberOfRows();
+        const coloresGenerados = generarColoresUnicos(totalCategorias);
+
         var optionsCategoria = {
             title: 'Productos por Categoría',
             pieHole: 0.3,
             width: '100%',
             height: 350,
             chartArea: {width: '90%', height: '90%'},
-            colors: ['#FF7043', '#29B6F6', '#66BB6A', '#AB47BC']
+            colors: coloresGenerados
         };
 
         var chartCategoria = new google.visualization.PieChart(document.getElementById('grafico_categoria'));
         chartCategoria.draw(dataCategoria, optionsCategoria);
 
+        // Datos de Ventas
         var dataVentas = google.visualization.arrayToDataTable([
             ['Mes', 'Total Ventas'],
             @if($ventasMensuales->count() > 0)
@@ -118,14 +154,6 @@
         chartVentas.draw(dataVentas, optionsVentas);
     }
 </script>
-
-<footer class="pie">
-    <div class="foot">
-        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    </div>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
 
 </body>
 </html>
