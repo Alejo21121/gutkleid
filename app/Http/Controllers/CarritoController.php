@@ -9,6 +9,7 @@ use App\Models\DetalleFacturaV;
 use App\Models\MetodoPago;
 use Illuminate\Support\Facades\DB;
 use App\Models\Imagen;
+use App\Models\Talla;
 
 class CarritoController extends Controller
 {
@@ -55,9 +56,27 @@ class CarritoController extends Controller
                     return redirect()->route('carrito.index')->with('error', 'Producto no encontrado.');
                 }
 
-                if ($producto->cantidad < $item['cantidad']) {
+                // Validar y limpiar talla
+                $tallaBuscada = strtoupper(trim($item['talla'] ?? ''));
+
+                if (empty($tallaBuscada)) {
                     DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Cantidad insuficiente para ' . $producto->nombre);
+                    return redirect()->route('carrito.index')->with('error', 'Falta seleccionar talla para el producto ' . $producto->nombre);
+                }
+
+                // Buscar talla específica del producto
+                $tallaProducto = Talla::where('id_producto', $producto->id_producto)
+                                      ->where('talla', $tallaBuscada)
+                                      ->first();
+
+                if (!$tallaProducto) {
+                    DB::rollBack();
+                    return redirect()->route('carrito.index')->with('error', 'No se encontró la talla ' . $tallaBuscada . ' para el producto ' . $producto->nombre);
+                }
+
+                if ($tallaProducto->cantidad < $item['cantidad']) {
+                    DB::rollBack();
+                    return redirect()->route('carrito.index')->with('error', 'Stock insuficiente para talla ' . $item['talla'] . ' del producto ' . $producto->nombre);
                 }
 
                 $subtotal = $item['valor'] * $item['cantidad'];
@@ -67,12 +86,13 @@ class CarritoController extends Controller
                 $detalle->id_producto = $producto->id_producto;
                 $detalle->cantidad = $item['cantidad'];
                 $detalle->subtotal = $subtotal;
-                $detalle->impuestos = 0.19; // Puedes ajustar esto si usas impuestos
-                $detalle->id_impuesto = 1; // Cambia por el ID real del impuesto
+                $detalle->impuestos = 0.19;
+                $detalle->id_impuesto = 1;
                 $detalle->save();
 
-                $producto->cantidad -= $item['cantidad'];
-                $producto->save();
+                // Descontar stock de la talla
+                $tallaProducto->cantidad -= $item['cantidad'];
+                $tallaProducto->save();
 
                 $total += $subtotal;
             }
@@ -90,65 +110,66 @@ class CarritoController extends Controller
         }
     }
 
-public function agregar(Request $request)
-{
-    $id_producto = $request->input('id_producto');
-    $nombre = $request->input('nombre');
-    $valor = $request->input('precio');
-    $color = $request->input('color');
-    $talla = $request->input('talla');
-    $cantidad = max((int) $request->input('cantidad', 1), 1); // Se asegura que mínimo sea 1
+    public function agregar(Request $request)
+    {
+        $id_producto = $request->input('id_producto');
+        $nombre = $request->input('nombre');
+        $valor = $request->input('precio');
+        $color = $request->input('color');
+        $talla = strtoupper(trim($request->input('talla')));
+        $cantidad = max((int) $request->input('cantidad', 1), 1);
 
-    // Buscar el producto con su imagen relacionada
-    $producto = Producto::with('imagenes')->findOrFail($id_producto);
-
-    // Obtener la ruta de la primera imagen o imagen por defecto
-    $rutaImagen = $producto->imagenes->first()->ruta ?? 'IMG/default.jpg';
-    $rutaCompleta = 'IMG/imagenes_demo/' . basename($rutaImagen);
-
-    $carrito = session()->get('carrito', []);
-
-    // Generar una clave única basada en ID + color + talla
-    $clave = $id_producto . '-' . strtolower($color) . '-' . strtoupper($talla);
-
-    if (isset($carrito[$clave])) {
-        $carrito[$clave]['cantidad'] += $cantidad;
-    } else {
-        $carrito[$clave] = [
-            "id_producto" => $id_producto,
-            "nombre" => $nombre,
-            "valor" => $valor,
-            "color" => $color,
-            "talla" => $talla,
-            "cantidad" => $cantidad,
-            "imagen" => $rutaCompleta
-        ];
-    }
-
-    session()->put('carrito', $carrito);
-
-    return redirect()->route('carrito.index')->with('success', 'Producto agregado al carrito.');
-}
-
-
-public function actualizarCantidad(Request $request, $id_producto)
-{
-    $carrito = session()->get('carrito', []);
-
-    if (isset($carrito[$id_producto])) {
-        $tipo = $request->input('tipo');
-
-        if ($tipo === 'sumar') {
-            $carrito[$id_producto]['cantidad'] += 1;
-        } elseif ($tipo === 'restar' && $carrito[$id_producto]['cantidad'] > 1) {
-            $carrito[$id_producto]['cantidad'] -= 1;
+        // Validar que venga una talla
+        if (empty($talla)) {
+            return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para continuar.');
         }
+
+        $producto = Producto::with('imagenes')->findOrFail($id_producto);
+
+        $rutaImagen = $producto->imagenes->first()->ruta ?? 'IMG/default.jpg';
+        $rutaCompleta = 'IMG/imagenes_demo/' . basename($rutaImagen);
+
+        $carrito = session()->get('carrito', []);
+
+        $clave = $id_producto . '-' . strtolower($color) . '-' . $talla;
+
+        if (isset($carrito[$clave])) {
+            $carrito[$clave]['cantidad'] += $cantidad;
+        } else {
+            $carrito[$clave] = [
+                "id_producto" => $id_producto,
+                "nombre" => $nombre,
+                "valor" => $valor,
+                "color" => $color,
+                "talla" => $talla,
+                "cantidad" => $cantidad,
+                "imagen" => $rutaCompleta
+            ];
+        }
+
         session()->put('carrito', $carrito);
+
+        return redirect()->route('carrito.index')->with('success', 'Producto agregado al carrito.');
     }
 
-    return redirect()->route('carrito.index');
-}
+    public function actualizarCantidad(Request $request, $id_producto)
+    {
+        $carrito = session()->get('carrito', []);
 
+        if (isset($carrito[$id_producto])) {
+            $tipo = $request->input('tipo');
+
+            if ($tipo === 'sumar') {
+                $carrito[$id_producto]['cantidad'] += 1;
+            } elseif ($tipo === 'restar' && $carrito[$id_producto]['cantidad'] > 1) {
+                $carrito[$id_producto]['cantidad'] -= 1;
+            }
+
+            session()->put('carrito', $carrito);
+        }
+
+        return redirect()->route('carrito.index');
+    }
 
     public function eliminar($id_producto)
     {

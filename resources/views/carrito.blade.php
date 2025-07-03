@@ -99,7 +99,14 @@
 </div>
 </td>
 
-            <td>{{ $item['talla'] }}</td> <!-- Talla correcta -->
+            <td>
+    @if(!empty($item['talla']))
+        {{ ucwords(strtolower($item['talla'])) }}
+    @else
+        <span class="text-muted">Sin talla</span>
+    @endif
+</td>
+
             <td>{{ $item['color'] }}</td> <!-- Color correcto -->
             <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
             <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
