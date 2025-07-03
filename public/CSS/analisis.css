@@ -10,6 +10,7 @@ body {
     background: linear-gradient(to bottom, #6b6b6b9f 10%, #6b6b6b56 50%, rgb(194, 149, 106));
     background-attachment: fixed;
     color: #333;
+    overflow-x: hidden;
 }
 
 /* === HEADER === */
@@ -20,14 +21,17 @@ body {
 }
 
 .barras {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative; /* necesario para que .logo absolute funcione bien */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    flex-wrap: wrap;
 }
 
 .barra1 {
     display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .logo img {
@@ -35,11 +39,10 @@ body {
 }
 
 .logo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
 }
 
 .usuario-info {
@@ -69,35 +72,34 @@ body {
 }
 
 /* === BOTONES === */
-
 button,
 a[class^="bott"],
 .filter-btn,
 .filter-bcc,
 .filter-bccselect {
-  padding: 8px 12px;
-  border-radius: 10px;
-  margin: 5px;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
 .filter-bcc {
-  background-color: #765036;
-  color: #fff;
-  border: none;
+    background-color: #765036;
+    color: #fff;
+    border: none;
 }
 
 .filter-bcc:hover {
-  background-color: rgb(245, 159, 61);
+    background-color: rgb(245, 159, 61);
 }
 
 .filter-bccselect {
-  background-color: rgb(245, 159, 61);
-  color: #fff;
-  border: none;
+    background-color: rgb(245, 159, 61);
+    color: #fff;
+    border: none;
 }
 
 /* === CONTENIDO PRINCIPAL === */
@@ -117,19 +119,23 @@ a[class^="bott"],
 .grafico {
     background-color: white;
     border-radius: 15px;
-    padding: 0; /* Quitamos padding */
+    padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     min-height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-x: auto; /* para evitar desbordes */
 }
 
+/* Se asegura que el gráfico se adapte y tenga un ancho mínimo */
 #grafico_categoria,
-#grafico_ventas {
+#grafico_ventas,
+#grafico_mas_vendidos {
     width: 100%;
     height: 100%;
     min-height: 350px;
+    min-width: 300px;
 }
 
 /* === RESPONSIVE === */
@@ -140,7 +146,6 @@ a[class^="bott"],
     }
 
     .barra1 {
-        flex-wrap: wrap;
         justify-content: center;
     }
 
@@ -153,32 +158,62 @@ a[class^="bott"],
     }
 
     #grafico_categoria,
-    #grafico_ventas {
+    #grafico_ventas,
+    #grafico_mas_vendidos {
         min-height: 300px;
     }
 }
 
+/* === PIE DE PÁGINA === */
 .pie {
     color: white;
     text-align: center;
     padding: 20px 0;
     margin-top: 100px;
+    position: relative;
+    z-index: 10;
 }
 
 .foot {
-    text-align: left;
-    position: absolute;
-    width: 100%;
-    height: 65px;
+    text-align: center;
+    padding: 10px 0;
     background: linear-gradient(to top, rgb(78, 60, 43) 10%, rgba(148, 113, 80, 0.986) 50%, rgba(194, 149, 106, 0) 100%);
 }
 
 .abaj {
     color: white;
-    margin: 20px;
+    margin: 0 10px;
     text-decoration: none;
 }
 
 .abaj:hover {
     color: rgb(245, 159, 61);
+}
+.chart-canvas {
+    width: 100%;
+    height: 400px;
+    min-width: 300px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+.grafico h6 {
+    font-size: 16px;
+    color: #444;
+}
+.grafico h6 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
 }

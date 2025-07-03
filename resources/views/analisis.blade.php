@@ -29,8 +29,7 @@
                 @if (session('usuario'))
                     <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
                     <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                             alt="Perfil" class="perfil-icono">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
                     </a>
                     <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
                 @else
@@ -40,46 +39,60 @@
         </div>
     </nav>
 </header>
+<main class="main-analisis container-fluid py-4">
+    <h2 class="text-center mb-5 fw-bold">Análisis General</h2>
 
-<main class="main-analisis container py-4">
-    <h2 class="text-center mb-4">Análisis General</h2>
-    <div class="row justify-content-center mb-5">
-        <div class="col-md-4">
-            <div class="card shadow p-3 mb-4 rounded">
-                <h5 class="card-title"><i class="bi bi-person-fill"></i> Total Clientes Registrados</h5>
-                <p class="card-text fs-3 fw-bold text-primary">{{ $totalClientes }}</p>
+    <!-- Métricas rápidas -->
+    <div class="row justify-content-center g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card text-center shadow-sm p-3">
+                <h6 class="text-muted"><i class="bi bi-person-fill"></i> Total Clientes</h6>
+                <p class="fs-2 fw-bold text-primary mb-0">{{ $totalClientes }}</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow p-3 mb-4 rounded">
-                <h5 class="card-title"><i class="bi bi-box-seam"></i> Total de Productos Registrados</h5>
-                <p class="card-text fs-3 fw-bold text-success">{{ $totalProductos }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center g-4">
-        <div class="col-lg-6 col-md-8 col-12">
-            <div class="grafico">
-                <div id="grafico_categoria"></div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-8 col-12">
-            <div class="grafico">
-                <div id="grafico_ventas"></div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card text-center shadow-sm p-3">
+                <h6 class="text-muted"><i class="bi bi-box-seam"></i> Total Productos</h6>
+                <p class="fs-2 fw-bold text-success mb-0">{{ $totalProductos }}</p>
             </div>
         </div>
     </div>
-    <div style="display: none;" id="grafico_impuestos"></div>
+
+    <!-- Gráficas -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="grafico p-3 bg-white shadow-sm rounded h-100">
+                <h6 class="fw-bold text-center mb-3">Productos por Categoría</h6>
+                <div id="grafico_categoria" class="chart-canvas"></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="grafico p-3 bg-white shadow-sm rounded h-100">
+                <h6 class="fw-bold text-center mb-3">Ventas Mensuales</h6>
+                <div id="grafico_ventas" class="chart-canvas"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-3">
+        <div class="col-12">
+            <div class="grafico p-3 bg-white shadow-sm rounded">
+                <h6 class="fw-bold text-center mb-3">Top 10 Productos Más Vendidos</h6>
+                <div id="grafico_mas_vendidos" class="chart-canvas"></div>
+            </div>
+        </div>
+    </div>
 </main>
 
-<footer class="pie">
-    <div class="foot">
-        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+<footer class="pie mt-5 text-center">
+    <div class="foot mb-2">
+        <a href="{{ route('terminos') }}" class="abaj me-3">Términos y Condiciones</a>
         <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
     </div>
     <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
 
+<!-- Scripts -->
 <script>
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawCharts);
@@ -87,53 +100,38 @@
     function hslToHex(h, s, l) {
         s /= 100;
         l /= 100;
-
         const k = n => (n + h / 30) % 12;
         const a = s * Math.min(l, 1 - l);
         const f = n => {
             const color = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
             return Math.round(255 * color).toString(16).padStart(2, '0');
         };
-
         return `#${f(0)}${f(8)}${f(4)}`;
     }
 
-    function generarColoresUnicos(cantidad) {
-        const colores = [];
-        for (let i = 0; i < cantidad; i++) {
-            const hue = Math.floor((360 / cantidad) * i);
-            colores.push(hslToHex(hue, 70, 60));
-        }
-        return colores;
-    }
-
     function drawCharts() {
-        // Datos de Categoría
-        var dataCategoria = google.visualization.arrayToDataTable([
+        const dataCategoria = google.visualization.arrayToDataTable([
             ['Categoría', 'Cantidad'],
             @foreach($porCategoria as $cat)
                 ['{{ $cat->categoria }}', {{ $cat->cantidad }}],
             @endforeach
         ]);
-
         const totalCategorias = dataCategoria.getNumberOfRows();
-        const coloresGenerados = generarColoresUnicos(totalCategorias);
-
-        var optionsCategoria = {
-            title: 'Productos por Categoría',
+        const coloresGenerados = [];
+        for (let i = 0; i < totalCategorias; i++) {
+            const hue = Math.floor((360 / totalCategorias) * i);
+            coloresGenerados.push(hslToHex(hue, 70, 60));
+        }
+        new google.visualization.PieChart(document.getElementById('grafico_categoria')).draw(dataCategoria, {
+            title: '',
             pieHole: 0.3,
             width: '100%',
-            height: 350,
-            chartArea: {width: '90%', height: '90%'},
+            height: 400,
+            chartArea: { width: '90%', height: '80%' },
             colors: coloresGenerados
-        };
+        });
 
-        var chartCategoria = new google.visualization.PieChart(document.getElementById('grafico_categoria'));
-        chartCategoria.draw(dataCategoria, optionsCategoria);
-
-        // Datos de Ventas
-        var dataVentas = google.visualization.arrayToDataTable([
-            ['Mes', 'Total Ventas'],
+        const rawData = [
             @if($ventasMensuales->count() > 0)
                 @foreach($ventasMensuales as $venta)
                     ['{{ \Carbon\Carbon::create()->month($venta->mes)->locale("es")->monthName }}', {{ $venta->total }}],
@@ -141,17 +139,47 @@
             @else
                 ['Sin datos', 0]
             @endif
+        ];
+        const dataVentas = new google.visualization.DataTable();
+        dataVentas.addColumn('string', 'Mes');
+        dataVentas.addColumn('number', 'Total Ventas');
+        dataVentas.addColumn({ type: 'string', role: 'annotation' });
+        rawData.forEach(row => {
+            const valor = row[1];
+            const anotacion = new Intl.NumberFormat('es-CO').format(valor);
+            dataVentas.addRow([row[0], valor, anotacion]);
+        });
+        new google.visualization.ColumnChart(document.getElementById('grafico_ventas')).draw(dataVentas, {
+            title: '',
+            width: '100%',
+            height: 400,
+            legend: { position: 'none' },
+            colors: ['#1976D2'],
+            bar: { groupWidth: '60%' },
+            annotations: {
+                alwaysOutside: false,
+                textStyle: { fontSize: 13, color: '#fff', auraColor: 'none' },
+                highContrast: true
+            },
+            hAxis: { title: 'Mes', slantedText: true, slantedTextAngle: 45 },
+            vAxis: { title: 'Total en Ventas' },
+            chartArea: { top: 60, width: '85%', height: '70%' }
+        });
+
+        const dataVendidos = google.visualization.arrayToDataTable([
+            ['Producto', 'Cantidad Vendida'],
+            @foreach($productosMasVendidos as $prod)
+                ['{{ $prod->producto }}', {{ $prod->total_vendido }}],
+            @endforeach
         ]);
-
-        var optionsVentas = {
-            title: 'Ventas Mensuales',
-            curveType: 'function',
-            legend: { position: 'bottom' },
-            colors: ['#42A5F5']
-        };
-
-        var chartVentas = new google.visualization.LineChart(document.getElementById('grafico_ventas'));
-        chartVentas.draw(dataVentas, optionsVentas);
+        new google.visualization.BarChart(document.getElementById('grafico_mas_vendidos')).draw(dataVendidos, {
+            title: '',
+            height: 400,
+            colors: ['#388E3C'],
+            chartArea: { width: '75%', height: '70%' },
+            hAxis: { title: 'Cantidad Vendida', minValue: 0, textStyle: { fontSize: 12 } },
+            vAxis: { title: 'Producto', textStyle: { fontSize: 12 } }
+        });
     }
 </script>
 

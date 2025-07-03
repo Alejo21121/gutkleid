@@ -25,9 +25,24 @@ class DashboardController extends Controller
         // Total de clientes
         $totalClientes = DB::table('personas')->where('id_rol', 2)->count();
 
-        // Total de productos registrados (por ID único)
+        // Total de productos registrados
         $totalProductos = DB::table('productos')->count();
 
-        return view('analisis', compact('porCategoria', 'ventasMensuales', 'totalClientes', 'totalProductos'));
+        // 🔥 TOP 10 productos más vendidos
+        $productosMasVendidos = DB::table('detalles_factura_v_s')
+            ->join('productos', 'detalles_factura_v_s.id_producto', '=', 'productos.id_producto')
+            ->select('productos.nombre as producto', DB::raw('SUM(detalles_factura_v_s.cantidad) as total_vendido'))
+            ->groupBy('productos.nombre')
+            ->orderByDesc('total_vendido')
+            ->limit(10)
+            ->get();
+
+        return view('analisis', compact(
+            'porCategoria',
+            'ventasMensuales',
+            'totalClientes',
+            'totalProductos',
+            'productosMasVendidos'
+        ));
     }
 }
