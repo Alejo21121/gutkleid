@@ -538,3 +538,46 @@ body {
     color: white;
     background-color: rgb(21, 72, 139);
 }
+.cantidad-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* espacio entre los botones y el número */
+}
+
+.bottoncantimen,
+.bottoncantimas {
+    background-color: brown;
+    border: none;
+    width: 32px;
+    height: 32px;
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.bottoncantimen:hover,
+.bottoncantimas:hover {
+    background-color: rgb(99, 25, 25);
+}
+
+.cantidad-num {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+.cantidad-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+tbody, td, tr{
+    text-align: center;
+}

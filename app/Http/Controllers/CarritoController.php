@@ -90,14 +90,14 @@ class CarritoController extends Controller
         }
     }
 
-   public function agregar(Request $request)
+public function agregar(Request $request)
 {
     $id_producto = $request->input('id_producto');
     $nombre = $request->input('nombre');
     $valor = $request->input('precio');
     $color = $request->input('color');
     $talla = $request->input('talla');
-
+    $cantidad = max((int) $request->input('cantidad', 1), 1); // Se asegura que mínimo sea 1
 
     // Buscar el producto con su imagen relacionada
     $producto = Producto::with('imagenes')->findOrFail($id_producto);
@@ -108,16 +108,19 @@ class CarritoController extends Controller
 
     $carrito = session()->get('carrito', []);
 
-    if (isset($carrito[$id_producto])) {
-        $carrito[$id_producto]['cantidad'] += 1;
+    // Generar una clave única basada en ID + color + talla
+    $clave = $id_producto . '-' . strtolower($color) . '-' . strtoupper($talla);
+
+    if (isset($carrito[$clave])) {
+        $carrito[$clave]['cantidad'] += $cantidad;
     } else {
-        $carrito[$id_producto] = [
+        $carrito[$clave] = [
             "id_producto" => $id_producto,
             "nombre" => $nombre,
             "valor" => $valor,
             "color" => $color,
             "talla" => $talla,
-            "cantidad" => 1,
+            "cantidad" => $cantidad,
             "imagen" => $rutaCompleta
         ];
     }
@@ -126,6 +129,26 @@ class CarritoController extends Controller
 
     return redirect()->route('carrito.index')->with('success', 'Producto agregado al carrito.');
 }
+
+
+public function actualizarCantidad(Request $request, $id_producto)
+{
+    $carrito = session()->get('carrito', []);
+
+    if (isset($carrito[$id_producto])) {
+        $tipo = $request->input('tipo');
+
+        if ($tipo === 'sumar') {
+            $carrito[$id_producto]['cantidad'] += 1;
+        } elseif ($tipo === 'restar' && $carrito[$id_producto]['cantidad'] > 1) {
+            $carrito[$id_producto]['cantidad'] -= 1;
+        }
+        session()->put('carrito', $carrito);
+    }
+
+    return redirect()->route('carrito.index');
+}
+
 
     public function eliminar($id_producto)
     {

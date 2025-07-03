@@ -69,16 +69,10 @@
             <h5>{{ $producto->nombre }}</h5>
             <p>${{ number_format($producto->valor, 0, ',', '.') }} COP</p>
         </a>
+<a href="{{ route('producto.ver', $producto->id_producto) }}">
+    <button type="button" class="bottonagreg">Ver más</button>
+</a>
 
-        <form action="{{ route('carrito.agregar') }}" method="POST" onsubmit="agregado(event)">
-            @csrf
-            <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
-            <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
-            <input type="hidden" name="precio" value="{{ $producto->valor }}">
-            <input type="hidden" name="color" value="{{ $producto->color }}">
-            <input type="hidden" name="talla" value="{{ $producto->talla }}">
-            <button type="submit" class="bottonagreg">Agregar al carrito</button>
-        </form>
     </div>
 @endforeach
 

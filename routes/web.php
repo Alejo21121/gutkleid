@@ -85,3 +85,5 @@ Route::get('/producto/ver/{id}', [ProductoController::class, 'verProducto'])->na
 Route::get('/producto/{id}/imagenes', [ProductoController::class, 'gestionarImagenes'])->name('producto.imagenes');
 Route::post('/producto/{id}/imagenes', [ProductoController::class, 'subirImagen'])->name('producto.imagenes.subir');
 Route::delete('/imagenes/{id}', [ProductoController::class, 'eliminarImagen'])->name('imagenes.eliminar');
+
+Route::post('/carrito/actualizar/{id}', [CarritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');

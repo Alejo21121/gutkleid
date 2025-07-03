@@ -65,37 +65,59 @@
                         <th>Producto</th>
                         <th>Descripcion</th>
                         <th>Cantidad</th>
+                        <th>Talla</th>
+                        <th>Color</th>
                         <th>Precio U.</th>
                         <th>Subtotal</th>
-                        <th>Acción</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php $total = 0; @endphp
-                    @foreach($carrito as $id => $item)
-                    @php $total += $item['valor'] * $item['cantidad']; @endphp
-                    <tr>
-                        <td>
-                            <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
-                        </td>
-                        <td>{{ $item['nombre'] }} <br> {{ $item['color'] }} <br> {{ $item['talla'] }}</td>
-                        <td>{{ $item['cantidad'] }}</td>
-                        <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
-                        <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
-                                @csrf
-                                @method('DELETE')
-                                <button class="bottonelim"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                        <tr class="table-light">
-                            <td colspan="3" class="text-end"><strong>Total</strong></td>
-                            <td colspan="2"><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
-                        </tr>
-                    </tbody>
+    @php $total = 0; @endphp
+    @foreach($carrito as $id => $item)
+        @php $total += $item['valor'] * $item['cantidad']; @endphp
+        <tr>
+            <td>
+                <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
+            </td>
+            <td>{{ $item['nombre'] }}</td> <!-- Solo nombre en descripción -->
+            <td>
+                <div class="cantidad-control">
+    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+        @csrf
+        <input type="hidden" name="tipo" value="restar">
+        <button type="submit" class="bottoncantimen">-</button>
+    </form>
+
+    <span>{{ $item['cantidad'] }}</span>
+
+    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+        @csrf
+        <input type="hidden" name="tipo" value="sumar">
+        <button type="submit" class="bottoncantimas">+</button>
+    </form>
+</div>
+</td>
+
+            <td>{{ $item['talla'] }}</td> <!-- Talla correcta -->
+            <td>{{ $item['color'] }}</td> <!-- Color correcto -->
+            <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
+            <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
+            <td>
+                <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button class="bottonelim"><i class="bi bi-trash"></i></button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+    <tr class="table-light">
+        <td colspan="6" class="text-end"><strong>Total</strong></td>
+        <td colspan="2"><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
+    </tr>
+</tbody>
+
                 </table>
             </div>
 

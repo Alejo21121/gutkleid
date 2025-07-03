@@ -379,3 +379,62 @@ body {
 .miniaturas .miniatura:hover {
     border: 2px solid #ff9f3a;
 }
+.color-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 3px solid;
+    cursor: pointer;
+    margin: 5px;
+    border-color: rgb(109, 28, 28);
+}
+
+.color-btn:hover{
+        border-color: orange;
+}
+
+.color-btn.blanco { background-color: white; }
+.color-btn.negro { background-color: black; }
+.color-btn.marron { background-color: brown; }
+
+.color-btn.selected {
+    border: 3px solid orange;
+}
+
+.talla-btn {
+    padding: 5px 10px;
+    margin: 5px;
+    border: 1px solid #734222;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 50px;
+    height: 50px;
+}
+.talla-btn:hover{
+    background-color: rgb(255, 188, 65);
+}
+
+.talla-btn.selected {
+    background-color: #734222;
+    color: white;
+}
+.bottoncantimen,
+.bottoncantimas {
+    background-color: brown;
+    border: none;
+    width: 32px;
+    height: 32px;
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+.bottoncantimen:hover,
+.bottoncantimas:hover {
+    background-color: rgb(99, 25, 25);
+}

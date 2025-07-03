@@ -64,32 +64,42 @@
             <p class="price">${{ number_format($producto->valor, 0, ',', '.') }} CO</p>
             <p>Color: {{ $producto->color }}</p>
             <p>Marca: {{ $producto->marca }}</p>
-            <p>Talla: {{ $producto->talla }}</p>
 
-            <div class="colores">
-                <span class="color blanco"></span>
-                <span class="color negro"></span>
-                <span class="color marron"></span>
-            </div>
+<form action="{{ route('carrito.agregar') }}" method="POST" onsubmit="agregado(event)">
+    @csrf
+    <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
+    <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
+    <input type="hidden" name="precio" value="{{ $producto->valor }}">
+    <input type="hidden" name="color" value="{{ $producto->color }}">
+    <input type="hidden" name="talla" value="{{ $producto->talla }}">
+    <input type="hidden" name="cantidad" id="cantidadInput" value="1">
 
-            <div class="sizes">
-                <p>Tallas disponibles:</p>
-                <button class="filter-btn">XS</button>
-                <button class="filter-btn">S</button>
-                <button class="filter-btn">M</button>
-                <button class="filter-btn">L</button>
-            </div>
+    <div class="cantidad-selector" style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+        <button type="button" onclick="cambiarCantidad(-1)" class="bottoncantimen">-</button>
+        <span id="cantidadVisible" style="min-width: 30px; text-align: center;">1</span>
+        <button type="button" onclick="cambiarCantidad(1)" class="bottoncantimas">+</button>
+    </div>
+    <div class="colores">
+        <p>Color:</p>
+        <button type="button" class="color-btn blanco" data-color="Blanco"></button>
+        <button type="button" class="color-btn negro" data-color="Negro"></button>
+        <button type="button" class="color-btn marron" data-color="Marrón"></button>
+    </div>
 
-            <br>
-            <form action="{{ route('carrito.agregar') }}" method="POST" onsubmit="agregado(event)">
-                @csrf
-                <input type="hidden" name="id_producto" value="{{ $producto->id_producto }}">
-                <input type="hidden" name="nombre" value="{{ $producto->nombre }}">
-                <input type="hidden" name="precio" value="{{ $producto->valor }}">
-                <input type="hidden" name="color" value="{{ $producto->color }}">
-                <input type="hidden" name="talla" value="{{ $producto->talla }}">
-                <button type="submit" class="filter-bcc">Agregar al carrito</button>
-            </form>
+    <div class="sizes">
+        <p>Talla:</p>
+        <button type="button" class="talla-btn" data-talla="XS">XS</button>
+        <button type="button" class="talla-btn" data-talla="S">S</button>
+        <button type="button" class="talla-btn" data-talla="M">M</button>
+        <button type="button" class="talla-btn" data-talla="L">L</button>
+        <button type="button" class="talla-btn" data-talla="XL">XL</button>
+    </div>
+
+    <br>
+    <button type="submit" class="filter-bcc">Agregar al carrito</button>
+</form>
+
+
         </div>
     </div>
 </main>
@@ -141,7 +151,35 @@
 }
 
 </script>
+<script>
+    // Selección de color
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('inputColor').value = btn.dataset.color;
+        });
+    });
 
+    // Selección de talla
+    document.querySelectorAll('.talla-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.talla-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('inputTalla').value = btn.dataset.talla;
+        });
+    });
+</script>
+<script>
+    function cambiarCantidad(valor) {
+        const input = document.getElementById('cantidadInput');
+        const visible = document.getElementById('cantidadVisible');
+        let cantidad = parseInt(input.value) + valor;
+        if (cantidad < 1) cantidad = 1;
+        input.value = cantidad;
+        visible.textContent = cantidad;
+    }
+</script>
 <script src="{{ asset('JS/script.js') }}"></script>
 <script src="{{ asset('JS/script2.js') }}"></script>
 <script src="{{ asset('JS/navbar.js') }}"></script>
