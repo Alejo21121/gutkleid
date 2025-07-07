@@ -46,6 +46,7 @@
                 <p><strong>Nombre Completo:</strong><br>{{ session('usuario')['nombres'] }}
                     {{ session('usuario')['apellidos'] }}
                 </p>
+                <p><strong>Fecha de Nacimiento:</strong><br>{{ session('usuario')['fecha_nacimiento'] }}</p>
                 <p><strong>Teléfono:</strong><br>{{ session('usuario')['telefono'] }}</p>
                 <p><strong>Dirección:</strong><br>{{ session('usuario')['direccion'] }}</p>
                 <p><strong>Correo:</strong><br>{{ session('usuario')['correo'] }}</p>

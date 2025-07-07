@@ -47,12 +47,17 @@
             </select><br>
             @error('id_tipo_documento') <div style="color:red;">{{ $message }}</div> @enderror
 
-
             <input type="text" name="nombres" placeholder="Nombres" required value="{{ old('nombres') }}"><br>
             @error('nombres') <div style="color:red;">{{ $message }}</div> @enderror
 
             <input type="text" name="apellidos" placeholder="Apellidos" required value="{{ old('apellidos') }}"><br>
             @error('apellidos') <div style="color:red;">{{ $message }}</div> @enderror
+
+           <div class="mb-3">
+                <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
+                <input type="date" name="fecha_nacimiento" class="form-control" required value="{{ old('fecha_nacimiento') }}">
+                @error('fecha_nacimiento') <div style="color:red;">{{ $message }}</div> @enderror
+            </div>
 
             <input type="text" name="direccion" placeholder="Dirección" required value="{{ old('direccion') }}"><br>
             @error('direccion') <div style="color:red;">{{ $message }}</div> @enderror

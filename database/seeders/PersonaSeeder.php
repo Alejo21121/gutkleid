@@ -20,6 +20,7 @@ class PersonaSeeder extends Seeder
             'contraseña' => Hash::make('Cobi1109#'), // Siempre usa hash para contraseñas
             'telefono' => '3042255701',
             'direccion' => 'cra 81i #73f-63 sur',
+            'fecha_nacimiento' => '2005-03-17', // Formato YYYY-MM-DD
             'id_rol' => 1, // Asegúrate de que este rol exista en la tabla roles
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

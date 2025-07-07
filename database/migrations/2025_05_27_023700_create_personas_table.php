@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_persona');
             $table->string('documento');
             $table->unsignedBigInteger('id_tipo_documento');
+            $table->date('fecha_nacimiento');
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('correo');
