@@ -11,7 +11,6 @@ class TipoDocumentoSeeder extends Seeder
     {
         DB::table('tipo_documentos')->insert([
             ['nombre' => 'Cédula de ciudadanía'],
-            ['nombre' => 'Tarjeta de identidad'],
             ['nombre' => 'Cédula de extranjería'],
             ['nombre' => 'Pasaporte'],
         ]);

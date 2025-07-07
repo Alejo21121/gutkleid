@@ -31,13 +31,28 @@ public function index(Request $request)
 
     $productos = $query->paginate(6)->appends(['buscar' => $buscar]);
 
+    $advertencias = [];
+
+    foreach ($productos as $producto) {
+        foreach ($producto->tallas as $talla) {
+            if ($talla->cantidad <= 5) { 
+                $advertencias[] = [
+                    'id' => $producto->id_producto,
+                    'nombre' => $producto->nombre,
+                    'talla' => $talla->talla,
+                    'cantidad' => $talla->cantidad,
+                ];
+            }
+        }
+    }
+
     $paginaActual = $productos->currentPage();
     $totalPaginas = $productos->lastPage();
 
     // Cargar categorías con conteo de productos
     $categoriasConCantidad = Categoria::withCount('productos')->get();
 
-    return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad'));
+    return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias'));
 }
 
     public function create()
@@ -211,5 +226,6 @@ public function index(Request $request)
         $productos = Producto::with('imagenes')->get();
         return view('inicio', compact('productos'));
     }
+
 
 }

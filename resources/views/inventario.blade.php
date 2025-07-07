@@ -106,6 +106,7 @@
                         </tbody>
                     </table>
 
+
                    <div class="pagination-container">
                         @if ($productos->onFirstPage())
                             <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
@@ -131,6 +132,19 @@
                 </center>
             </section>
         </main>
+        @if(count($advertencias) > 0)
+    <div class="alert alert-warning mt-4" style="width: 80%; margin: 0 auto;">
+        <h5><i class="bi bi-exclamation-triangle-fill"></i> Advertencias de Stock Bajo</h5>
+        <ul>
+            @foreach($advertencias as $a)
+                <li>
+                    Producto <strong>#{{ $a['id'] }} - {{ $a['nombre'] }}</strong> tiene <strong>{{ $a['cantidad'] }}</strong> unidades en talla <strong>{{ $a['talla'] }}</strong>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 
         <footer class="pie">
             <div class="foot">
