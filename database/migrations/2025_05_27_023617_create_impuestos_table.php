@@ -15,6 +15,7 @@ return new class extends Migration
 {
     Schema::create('impuestos', function (Blueprint $table) {
         $table->id('id_impuesto');
+        $table->string('origen'); // nacional o importado
         $table->decimal('tasa', 5, 2); // Ej: 19.00
         $table->timestamps();
     });

@@ -119,7 +119,7 @@ class CarritoController extends Controller
         $talla = strtoupper(trim($request->input('talla')));
         $cantidad = max((int) $request->input('cantidad', 1), 1);
 
-        // Validar que venga una talla
+        // Validar talla
         if (empty($talla)) {
             return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para continuar.');
         }

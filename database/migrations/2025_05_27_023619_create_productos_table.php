@@ -11,21 +11,23 @@ return new class extends Migration
      *
      * @return void
      */
-     public function up()
-    {
-        Schema::create('productos', function (Blueprint $table) {
-            $table->id('id_producto');
-            $table->string('nombre');
-            $table->decimal('valor', 10, 2); // mejor para dinero
-            $table->string('marca');
-            $table->string('color');
-            $table->unsignedBigInteger('id_categoria');
-            $table->timestamps();
+public function up()
+{
+    Schema::create('productos', function (Blueprint $table) {
+        $table->id('id_producto');
+        $table->string('nombre');
+        $table->decimal('valor', 10, 2); // mejor para dinero
+        $table->string('marca');
+        $table->string('color');
+        $table->unsignedBigInteger('id_impuesto');          // 🆕 nuevo campo
+        $table->unsignedBigInteger('id_categoria');
+        $table->timestamps();
 
-            // Llave foránea hacia categorías
-            $table->foreign('id_categoria')->references('id_categoria')->on('categorias')->onDelete('cascade');
-        });
-    }
+        // Relaciones
+        $table->foreign('id_impuesto')->references('id_impuesto')->on('impuestos');
+        $table->foreign('id_categoria')->references('id_categoria')->on('categorias')->onDelete('cascade');
+    });
+}
 
     /**
      * Reverse the migrations.
