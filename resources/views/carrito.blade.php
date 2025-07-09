@@ -60,18 +60,18 @@
         @if(count($carrito) > 0)
             <div class="table-responsive mt-4">
                 <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Descripcion</th>
-                        <th>Cantidad</th>
-                        <th>Talla</th>
-                        <th>Color</th>
-                        <th>Precio U.</th>
-                        <th>Subtotal</th>
-                        <th>Eliminar</th>
-                    </tr>
+                <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Talla</th>
+                    <th>Color</th>
+                    <th>Precio U.</th>
+                    <th>Eliminar</th>
+                </tr>
                 </thead>
+
                 <tbody>
     @php $total = 0; @endphp
     @foreach($carrito as $id => $item)
@@ -118,7 +118,6 @@
             <td>
                 ${{ number_format($valorConIva, 0, ',', '.') }}<br>
             </td>
-            <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
             <td>
                 <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
                     @csrf
@@ -129,8 +128,19 @@
         </tr>
     @endforeach
     <tr class="table-light">
-        <td colspan="6" class="text-end"><strong>Total</strong></td>
-        <td colspan="2"><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
+        <td colspan="6" class="text-end"><strong>Subtotal</strong></td>
+        <td><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
+    </tr>
+    <tr>
+    <td colspan="6" class="text-end"><strong>Gastos de envío</strong></td>
+    <td colspan="2">
+        @php $envio = $total >= 150000 ? 0 : 15000; @endphp
+        <strong>${{ number_format($envio, 0, ',', '.') }}</strong>
+    </td>
+    </tr>
+    <tr class="table-light">
+        <td colspan="6" class="text-end"><strong>Total</strong> <br>  <span style="font-size: 0.85rem; color: gray;"><em>IVA incluido</em></span></td>
+        <td><strong>${{ number_format($total + $envio, 0, ',', '.') }}</strong></td>
     </tr>
     </tbody>
 

@@ -38,6 +38,7 @@ class CarritoController extends Controller
         $factura->id_persona = session('usuario')['id_persona'] ?? 1;
         $factura->id_metodo_pago = MetodoPago::first()->id_metodo_pago ?? 1;
         $factura->total = 0;
+         $factura->envio = 0;
         $factura->save();
 
         $totalFactura = 0;
@@ -86,7 +87,12 @@ class CarritoController extends Controller
             $totalFactura += $total;
         }
 
-        $factura->total = $totalFactura;
+        
+        // 📦 Lógica del envío:
+        $costoEnvio = $totalFactura >= 150000 ? 0 : 15000;
+        
+        $factura->envio = $costoEnvio;
+        $factura->total = $totalFactura + $costoEnvio;
         $factura->save();
 
         DB::commit();
