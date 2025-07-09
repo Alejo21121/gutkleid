@@ -61,7 +61,14 @@
 
         <div class="producto-info">
             <h2>{{ $producto->nombre }}</h2>
-            <p class="price">${{ number_format($producto->valor, 0, ',', '.') }} CO</p>
+
+            @php
+                $valor = $producto->valor;
+                $iva = $valor * $producto->iva; // si no tienes campo 'iva', usa 0.19 directo
+                $precioFinal = $valor + $iva;
+            @endphp
+
+            <p class="price">${{ number_format($precioFinal, 0, ',', '.') }} COP</p>
             <p>Color: {{ $producto->color }}</p>
             <p>Marca: {{ $producto->marca }}</p>
 

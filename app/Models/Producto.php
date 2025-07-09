@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Impuesto;
+
 
 class Producto extends Model
 {
@@ -33,7 +35,6 @@ class Producto extends Model
     {
         return $this->hasMany(Talla::class, 'id_producto');
     }
-
 
 }
 

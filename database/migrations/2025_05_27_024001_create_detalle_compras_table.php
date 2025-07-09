@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_factura_compras');
             $table->unsignedBigInteger('id_producto');
             $table->decimal('valor_unitario', 10, 2);
-            $table->decimal('impuestos', 10, 2);
             $table->decimal('total', 10, 2);
             
             $table->foreign('id_producto')->references('id_producto')->on('productos');

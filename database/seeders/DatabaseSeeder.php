@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         PersonaSeeder::class,
         ProductoSeeder::class,
         TipoPagoSeeder::class,
-        ImpuestoSeeder::class,
         ImagenSeeder::class,
         TallaSeeder::class
     ]);

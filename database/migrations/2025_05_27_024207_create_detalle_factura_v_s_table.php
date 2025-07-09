@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id('id_detalle_v');
             $table->unsignedBigInteger('id_factura_venta');
             
-            $table->decimal('impuestos', 10, 2);
             $table->decimal('subtotal', 10, 2);
+            $table->decimal('iva', 10, 2);
             $table->decimal('cantidad', 10, 2);
-            $table->unsignedBigInteger('id_impuesto');
+            
             $table->unsignedBigInteger('id_producto');
             
-            $table->foreign('id_impuesto')->references('id_impuesto')->on('impuestos');
+            
             $table->foreign('id_factura_venta')->references('id_factura_venta')->on('factura_ventas');
             $table->foreign('id_producto')->references('id_producto')->on('productos');
             

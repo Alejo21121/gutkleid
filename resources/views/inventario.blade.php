@@ -56,6 +56,7 @@
                                 <th>Referencia</th>
                                 <th>Nombre</th>
                                 <th>Valor U</th>
+                                <th>IVA(19%)</th>
                                 <th>Marca</th>
                                 <th>Talla</th>
                                 <th>Color</th>
@@ -67,10 +68,15 @@
                         </thead>
                         <tbody>
                             @foreach($productos as $producto)
+                             @php
+                                $iva = $producto->valor * $producto->iva; // ya está la tasa guardada
+                            @endphp
                                 <tr>
                                     <td>{{ $producto->id_producto }}</td>
                                     <td>{{ $producto->nombre }}</td>
                                     <td>${{ number_format($producto->valor, 0, ',', '.') }}</td>
+                             
+                                    <td>${{ number_format($iva, 0, ',', '.') }}</td>
                                     <td>{{ $producto->marca }}</td>
                                     <td>
                                         @foreach ($producto->tallas as $t)

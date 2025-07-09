@@ -75,41 +75,50 @@
                 <tbody>
     @php $total = 0; @endphp
     @foreach($carrito as $id => $item)
-        @php $total += $item['valor'] * $item['cantidad']; @endphp
+        @php
+            $valor = $item['valor'];
+            $iva = $valor * 0.19;
+            $valorConIva = $valor + $iva;
+            $subtotal = $valorConIva * $item['cantidad'];
+            $total += $subtotal;
+        @endphp
         <tr>
             <td>
                 <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
             </td>
-            <td>{{ $item['nombre'] }}</td> <!-- Solo nombre en descripción -->
+            <td>{{ $item['nombre'] }}</td>
             <td>
                 <div class="cantidad-control">
-    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
-        @csrf
-        <input type="hidden" name="tipo" value="restar">
-        <button type="submit" class="bottoncantimen">-</button>
-    </form>
+                    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+                        @csrf
+                        <input type="hidden" name="tipo" value="restar">
+                        <button type="submit" class="bottoncantimen">-</button>
+                    </form>
 
-    <span>{{ $item['cantidad'] }}</span>
+                    <span>{{ $item['cantidad'] }}</span>
 
-    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
-        @csrf
-        <input type="hidden" name="tipo" value="sumar">
-        <button type="submit" class="bottoncantimas">+</button>
-    </form>
-</div>
-</td>
+                    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+                        @csrf
+                        <input type="hidden" name="tipo" value="sumar">
+                        <button type="submit" class="bottoncantimas">+</button>
+                    </form>
+                </div>
+            </td>
 
             <td>
-    @if(!empty($item['talla']))
-        {{ ucwords(strtolower($item['talla'])) }}
-    @else
-        <span class="text-muted">Sin talla</span>
-    @endif
-</td>
+                @if(!empty($item['talla']))
+                    {{ ucwords(strtolower($item['talla'])) }}
+                @else
+                    <span class="text-muted">Sin talla</span>
+                @endif
+            </td>
 
-            <td>{{ $item['color'] }}</td> <!-- Color correcto -->
-            <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
-            <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
+            <td>{{ $item['color'] }}</td>
+
+            <td>
+                ${{ number_format($valorConIva, 0, ',', '.') }}<br>
+            </td>
+            <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
             <td>
                 <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
                     @csrf
@@ -123,7 +132,7 @@
         <td colspan="6" class="text-end"><strong>Total</strong></td>
         <td colspan="2"><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
     </tr>
-</tbody>
+    </tbody>
 
                 </table>
             </div>
