@@ -70,6 +70,7 @@
         @if(count($carrito) > 0)
             <div class="table-responsive mt-4">
                 <table class="table table-bordered table-hover">
+<<<<<<< HEAD
                     <thead class="table-dark">
                         <tr>
                             <th>Producto</th>
@@ -104,6 +105,42 @@
                                             <input type="hidden" name="tipo" value="restar">
                                             <button type="submit" class="bottoncantimen">-</button>
                                         </form>
+=======
+                <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Talla</th>
+                    <th>Color</th>
+                    <th>Precio U.</th>
+                    <th>Eliminar</th>
+                </tr>
+                </thead>
+
+                <tbody>
+    @php $total = 0; @endphp
+    @foreach($carrito as $id => $item)
+        @php
+            $valor = $item['valor'];
+            $iva = $valor * 0.19;
+            $valorConIva = $valor + $iva;
+            $subtotal = $valorConIva * $item['cantidad'];
+            $total += $subtotal;
+        @endphp
+        <tr>
+            <td>
+                <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
+            </td>
+            <td>{{ $item['nombre'] }}</td>
+            <td>
+                <div class="cantidad-control">
+                    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+                        @csrf
+                        <input type="hidden" name="tipo" value="restar">
+                        <button type="submit" class="bottoncantimen">-</button>
+                    </form>
+>>>>>>> 95ef91880187955602ac4226fbf1b6233de4089a
 
                                         <span>{{ $item['cantidad'] }}</span>
 
@@ -123,7 +160,40 @@
                                     @endif
                                 </td>
 
+<<<<<<< HEAD
                                 <td>{{ $item['color'] }}</td>
+=======
+            <td>{{ $item['color'] }}</td>
+
+            <td>
+                ${{ number_format($valorConIva, 0, ',', '.') }}<br>
+            </td>
+            <td>
+                <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button class="bottonelim"><i class="bi bi-trash"></i></button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+    <tr class="table-light">
+        <td colspan="6" class="text-end"><strong>Subtotal</strong></td>
+        <td><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
+    </tr>
+    <tr>
+    <td colspan="6" class="text-end"><strong>Gastos de envío</strong></td>
+    <td colspan="2">
+        @php $envio = $total >= 150000 ? 0 : 15000; @endphp
+        <strong>${{ number_format($envio, 0, ',', '.') }}</strong>
+    </td>
+    </tr>
+    <tr class="table-light">
+        <td colspan="6" class="text-end"><strong>Total</strong> <br>  <span style="font-size: 0.85rem; color: gray;"><em>IVA incluido</em></span></td>
+        <td><strong>${{ number_format($total + $envio, 0, ',', '.') }}</strong></td>
+    </tr>
+    </tbody>
+>>>>>>> 95ef91880187955602ac4226fbf1b6233de4089a
 
                                 <td>${{ number_format($valorConIva, 0, ',', '.') }}</td>
                                 <td>${{ number_format($subtotal, 0, ',', '.') }}</td>

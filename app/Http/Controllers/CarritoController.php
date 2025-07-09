@@ -25,12 +25,86 @@ class CarritoController extends Controller
     {
         $carrito = session()->get('carrito', []);
 
+<<<<<<< HEAD
         if (empty($carrito)) {
             return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
         }
 
         try {
             DB::beginTransaction();
+=======
+    if (empty($carrito)) {
+        return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
+    }
+
+    try {
+        DB::beginTransaction();
+
+        $factura = new FacturaVenta();
+        $factura->fecha_venta = now();
+        $factura->nit_tienda = '123456789';
+        $factura->dire_tienda = 'Calle Ficticia #123';
+        $factura->telef_tienda = '3001234567';
+        $factura->id_persona = session('usuario')['id_persona'] ?? 1;
+        $factura->id_metodo_pago = MetodoPago::first()->id_metodo_pago ?? 1;
+        $factura->total = 0;
+         $factura->envio = 0;
+        $factura->save();
+
+        $totalFactura = 0;
+
+        foreach ($carrito as $item) {
+            $producto = Producto::find($item['id_producto']);
+
+            if (!$producto) {
+                DB::rollBack();
+                return redirect()->route('carrito.index')->with('error', 'Producto no encontrado.');
+            }
+
+            $tallaBuscada = strtoupper(trim($item['talla'] ?? ''));
+
+            if (empty($tallaBuscada)) {
+                DB::rollBack();
+                return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para ' . $producto->nombre);
+            }
+
+            $tallaProducto = Talla::where('id_producto', $producto->id_producto)
+                                  ->where('talla', $tallaBuscada)
+                                  ->first();
+
+            if (!$tallaProducto || $tallaProducto->cantidad < $item['cantidad']) {
+                DB::rollBack();
+                return redirect()->route('carrito.index')->with('error', 'Stock insuficiente para ' . $producto->nombre . ' talla ' . $tallaBuscada);
+            }
+
+            $cantidad = $item['cantidad'];
+            $valorUnitario = $item['valor'];
+            $subtotal = $valorUnitario * $cantidad;
+            $iva = $subtotal * 0.19;
+            $total = $subtotal + $iva;
+
+            $detalle = new DetalleFacturaV();
+            $detalle->id_factura_venta = $factura->id_factura_venta;
+            $detalle->id_producto = $producto->id_producto;
+            $detalle->cantidad = $cantidad;
+            $detalle->subtotal = $subtotal;
+            $detalle->iva = $iva;
+            $detalle->save();
+
+            $tallaProducto->cantidad -= $cantidad;
+            $tallaProducto->save();
+
+            $totalFactura += $total;
+        }
+
+        
+        // 📦 Lógica del envío:
+        $costoEnvio = $totalFactura >= 150000 ? 0 : 15000;
+        
+        $factura->envio = $costoEnvio;
+        $factura->total = $totalFactura + $costoEnvio;
+        $factura->save();
+>>>>>>> 95ef91880187955602ac4226fbf1b6233de4089a
 
             $factura = new FacturaVenta();
             $factura->fecha_venta = now();
