@@ -87,3 +87,17 @@ Route::post('/producto/{id}/imagenes', [ProductoController::class, 'subirImagen'
 Route::delete('/imagenes/{id}', [ProductoController::class, 'eliminarImagen'])->name('imagenes.eliminar');
 
 Route::post('/carrito/actualizar/{id}', [CarritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');
+
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+Route::get('/prueba-pdf', function () {
+    $html = '
+        <h1>Factura de prueba</h1>
+        <p>Cliente: Juan Pérez</p>
+        <p>Total: $150.000</p>
+    ';
+    $pdf = Pdf::loadHTML($html);
+    return $pdf->download('factura_prueba.pdf');
+});
+

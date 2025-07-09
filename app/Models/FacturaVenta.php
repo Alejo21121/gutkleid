@@ -20,4 +20,12 @@ class FacturaVenta extends Model
         'id_persona',
         'id_metodo_pago'
     ];
+    public function detalles()
+{
+    return $this->hasMany(\App\Models\DetalleFacturaV::class, 'id_factura_venta');
+}
+public function cliente()
+{
+    return $this->belongsTo(\App\Models\Persona::class, 'id_persona');
+}
 }

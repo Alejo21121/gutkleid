@@ -14,4 +14,8 @@ class DetalleFacturaV extends Model
     ];
 
     public $timestamps = true; // o false si tu tabla no tiene created_at/updated_at
+    public function producto()
+{
+    return $this->belongsTo(\App\Models\Producto::class, 'id_producto');
+}
 }
