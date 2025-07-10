@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('factura_compras', function (Blueprint $table) {
-            $table->id('id_factura_compras');
-            $table->decimal('valor', 10, 2);
-            $table->date('fecha_compra');
-            $table->string('estado', 20);
-            $table->unsignedBigInteger('id_inventario');
-            $table->unsignedBigInteger('id_proveedor');
-            $table->foreign('id_proveedor')->references('id_proveedor')->on('proveedors');
-            $table->timestamps();
-        });
+Schema::create('factura_compras', function (Blueprint $table) {
+    $table->id('id_factura_compras');
+    $table->decimal('valor', 10, 2);
+    $table->date('fecha_compra');
+    $table->string('estado', 20);
+    $table->unsignedBigInteger('id_proveedor');
+    $table->foreign('id_proveedor')->references('id_proveedor')->on('proveedors');
+    $table->timestamps();
+});
 
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
        Schema::create('inventario', function (Blueprint $table) {
             $table->id('id_inventario');
             $table->integer('stock');
-            $table->date('fecha_salida');
+            $table->date('fecha_salida')->nullable();
             $table->decimal('precio_compras', 10, 2);
             $table->decimal('precio_ventas', 10, 2);
             $table->unsignedBigInteger('id_producto');

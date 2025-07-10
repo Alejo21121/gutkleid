@@ -36,71 +36,71 @@ class ComprasController extends Controller
     }
 
     public function store(Request $request)
-{
-    DB::beginTransaction();
+    {
+        DB::beginTransaction();
 
-    try {
-        $factura = FacturaCompra::create([
-            'valor' => $request->input('valor_total'),
-            'fecha_compra' => now(),
-            'estado' => 'Realizada',
-            'id_inventario' => null,
-            'id_proveedor' => $request->input('id_proveedor')
-        ]);
+        try {
+            // ✅ Quitamos 'id_inventario' porque ya no existe
+            $factura = FacturaCompra::create([
+                'valor' => $request->input('valor_total'),
+                'fecha_compra' => now(),
+                'estado' => 'Realizada',
+                'id_proveedor' => $request->input('id_proveedor')
+            ]);
 
-        foreach ($request->input('productos') as $productoData) {
-            $producto = Producto::find($productoData['id']);
+            foreach ($request->input('productos') as $productoData) {
+                $producto = Producto::find($productoData['id']);
 
-            foreach ($productoData['tallas'] as $tallaData) {
-                $total = $tallaData['cantidad'] * $tallaData['precio'];
+                foreach ($productoData['tallas'] as $tallaData) {
+                    $total = $tallaData['cantidad'] * $tallaData['precio'];
 
-                DetalleCompra::create([
-                    'id_factura_compras' => $factura->id_factura_compras,
-                    'id_producto' => $producto->id_producto,
-                    'valor_unitario' => $tallaData['precio'],
-                    'total' => $total,
-                ]);
-
-                // Actualizar inventario general
-                $inventario = Inventario::where('id_producto', $producto->id_producto)->first();
-                if ($inventario) {
-                    $inventario->stock += $tallaData['cantidad'];
-                    $inventario->precio_compras = $tallaData['precio'];
-                    $inventario->fecha_salida = null;
-                    $inventario->save();
-                } else {
-                    Inventario::create([
+                    DetalleCompra::create([
+                        'id_factura_compras' => $factura->id_factura_compras,
                         'id_producto' => $producto->id_producto,
-                        'stock' => $tallaData['cantidad'],
-                        'precio_compras' => $tallaData['precio'],
-                        'precio_ventas' => $producto->valor,
-                        'fecha_salida' => null,
+                        'valor_unitario' => $tallaData['precio'],
+                        'total' => $total,
                     ]);
-                }
 
-                // Actualizar cantidad por talla
-                $talla = Talla::where('id_producto', $producto->id_producto)
-                    ->where('talla', $tallaData['talla'])
-                    ->first();
+                    // Actualizar inventario general
+                    $inventario = Inventario::where('id_producto', $producto->id_producto)->first();
+                    if ($inventario) {
+                        $inventario->stock += $tallaData['cantidad'];
+                        $inventario->precio_compras = $tallaData['precio'];
+                        $inventario->fecha_salida = null;
+                        $inventario->save();
+                    } else {
+                        Inventario::create([
+                            'id_producto' => $producto->id_producto,
+                            'stock' => $tallaData['cantidad'],
+                            'precio_compras' => $tallaData['precio'],
+                            'precio_ventas' => $producto->valor,
+                            'fecha_salida' => null,
+                        ]);
+                    }
 
-                if ($talla) {
-                    $talla->cantidad += $tallaData['cantidad'];
-                    $talla->save();
-                } else {
-                    Talla::create([
-                        'id_producto' => $producto->id_producto,
-                        'talla' => $tallaData['talla'],
-                        'cantidad' => $tallaData['cantidad'],
-                    ]);
+                    // Actualizar cantidad por talla
+                    $talla = Talla::where('id_producto', $producto->id_producto)
+                        ->where('talla', $tallaData['talla'])
+                        ->first();
+
+                    if ($talla) {
+                        $talla->cantidad += $tallaData['cantidad'];
+                        $talla->save();
+                    } else {
+                        Talla::create([
+                            'id_producto' => $producto->id_producto,
+                            'talla' => $tallaData['talla'],
+                            'cantidad' => $tallaData['cantidad'],
+                        ]);
+                    }
                 }
             }
-        }
 
-        DB::commit();
-        return redirect()->route('compras.index')->with('success', 'Compra registrada correctamente.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->with('error', 'Error al guardar la compra: ' . $e->getMessage());
+            DB::commit();
+            return redirect()->route('compras.index')->with('success', 'Compra registrada correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error al guardar la compra: ' . $e->getMessage());
+        }
     }
-}
 }

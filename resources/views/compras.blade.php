@@ -57,7 +57,6 @@
                         <th>Proveedor</th>
                         <th>Valor</th>
                         <th>Estado</th>
-                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,13 +68,6 @@
                             <td>${{ number_format($compra->valor, 0, ',', '.') }}</td>
                             <td>{{ $compra->estado }}</td>
                             <td>
-                                <a href="{{ route('compras.show', $compra->id_factura_compras) }}" class="bottver"><i class="bi bi-eye"></i></a>
-                                <form action="{{ route('compras.destroy', $compra->id_factura_compras) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que deseas eliminar esta compra?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bottbor"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
