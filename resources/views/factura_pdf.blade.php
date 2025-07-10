@@ -81,7 +81,7 @@
     <!-- Encabezado con Logo (izquierda) y datos (derecha) -->
     <div class="encabezado">
         <div>
-            <img src="{{ public_path('IMG/perfiles/1750829931_1750829862_1750829817_anais.jpg') }}" class="logo" alt="Logo Gut Kleid">
+            <img src="{{ public_path('IMG/LOGO3_cafe.jpg') }}" class="logo" alt="Logo Gut Kleid">
         </div>
         <div class="datos-empresa">
             <h2>Gut Kleid</h2>
