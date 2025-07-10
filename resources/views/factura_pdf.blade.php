@@ -159,8 +159,10 @@
     <div class="totales">
         <p><strong>Subtotal:</strong> ${{ number_format($subtotalGeneral, 0, ',', '.') }}</p>
         <p><strong>IVA Total:</strong> ${{ number_format($ivaGeneral, 0, ',', '.') }}</p>
+        <p><strong>Gastos de envío:</strong> ${{ number_format($factura->envio, 0, ',', '.') }}</p>
         <p><strong>Total a pagar:</strong> <strong style="color:#6F4E37;">${{ number_format($factura->total, 0, ',', '.') }}</strong></p>
     </div>
+
 
     <!-- Footer -->
     <div class="footer">

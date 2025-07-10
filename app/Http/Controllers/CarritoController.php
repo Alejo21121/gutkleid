@@ -21,9 +21,9 @@ class CarritoController extends Controller
         return view('carrito', compact('carrito'));
     }
 
-    public function finalizar()
-    {
-        $carrito = session()->get('carrito', []);
+public function finalizar()
+{
+    $carrito = session()->get('carrito', []);
 
     if (empty($carrito)) {
         return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
@@ -40,7 +40,7 @@ class CarritoController extends Controller
         $factura->id_persona = session('usuario')['id_persona'] ?? 1;
         $factura->id_metodo_pago = MetodoPago::first()->id_metodo_pago ?? 1;
         $factura->total = 0;
-         $factura->envio = 0;
+        $factura->envio = 0;
         $factura->save();
 
         $totalFactura = 0;
@@ -61,8 +61,8 @@ class CarritoController extends Controller
             }
 
             $tallaProducto = Talla::where('id_producto', $producto->id_producto)
-                                  ->where('talla', $tallaBuscada)
-                                  ->first();
+                ->where('talla', $tallaBuscada)
+                ->first();
 
             if (!$tallaProducto || $tallaProducto->cantidad < $item['cantidad']) {
                 DB::rollBack();
@@ -83,120 +83,60 @@ class CarritoController extends Controller
             $detalle->iva = $iva;
             $detalle->save();
 
+            // Guarda la talla en el objeto temporal (para mostrarla)
+            $detalle->talla = $tallaBuscada;
+
             $tallaProducto->cantidad -= $cantidad;
             $tallaProducto->save();
 
             $totalFactura += $total;
         }
 
-        
-        // 📦 Lógica del envío:
+        // Envío
         $costoEnvio = $totalFactura >= 150000 ? 0 : 15000;
-        
         $factura->envio = $costoEnvio;
         $factura->total = $totalFactura + $costoEnvio;
         $factura->save();
 
-            $factura = new FacturaVenta();
-            $factura->fecha_venta = now();
-            $factura->nit_tienda = '123456789';
-            $factura->dire_tienda = 'Calle Ficticia #123';
-            $factura->telef_tienda = '3001234567';
-            $factura->id_persona = session('usuario')['id_persona'] ?? 1;
-            $factura->id_metodo_pago = MetodoPago::first()->id_metodo_pago ?? 1;
-            $factura->total = 0;
-            $factura->save();
+        DB::commit();
+        session()->forget('carrito');
 
-            $totalFactura = 0;
+        // Cargar relaciones
+        $factura->load(['detalles.producto', 'cliente']);
 
-            foreach ($carrito as $item) {
-                $producto = Producto::find($item['id_producto']);
-
-                if (!$producto) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Producto no encontrado.');
-                }
-
-                $tallaBuscada = strtoupper(trim($item['talla'] ?? ''));
-
-                if (empty($tallaBuscada)) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para ' . $producto->nombre);
-                }
-
-                $tallaProducto = Talla::where('id_producto', $producto->id_producto)
-                    ->where('talla', $tallaBuscada)
-                    ->first();
-
-                if (!$tallaProducto || $tallaProducto->cantidad < $item['cantidad']) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Stock insuficiente para ' . $producto->nombre . ' talla ' . $tallaBuscada);
-                }
-
-                $cantidad = $item['cantidad'];
-                $valorUnitario = $item['valor'];
-                $subtotal = $valorUnitario * $cantidad;
-                $iva = $subtotal * 0.19;
-                $total = $subtotal + $iva;
-
-                $detalle = new DetalleFacturaV();
-                $detalle->id_factura_venta = $factura->id_factura_venta;
-                $detalle->id_producto = $producto->id_producto;
-                $detalle->cantidad = $cantidad;
-                $detalle->subtotal = $subtotal;
-                $detalle->iva = $iva;
-                $detalle->save();
-
-                $detalle->talla = $tallaBuscada;
-
-                $tallaProducto->cantidad -= $cantidad;
-                $tallaProducto->save();
-
-                $totalFactura += $total;
-            }
-
-            $factura->total = $totalFactura;
-            $factura->save();
-
-            DB::commit();
-            session()->forget('carrito');
-
-            $factura->load(['detalles.producto', 'cliente']);
-
-            foreach ($factura->detalles as $detalle) {
-                $detalle->talla = Talla::where('id_producto', $detalle->id_producto)
-                    ->where('cantidad', '>=', $detalle->cantidad)
-                    ->first()
-                    ->talla ?? 'N/A';
-            }
-
-            // Preparar logo en base64 para el PDF
-            $logoPath = public_path('IMG/LOGO3.png');
-            $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
-            $logoData = file_get_contents($logoPath);
-            $base64Logo = 'data:image/' . $logoType . ';base64,' . base64_encode($logoData);
-
-            // Generar el PDF con vista
-            $pdf = Pdf::loadView('factura_pdf', [
-                'factura' => $factura,
-                'logo' => $base64Logo
-            ]);
-
-            // Guardar el PDF en /public/facturas
-            $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
-            $rutaArchivo = public_path('facturas/' . $nombreArchivo);
-            $pdf->save($rutaArchivo);
-
-            // Redirigir al carrito con mensaje y enlace
-            return redirect()->route('carrito.index')
-                ->with('success', '¡Compra realizada con éxito! Puedes descargar tu factura abajo.')
-                ->with('factura_pdf', asset('facturas/' . $nombreArchivo));
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('carrito.index')->with('error', 'Error al finalizar la compra: ' . $e->getMessage());
+        // Asignar tallas para cada producto
+        foreach ($factura->detalles as $detalle) {
+            $detalle->talla = Talla::where('id_producto', $detalle->id_producto)
+                ->where('cantidad', '>=', $detalle->cantidad)
+                ->first()
+                ->talla ?? 'N/A';
         }
+
+        // Logo base64
+        $logoPath = public_path('IMG/LOGO3.png');
+        $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
+        $logoData = file_get_contents($logoPath);
+        $base64Logo = 'data:image/' . $logoType . ';base64,' . base64_encode($logoData);
+
+        // Generar PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('factura_pdf', [
+            'factura' => $factura,
+            'logo' => $base64Logo
+        ]);
+
+        $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
+        $rutaArchivo = public_path('facturas/' . $nombreArchivo);
+        $pdf->save($rutaArchivo);
+
+        return redirect()->route('carrito.index')
+            ->with('success', '¡Compra realizada con éxito! Puedes descargar tu factura abajo.')
+            ->with('factura_pdf', asset('facturas/' . $nombreArchivo));
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->route('carrito.index')->with('error', 'Error al finalizar la compra: ' . $e->getMessage());
     }
+}
+
 
     public function agregar(Request $request)
     {
