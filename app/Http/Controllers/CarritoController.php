@@ -25,14 +25,6 @@ class CarritoController extends Controller
     {
         $carrito = session()->get('carrito', []);
 
-<<<<<<< HEAD
-        if (empty($carrito)) {
-            return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
-        }
-
-        try {
-            DB::beginTransaction();
-=======
     if (empty($carrito)) {
         return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
     }
@@ -104,7 +96,6 @@ class CarritoController extends Controller
         $factura->envio = $costoEnvio;
         $factura->total = $totalFactura + $costoEnvio;
         $factura->save();
->>>>>>> 95ef91880187955602ac4226fbf1b6233de4089a
 
             $factura = new FacturaVenta();
             $factura->fecha_venta = now();
