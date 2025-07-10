@@ -20,16 +20,10 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->decimal('iva', 10, 2);
             $table->decimal('cantidad', 10, 2);
-<<<<<<< HEAD
-            $table->unsignedBigInteger('id_producto');
-            
-
-=======
             
             $table->unsignedBigInteger('id_producto');
             
             
->>>>>>> 7a5405a3ab25780f3e4b9c9286bdc8fd2ad6a340
             $table->foreign('id_factura_venta')->references('id_factura_venta')->on('factura_ventas');
             $table->foreign('id_producto')->references('id_producto')->on('productos');
             
