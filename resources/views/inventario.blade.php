@@ -16,6 +16,7 @@
                     <a href="{{ route('producto.index') }}"><button class="filter-bccselect">Inventario</button></a>
                     <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
                     <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
+                    <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
                 </div>
             <div class="logo">
                 <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
@@ -160,4 +161,4 @@
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
     </body>
-    </html>
+</html>
