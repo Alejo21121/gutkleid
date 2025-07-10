@@ -53,31 +53,34 @@
 <main class="main">
     <br>
     <div class="productosbar">
-       @foreach ($productos as $producto)
-    <div class="productos">
-        <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
-            <div class="mini-carousel" onclick="event.stopPropagation();">
-                <div class="mini-carousel-images">
-                    @foreach ($producto->imagenes as $imagen)
-                        <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
-                    @endforeach
-                </div>
-                <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
-                <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+        @foreach ($productos as $producto)
+            @php
+                $precioConIVA = round($producto->valor * (1 + $producto->iva));
+            @endphp
+            <div class="productos">
+                <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
+                    <div class="mini-carousel" onclick="event.stopPropagation();">
+                        <div class="mini-carousel-images">
+                            @foreach ($producto->imagenes as $imagen)
+                                <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                            @endforeach
+                        </div>
+                        <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+                        <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+                    </div>
+                    <br>
+                    <h5>{{ $producto->nombre }}</h5>
+                    <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
+                </a>
+
+                <a href="{{ route('producto.ver', $producto->id_producto) }}">
+                    <button type="button" class="bottonagreg">Ver más</button>
+                </a>
             </div>
-            <br>
-            <h5>{{ $producto->nombre }}</h5>
-            <p>${{ number_format($producto->valor, 0, ',', '.') }} COP</p>
-        </a>
-<a href="{{ route('producto.ver', $producto->id_producto) }}">
-    <button type="button" class="bottonagreg">Ver más</button>
-</a>
-
-    </div>
-@endforeach
-
+        @endforeach
     </div>
 </main>
+
 
 <!-- Toast de éxito -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">

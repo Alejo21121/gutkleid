@@ -16,6 +16,7 @@
                     <a href="{{ route('producto.index') }}"><button class="filter-bccselect">Inventario</button></a>
                     <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
                     <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
+                    <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
                 </div>
             <div class="logo">
                 <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
@@ -56,6 +57,7 @@
                                 <th>Referencia</th>
                                 <th>Nombre</th>
                                 <th>Valor U</th>
+                                <th>IVA(19%)</th>
                                 <th>Marca</th>
                                 <th>Talla</th>
                                 <th>Color</th>
@@ -67,10 +69,15 @@
                         </thead>
                         <tbody>
                             @foreach($productos as $producto)
+                             @php
+                                $iva = $producto->valor * $producto->iva; // ya está la tasa guardada
+                            @endphp
                                 <tr>
                                     <td>{{ $producto->id_producto }}</td>
                                     <td>{{ $producto->nombre }}</td>
                                     <td>${{ number_format($producto->valor, 0, ',', '.') }}</td>
+                             
+                                    <td>${{ number_format($iva, 0, ',', '.') }}</td>
                                     <td>{{ $producto->marca }}</td>
                                     <td>
                                         @foreach ($producto->tallas as $t)
@@ -154,4 +161,4 @@
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
     </body>
-    </html>
+</html>

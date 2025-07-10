@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('dire_tienda');
             $table->string('telef_tienda');      
             $table->date('fecha_venta');
+            $table->enum('entrega', ['tienda', 'domicilio'])->default('tienda');
+            $table->decimal('envio', 10, 2)->default(0);
             $table->decimal('total', 10, 2);
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_metodo_pago');

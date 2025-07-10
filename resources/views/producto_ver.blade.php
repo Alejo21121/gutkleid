@@ -61,7 +61,14 @@
 
         <div class="producto-info">
             <h2>{{ $producto->nombre }}</h2>
-            <p class="price">${{ number_format($producto->valor, 0, ',', '.') }} CO</p>
+
+            @php
+                $valor = $producto->valor;
+                $iva = $valor * $producto->iva; // si no tienes campo 'iva', usa 0.19 directo
+                $precioFinal = $valor + $iva;
+            @endphp
+
+            <p class="price">${{ number_format($precioFinal, 0, ',', '.') }} COP</p>
             <p>Color: {{ $producto->color }}</p>
             <p>Marca: {{ $producto->marca }}</p>
 
@@ -82,20 +89,41 @@
         <button type="button" onclick="cambiarCantidad(1)" class="bottoncantimas">+</button>
     </div>
 
-    <div class="colores">
-        <p>Color:</p>
-        <button type="button" class="color-btn blanco" data-color="Blanco"></button>
-        <button type="button" class="color-btn negro" data-color="Negro"></button>
-        <button type="button" class="color-btn marron" data-color="Marrón"></button>
-    </div>
+@php
+    // Traducción de color en español (base de datos) → nombre de color válido en CSS
+    $coloresCSS = [
+        'Blanco' => 'white',
+        'Negra' => 'black',
+        'Marrón' => 'brown',
+        'Azul' => 'blue',
+        'Rojo' => 'red',
+        'Gris' => 'gray',
+        'Amarillo' => 'yellow',
+        'Verde' => 'Green',
+        'Beige' => 'beige'
+        // agrega más si los tienes
+    ];
+
+    $colorCSS = $coloresCSS[$producto->color] ?? 'gray'; // color por defecto si no está en el arreglo
+@endphp
+
+<div class="colores">
+    <p>Color:</p>
+    <button 
+        type="button" 
+        class="color-btn"
+        data-color="{{ $producto->color }}"
+        style="background-color: {{ $colorCSS }}; border-color: rgb(109, 28, 28);">
+    </button>
+</div>
 
     <div class="sizes">
         <p>Talla:</p>
-        <button type="button" class="talla-btn" data-talla="XS">XS</button>
-        <button type="button" class="talla-btn" data-talla="S">S</button>
-        <button type="button" class="talla-btn" data-talla="M">M</button>
-        <button type="button" class="talla-btn" data-talla="L">L</button>
-        <button type="button" class="talla-btn" data-talla="XL">XL</button>
+        @foreach ($producto->tallas->where('cantidad', '>', 0) as $talla)
+            <button type="button" class="talla-btn" data-talla="{{ $talla->talla }}">
+                {{ $talla->talla }}
+            </button>
+        @endforeach
     </div>
 
     <br>

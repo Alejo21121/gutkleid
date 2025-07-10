@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Usuario extends Model
+class Persona extends Model
 {
     protected $table = 'personas'; // 👈 le dices a Laravel que use esta tabla
 

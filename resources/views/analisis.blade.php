@@ -18,6 +18,7 @@
             <a href="{{ route('producto.index') }}"><button class="filter-bcc">Inventario</button></a>
             <a href="{{ route('analisis') }}"><button class="filter-bccselect">Análisis</button></a>
             <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
+            <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
         </div>
         <div class="logo">
             <a href="{{ route('inicio') }}">

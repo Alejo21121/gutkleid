@@ -9,6 +9,8 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RecuperarController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\ComprasController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +89,23 @@ Route::post('/producto/{id}/imagenes', [ProductoController::class, 'subirImagen'
 Route::delete('/imagenes/{id}', [ProductoController::class, 'eliminarImagen'])->name('imagenes.eliminar');
 
 Route::post('/carrito/actualizar/{id}', [CarritoController::class, 'actualizarCantidad'])->name('carrito.actualizar');
+
+Route::resource('compras', ComprasController::class);
+Route::get('/compras/exportar-excel', [ComprasController::class, 'exportarExcel'])->name('compras.exportarExcel');
+Route::get('/compras/exportar-pdf', [ComprasController::class, 'exportarPDF'])->name('compras.exportarPDF');
+Route::post('/compras/store', [ComprasController::class, 'store'])->name('compra.store');
+
+
+
+use Barryvdh\DomPDF\Facade\Pdf;
+
+Route::get('/prueba-pdf', function () {
+    $html = '
+        <h1>Factura de prueba</h1>
+        <p>Cliente: Juan Pérez</p>
+        <p>Total: $150.000</p>
+    ';
+    $pdf = Pdf::loadHTML($html);
+    return $pdf->download('factura_prueba.pdf');
+});
+

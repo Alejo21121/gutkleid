@@ -30,7 +30,8 @@
                     <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
                     @if (session('usuario'))
                         <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" 
+                            alt="Perfil" class="perfil-icono">
                         </a>
                     @endif                    
                     <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
@@ -49,8 +50,17 @@
     <div class="containercar">
         <h2 class="text-center">Carrito de Compras</h2>
 
+        {{-- MENSAJES DE ALERTA --}}
         @if(session('success'))
-            <div class="alert alert-success text-center mt-3">{{ session('success') }}</div>
+            <div class="alert alert-success text-center mt-3">
+                {{ session('success') }}
+                @if(session('factura_pdf'))
+                    <br>
+                    <a href="{{ session('factura_pdf') }}" class="btn btn-sm btn-primary mt-2" download>
+                        <i class="bi bi-file-earmark-arrow-down"></i> Descargar Factura
+                    </a>
+                @endif
+            </div>
         @endif
 
         @if(session('error'))
@@ -59,73 +69,91 @@
 
         @if(count($carrito) > 0)
             <div class="table-responsive mt-4">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Descripcion</th>
-                        <th>Cantidad</th>
-                        <th>Talla</th>
-                        <th>Color</th>
-                        <th>Precio U.</th>
-                        <th>Subtotal</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-    @php $total = 0; @endphp
-    @foreach($carrito as $id => $item)
-        @php $total += $item['valor'] * $item['cantidad']; @endphp
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
         <tr>
-            <td>
-                <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
-            </td>
-            <td>{{ $item['nombre'] }}</td> <!-- Solo nombre en descripción -->
-            <td>
-                <div class="cantidad-control">
-    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
-        @csrf
-        <input type="hidden" name="tipo" value="restar">
-        <button type="submit" class="bottoncantimen">-</button>
-    </form>
-
-    <span>{{ $item['cantidad'] }}</span>
-
-    <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
-        @csrf
-        <input type="hidden" name="tipo" value="sumar">
-        <button type="submit" class="bottoncantimas">+</button>
-    </form>
-</div>
-</td>
-
-            <td>
-    @if(!empty($item['talla']))
-        {{ ucwords(strtolower($item['talla'])) }}
-    @else
-        <span class="text-muted">Sin talla</span>
-    @endif
-</td>
-
-            <td>{{ $item['color'] }}</td> <!-- Color correcto -->
-            <td>${{ number_format($item['valor'], 0, ',', '.') }}</td>
-            <td>${{ number_format($item['valor'] * $item['cantidad'], 0, ',', '.') }}</td>
-            <td>
-                <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="bottonelim"><i class="bi bi-trash"></i></button>
-                </form>
-            </td>
+            <th>Producto</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Talla</th>
+            <th>Color</th>
+            <th>Precio U.</th>
+            <th>Eliminar</th>
         </tr>
-    @endforeach
-    <tr class="table-light">
-        <td colspan="6" class="text-end"><strong>Total</strong></td>
-        <td colspan="2"><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
-    </tr>
-</tbody>
+    </thead>
+    <tbody>
+        @php
+            $total = 0;
+        @endphp
+        @foreach($carrito as $id => $item)
+            @php
+                $valor = $item['valor'];
+                $iva = $valor * 0.19;
+                $valorConIva = $valor + $iva;
+                $subtotal = $valorConIva * $item['cantidad'];
+                $total += $subtotal;
+            @endphp
+            <tr>
+                <td>
+                    <img src="{{ $item['imagen'] }}" alt="Imagen" width="70" height="70" style="object-fit: cover;">
+                </td>
+                <td>{{ $item['nombre'] }}</td>
+                <td>
+                    <div class="cantidad-control">
+                        <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+                            @csrf
+                            <input type="hidden" name="tipo" value="restar">
+                            <button type="submit" class="bottoncantimen">-</button>
+                        </form>
 
-                </table>
+                        <span>{{ $item['cantidad'] }}</span>
+
+                        <form action="{{ route('carrito.actualizar', $id) }}" method="POST" style="display: flex; align-items: center; gap: 5px;">
+                            @csrf
+                            <input type="hidden" name="tipo" value="sumar">
+                            <button type="submit" class="bottoncantimas">+</button>
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    @if(!empty($item['talla']))
+                        {{ ucwords(strtolower($item['talla'])) }}
+                    @else
+                        <span class="text-muted">Sin talla</span>
+                    @endif
+                </td>
+                <td>{{ $item['color'] }}</td>
+                <td>${{ number_format($valorConIva, 0, ',', '.') }}</td>
+                <td>
+                    <form method="POST" action="{{ route('carrito.eliminar', $id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="bottonelim"><i class="bi bi-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+
+        @php $envio = $total >= 150000 ? 0 : 15000; @endphp
+
+        <tr class="table-light">
+            <td colspan="6" class="text-end"><strong>Subtotal</strong></td>
+            <td><strong>${{ number_format($total, 0, ',', '.') }}</strong></td>
+        </tr>
+        <tr>
+            <td colspan="6" class="text-end"><strong>Gastos de envío</strong></td>
+            <td><strong>${{ number_format($envio, 0, ',', '.') }}</strong></td>
+        </tr>
+        <tr class="table-light">
+            <td colspan="6" class="text-end">
+                <strong>Total</strong><br>
+                <span style="font-size: 0.85rem; color: gray;"><em>IVA incluido</em></span>
+            </td>
+            <td><strong>${{ number_format($total + $envio, 0, ',', '.') }}</strong></td>
+        </tr>
+    </tbody>
+</table>
+
             </div>
 
             <div class="text-center mt-3">
