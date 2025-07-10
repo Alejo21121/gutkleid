@@ -12,8 +12,8 @@ class RegistroController extends Controller
 {
 
     public function mostrarFormulario() {
-        $tipos = DB::table('tipo_documentos')->get(); // Obtener los tipos desde la BD
-        return view('registro', compact('tipos'));   // Pasarlos a la vista
+        $tipos = DB::table('tipo_documentos')->get(); 
+        return view('registro', compact('tipos'));  
     }
 
     public function registrar(Request $request) {

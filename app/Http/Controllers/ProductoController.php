@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Categoria;
 
 use App\Models\Imagen;
-use App\Models\Talla; // Asegúrate de importar el modelo
+use App\Models\Talla;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
@@ -57,7 +57,7 @@ public function index(Request $request)
 
     public function create()
     {
-        $categorias = Categoria::all(); // Traer todas las categorías
+        $categorias = Categoria::all(); 
         return view('create', compact('categorias'));
     }
 
@@ -102,13 +102,13 @@ public function index(Request $request)
 
     public function edit(Producto $producto)
     {
-        $categorias = Categoria::all(); // Necesario para llenar el <select>
+        $categorias = Categoria::all(); 
         return view('producto_edit', compact('producto', 'categorias'));
     }
 
     public function update(Request $request, Producto $producto)
     {
-        // Validación para los campos principales
+        // Validación 
         $request->validate([
             'nombre' => 'required|string|max:255',
             'valor' => 'required|numeric|min:0',
@@ -171,7 +171,7 @@ public function index(Request $request)
     public function gestionarImagenes($id)
     {
         $producto = Producto::findOrFail($id);
-        $imagenes = $producto->imagenes; // relación hasMany
+        $imagenes = $producto->imagenes; 
 
         return view('producto_imagenes', compact('producto', 'imagenes'));
     }

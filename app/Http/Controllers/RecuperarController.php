@@ -33,12 +33,12 @@ class RecuperarController extends Controller
         Mail::to($request->email)->send(new CodigoRecuperacion($token));
         session(['correo_recuperacion' => $request->email]);
 
-        return redirect()->route('codigo')->with('codigo', $token); // En desarrollo
+        return redirect()->route('codigo')->with('codigo', $token); 
     }
 
     public function vistaCodigo()
     {
-        return view('contraseña'); // tu vista para ingresar el código y nueva contraseña
+        return view('contraseña'); 
     }
 
     public function validarCodigo(Request $request)

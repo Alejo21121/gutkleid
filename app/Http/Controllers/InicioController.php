@@ -22,7 +22,6 @@ class InicioController extends Controller
             Session::put('tiempo', time());
         }
 
-        // ✅ Traer productos con imágenes
         $productos = Producto::with('imagenes')->take(6)->get();
 
         return view('inicio', compact('usuario', 'productos'));

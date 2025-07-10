@@ -18,11 +18,13 @@ class DatabaseSeeder extends Seeder
         TipoDocumentoSeeder::class,
         CategoriaSeeder::class,
         RolSeeder::class,
+        ImpuestoSeeder::class,
         PersonaSeeder::class,
         ProductoSeeder::class,
         TipoPagoSeeder::class,
         ImagenSeeder::class,
-        TallaSeeder::class
+        TallaSeeder::class,
+        ProveedoresSeeder::class
     ]);
 }
 }
