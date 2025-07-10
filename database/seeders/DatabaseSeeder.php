@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
         ProductoSeeder::class,
         TipoPagoSeeder::class,
         ImagenSeeder::class,
-        TallaSeeder::class
+        TallaSeeder::class,
+        ProveedoresSeeder::class
     ]);
 }
 }
