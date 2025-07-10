@@ -147,10 +147,6 @@ public function finalizar()
         $talla = strtoupper(trim($request->input('talla')));
         $cantidad = max((int) $request->input('cantidad', 1), 1);
 
-<<<<<<< HEAD
-        // Validar talla
-=======
->>>>>>> 7a5405a3ab25780f3e4b9c9286bdc8fd2ad6a340
         if (empty($talla)) {
             return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para continuar.');
         }
