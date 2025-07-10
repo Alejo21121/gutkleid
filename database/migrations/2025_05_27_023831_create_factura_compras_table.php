@@ -21,7 +21,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_inventario');
             $table->unsignedBigInteger('id_proveedor');
             $table->foreign('id_proveedor')->references('id_proveedor')->on('proveedors');
-            $table->foreign('id_inventario')->references('id_inventario')->on('inventario');
             $table->timestamps();
         });
 
