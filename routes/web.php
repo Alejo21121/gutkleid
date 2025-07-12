@@ -10,6 +10,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RecuperarController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 /*
@@ -50,7 +51,12 @@ Route::view('/contraseña', 'contraseña')->name('contraseña');
 Route::view('/recuperar_cuenta', 'recuperar_cuenta')->name('recuperar_cuenta');
 Route::view('/terminos', 'terminos')->name('terminos');
 Route::view('/preguntas', 'preguntas')->name('preguntas');
-Route::view('/mi-cuenta', 'cuenta_cli')->name('cuenta');
+Route::view('/mi-cuenta-cli', 'cuenta_cli')->name('cuenta_cli');
+Route::view('/mi-cuenta', 'user')->name('cuenta');
+
+
+
+
 Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
@@ -96,9 +102,6 @@ Route::get('/compras/exportar-pdf', [ComprasController::class, 'exportarPDF'])->
 Route::post('/compras/store', [ComprasController::class, 'store'])->name('compra.store');
 
 
-
-use Barryvdh\DomPDF\Facade\Pdf;
-
 Route::get('/prueba-pdf', function () {
     $html = '
         <h1>Factura de prueba</h1>
@@ -109,3 +112,5 @@ Route::get('/prueba-pdf', function () {
     return $pdf->download('factura_prueba.pdf');
 });
 
+Route::get('/direccion', function () {return view('direccion');})->name('direccion');
+Route::post('/actualizar-direccion', [UsuarioController::class, 'actualizarDireccion'])->name('perfil.actualizar_direccion');

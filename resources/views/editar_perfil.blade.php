@@ -43,11 +43,11 @@
 
 <body>
     <div class="form-container">
-    <h1>Actualiza Tus Datos</h1>
+    <center><h1>Actualiza Tus Datos</h1></center>
 
          <form action="{{ route('perfil.eliminarImagen') }}" method="POST">
                 @csrf
-                <button type="submit" class="filter-bcc">Eliminar imagen de perfil</button>
+                <center><button type="submit" class="filter-bcc">Eliminar imagen de perfil</button></center>
             </form>
     
         <form method="POST" action="{{ route('perfil.actualizar') }}" enctype="multipart/form-data">
@@ -66,9 +66,6 @@
 
             <label for="telefono">Teléfono:</label>
             <input type="text" name="telefono" value="{{ $usuario['telefono'] }}" required>
-
-            <label for="direccion">Dirección:</label>
-            <input type="text" name="direccion" value="{{ $usuario['direccion'] }}" required>
 
             <label for="correo">Correo:</label>
             <input type="email" name="correo" value="{{ $usuario['correo'] }}" required>

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('correo');
             $table->string('telefono');
             $table->string('direccion');
+            $table->text('info_adicional')->nullable();
             $table->string('contraseña');
             $table->unsignedBigInteger('id_rol');
             $table->string('imagen')->nullable();

@@ -48,14 +48,12 @@
                 </p>
                 <p><strong>Fecha de Nacimiento:</strong><br>{{ session('usuario')['fecha_nacimiento'] }}</p>
                 <p><strong>Teléfono:</strong><br>{{ session('usuario')['telefono'] }}</p>
-                <p><strong>Dirección:</strong><br>{{ session('usuario')['direccion'] }}</p>
                 <p><strong>Correo:</strong><br>{{ session('usuario')['correo'] }}</p>
             </center>
         </div>
         <center>
             <a href="{{ route('perfil.editar') }}"><button class="filter-bcc">Actualizar
                     Información</button></a><br><br>
-            <a href="#"><button class="filter-bcc">Mis Pedidos</button></a><br><br>
         </center>
     </main>
 

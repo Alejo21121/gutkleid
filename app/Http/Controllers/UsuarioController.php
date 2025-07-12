@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -53,19 +54,19 @@ class UsuarioController extends Controller
 
         // 👉 Procesar imagen si se sube
         if ($request->hasFile('imagen')) {
-        // Eliminar la imagen anterior (si existe y no es la imagen por defecto)
-        if (!empty($usuario['imagen']) && file_exists(public_path($usuario['imagen'])) && $usuario['imagen'] !== 'IMG/default.jpeg') {
-            unlink(public_path($usuario['imagen']));
+            // Eliminar la imagen anterior (si existe y no es la imagen por defecto)
+            if (!empty($usuario['imagen']) && file_exists(public_path($usuario['imagen'])) && $usuario['imagen'] !== 'IMG/default.jpeg') {
+                unlink(public_path($usuario['imagen']));
+            }
+
+            // Guardar nueva imagen
+            $imagen = $request->file('imagen');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $ruta = 'IMG/perfiles/' . $nombreImagen;
+            $imagen->move(public_path('IMG/perfiles'), $nombreImagen);
+
+            $dataToUpdate['imagen'] = $ruta;
         }
-
-        // Guardar nueva imagen
-        $imagen = $request->file('imagen');
-        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-        $ruta = 'IMG/perfiles/' . $nombreImagen;
-        $imagen->move(public_path('IMG/perfiles'), $nombreImagen);
-
-        $dataToUpdate['imagen'] = $ruta;
-    }
 
         // Actualizar en la base de datos
         DB::table('personas')->where('id_persona', $usuario['id_persona'])->update($dataToUpdate);
@@ -89,9 +90,9 @@ class UsuarioController extends Controller
 
         $query = Usuario::query();
 
-    if ($request->has('buscar')) {
-        $query->where('id_persona', $request->buscar);
-    }
+        if ($request->has('buscar')) {
+            $query->where('id_persona', $request->buscar);
+        }
 
         $usuarios = $query->paginate(6)->appends(['buscar' => $buscar]);
 
@@ -186,7 +187,7 @@ class UsuarioController extends Controller
         $page = request()->query('page');
         $buscar = request()->query('buscar');
         return redirect()->route('usuarios.index', ['page' => $page, 'buscar' => $buscar])
-                 ->with('success', 'Usuario eliminado correctamente.');
+            ->with('success', 'Usuario eliminado correctamente.');
     }
 
     // Métodos para exportación
@@ -201,23 +202,41 @@ class UsuarioController extends Controller
     }
 
     public function eliminarImagen()
-{
-    $usuario = session('usuario');
+    {
+        $usuario = session('usuario');
 
-    if (!empty($usuario['imagen']) && file_exists(public_path($usuario['imagen'])) && $usuario['imagen'] !== 'IMG/default.jpeg') {
-        unlink(public_path($usuario['imagen']));
+        if (!empty($usuario['imagen']) && file_exists(public_path($usuario['imagen'])) && $usuario['imagen'] !== 'IMG/default.jpeg') {
+            unlink(public_path($usuario['imagen']));
+        }
+
+        DB::table('personas')->where('id_persona', $usuario['id_persona'])->update([
+            'imagen' => null
+        ]);
+
+        // Actualiza en sesión
+        $usuario['imagen'] = null;
+        session(['usuario' => $usuario]);
+
+        return redirect()->route('cuenta')->with('success', 'Imagen de perfil eliminada.');
     }
 
-    DB::table('personas')->where('id_persona', $usuario['id_persona'])->update([
-        'imagen' => null
-    ]);
+    public function actualizarDireccion(Request $request)
+    {
+        $request->validate([
+            'direccion' => 'required|string|max:255',
+            'info_adicional' => 'nullable|string',
+        ]);
 
-    // Actualiza en sesión
-    $usuario['imagen'] = null;
-    session(['usuario' => $usuario]);
+        $persona = Persona::find(session('usuario')['id_persona']);
+        if ($persona) {
+            $persona->direccion = $request->direccion;
+            $persona->info_adicional = $request->info_adicional;
+            $persona->save();
 
-    return redirect()->route('cuenta')->with('success', 'Imagen de perfil eliminada.');
-}
+            // actualizar sesión
+            session(['usuario' => $persona->toArray()]);
+        }
 
-    
+        return back()->with('success', 'Dirección actualizada correctamente.');
+    }
 }

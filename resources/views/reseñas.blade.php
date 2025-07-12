@@ -9,39 +9,40 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
     <header class="cabeza">
-        <nav class="barras">
-            <div class="barra1">
-                <a href="{{ url()->previous() }}">
-                    <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
-                </a>
-            </div>
-            <div class="logo">
-            <div class="iconos">
-                <a href="/">
-                    <img class="logo1" src="IMG/LOGO3.PNG" alt="Logo">
-                </a>
-            </div>
-            <div class="barra2">
-                <div class="usuario-info">
+    <nav class="barras">
+        <div class="barra1">
+            <a href="{{ url()->previous() }}">
+                <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
+            </a>
+            <a href="{{ route('reseñas') }}"><button class="filter-btn">Acerca de</button></a>
+            @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+            @endif
+        </div>
+        <div class="logo">
+            <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+        </div>
+        <div class="barra2">
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
                     @if (session('usuario'))
-                        <a href="{{ url('/logout') }}">
-                            <button class="filter-btn">Cerrar sesión</button>
+                        <a href="{{ route('cuenta') }}">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" 
+                            alt="Perfil" class="perfil-icono">
                         </a>
-                    @else
-                        <a href="{{ route('login') }}">
-                            <button class="filter-btn">Inicia sesión</button>
-                        </a>
-                    @endif
-                </div>
+                    @endif                    
+                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                @else
+                    <a href="{{ route('login') }}" class="inis"><p class="filter-btna">Inicia sesión</p></a>
+                @endif
                 <div class="iconos">
-                    <a href="CARRITO DE COMPRAS.html"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
-                    @if (session('usuario'))
-                        <a href="{{ route('cuenta') }}"><button class="filter-btn"><i class="bi bi-person-fill"></i> Mi cuenta </button></a>
-                    @endif
+                    <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 </head>
 <body>
     <div class="container">

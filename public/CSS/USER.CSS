@@ -12,16 +12,7 @@ body {
     min-height: 100vh;
     background: linear-gradient(to bottom, #6b6b6b9f 10%, #6b6b6b56 50%, rgb(194, 149, 106));
     background-attachment: fixed;
-}
 
-.user-name {
-    color: #fff;
-    background-color: #198754;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    margin-right: 10px;
-    display: inline-block;
 }
 
 /* === HEADER === */
@@ -47,7 +38,7 @@ body {
     display: block;
     margin: 0 auto;
     position: relative;
-    margin-left: 100px;
+    ;
 }
 
 .usuario-info {
@@ -78,7 +69,6 @@ body {
 }
 
 
-
 .filter-btna:hover, .filter-busc:hover, .inven:hover {
     background-color: rgb(245, 159, 61);
     
@@ -91,7 +81,6 @@ body {
     transform: scale(1.05);
     
 }
-
 
 .gender-btn.active {
     background-color: #ddd;
@@ -111,31 +100,6 @@ body {
     margin-top: 16px;
 }
 
-/* === PRODUCTOS === */
-.productosbar {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); /* Fuerza 6 columnas */
-    gap: 25px;
-    text-align: center;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-
-.productos {
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    padding: 15px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out;
-    height: 520px; /* Ajustado para imagen grande + texto */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 
 .productos:hover {
     transform: scale(1.05);
@@ -146,72 +110,6 @@ body {
     display: block;
     margin: 0 auto;
 }
-
-
-.productos h5 {
-    font-size: 20px;
-    margin: 50px 0 5px;
-}
-
-.productos p {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.main {
-    padding-top: 100px;
-    padding-bottom: 60px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-/* === MINI-CAROUSEL === */
-.mini-carousel {
-    position: relative;
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-}
-
-.mini-carousel-images {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.mini-slide {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.mini-slide.active {
-    opacity: 1;
-}
-
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0);
-    color: rgb(170, 169, 169);
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.prev:hover, .next:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.prev { left: 5px; }
-.next { right: 5px; }
 
 /* === FOOTER === */
 .pie {
@@ -239,105 +137,6 @@ body {
     color: rgb(245, 159, 61);
 }
 
-/* === NAV === */
-.barratext {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-}
-
-.barratext:hover {
-    color: green;
-}
-
-.navbar-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.busca {
-    outline: none;
-    height: 40px;
-    width: 0;
-    padding: 0 20px;
-    color: #000;
-    border-radius: 10px;
-    font-size: 20px;
-    border: 1px solid #734222;
-    transition: all .7s ease;
-    right: 14px;
-    position: absolute;
-    z-index: 1;
-}
-
-::placeholder {
-    color: gray;
-}
-
-.botonbusca {
-    position: absolute;
-    z-index: 2;
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: #734222;
-    color: white;
-    padding: 10px;
-    border: none;
-    margin-top: -5px;
-}
-
-
-::placeholder{
-    color: gray;
-}
-
-.botonbusca {
-    position: absolute; /* <-- Esto es obligatorio si usas z-index */
-    z-index: 2;          /* Ya está bien */
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: #734222;
-    color: white;
-    padding: 10px;
-    border: none;
-    right: 10px;
-    margin-top: -5px; /* Ojo: tenías un espacio entre -5 y px, lo corregí */
-}
-
-
-.contenedor:hover input {
-    width: 250px;
-}
-
-.contenedor{
-    position: absolute;
-    right: 40px;
-    top: 100px;
-    transform: translate(-50% -50%);
-    padding: 10px;
-}
-
-.botonbusca:hover{
-    background: #492a16;
-}
-
-.perfil-icono {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid white;
-    transition: 0.3s;
-}
-
-.perfil-icono:hover {
-    border-color: orange;
-    transform: scale(1.05);
-}
 
 .img-perfil-usuario {
   width: 80px;
@@ -349,6 +148,19 @@ body {
   margin-top: 40px;
   margin-bottom: 22px;
 }
+
+.content-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  margin-top: 50px;
+}
+
+body#my-account {
+  background: linear-gradient(to bottom, #6b6b6b9f 10%, #6b6b6b56 50%, rgb(194, 149, 106));
+  background-attachment: fixed;
+}
+
 
 
 /* === RESPONSIVE === */
