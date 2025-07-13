@@ -34,7 +34,6 @@ class UsuarioController extends Controller
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
-            'direccion' => 'nullable|string|max:255',
             'correo' => 'required|email|max:255|unique:personas,correo,' . $usuario['id_persona'] . ',id_persona',
             'contraseña' => 'nullable|string|min:6',
             'imagen' => 'nullable|image|max:2048', // Validar imagen
@@ -44,7 +43,6 @@ class UsuarioController extends Controller
             'nombres' => $request->input('nombres'),
             'apellidos' => $request->input('apellidos'),
             'telefono' => $request->input('telefono'),
-            'direccion' => $request->input('direccion'),
             'correo' => $request->input('correo'),
         ];
 
@@ -237,7 +235,7 @@ class UsuarioController extends Controller
             session(['usuario' => $persona->toArray()]);
         }
 
-        return back()->with('success', 'Dirección actualizada correctamente.');
+        return redirect()->route('cuenta')->with('success', 'Dirección actualizada correctamente.');
     }
 
     public function historial()

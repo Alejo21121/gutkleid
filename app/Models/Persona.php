@@ -13,14 +13,16 @@ class Persona extends Model
     public $timestamps = false; // 👈 si tu tabla no tiene 'created_at' y 'updated_at'
 
     protected $fillable = [
-        'id_persona',
         'documento',
         'id_tipo_documento',
+        'fecha_nacimiento',
         'nombres',
         'apellidos',
-        'telefono',
         'correo',
-        'contraseña',
+        'telefono',
         'direccion',
+        'info_adicional',
+        'imagen',
+        'id_rol'
     ];
 }

@@ -76,7 +76,8 @@
         <div class="mb-3">
           <label for="direccion" class="form-label"><strong>Dirección:</strong></label>
           <input type="text" class="form-control" id="direccion" name="direccion"
-            value="{{ session('usuario')['direccion'] ?? '' }}" required>
+            value="{{ session('usuario')['direccion'] }}" required>
+            
         </div>
 
         <div class="mb-3">
