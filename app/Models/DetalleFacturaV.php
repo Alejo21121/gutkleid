@@ -18,4 +18,10 @@ class DetalleFacturaV extends Model
 {
     return $this->belongsTo(\App\Models\Producto::class, 'id_producto');
 }
+
+public function talla()
+{
+    return $this->belongsTo(Talla::class, 'id_talla');
+}
+
 }

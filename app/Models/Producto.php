@@ -14,27 +14,36 @@ class Producto extends Model
     public $incrementing = true; // Es lo predeterminado, pero lo puedes dejar explícito
 
     protected $fillable = [
-        'id_producto', 'nombre', 'valor', 'marca', 'talla',
-        'color', 'id_categoria', 'cantidad'
+        'id_producto',
+        'nombre',
+        'valor',
+        'marca',
+        'talla',
+        'color',
+        'id_categoria',
+        'cantidad'
     ];
 
     public $timestamps = true; // Si tienes created_at y updated_at
 
-        // Al final del modelo Producto
+    // Al final del modelo Producto
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');
     }
 
-        public function imagenes()
+    public function imagenes()
     {
         return $this->hasMany(Imagen::class, 'id_producto');
     }
 
-        public function tallas()
+    public function tallas()
     {
         return $this->hasMany(Talla::class, 'id_producto');
     }
 
+    public function imagenPrincipal()
+    {
+        return $this->hasOne(Imagen::class, 'id_producto');
+    }
 }
-

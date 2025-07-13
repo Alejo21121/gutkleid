@@ -71,10 +71,6 @@
         <strong>Teléfono:</strong> {{ session('usuario')['telefono'] ?? '' }}
       </div>
 
-      <div class="mb-3">
-        <strong>Dirección:</strong> {{ session('usuario')['direccion'] ?? '' }}
-      </div>
-
       <form method="POST" action="{{ route('perfil.actualizar_direccion') }}">
         @csrf
         <div class="mb-3">
@@ -93,7 +89,6 @@
 
     </div>
   </div>
-
 
 </body>
 <footer class="pie">

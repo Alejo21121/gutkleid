@@ -20,7 +20,9 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->decimal('iva', 10, 2);
             $table->decimal('cantidad', 10, 2);
-            
+            $table->unsignedBigInteger('id_talla')->nullable();
+            $table->foreign('id_talla')->references('id')->on('tallas')->onDelete('set null');
+
             $table->unsignedBigInteger('id_producto');
             
             

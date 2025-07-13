@@ -17,12 +17,11 @@ return new class extends Migration
             $table->id('id_producto');
             $table->string('nombre');
             $table->decimal('valor', 10, 2); // mejor para dinero
-             $table->decimal('iva', 5, 2)->default(0.19); // <--- Aquí el IVA
+            $table->decimal('iva', 5, 2)->default(0.19); // <--- Aquí el IVA
             $table->string('marca');
             $table->string('color');
             $table->unsignedBigInteger('id_categoria');
             
-
 
             $table->timestamps();
 

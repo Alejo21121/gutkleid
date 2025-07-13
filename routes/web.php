@@ -114,3 +114,5 @@ Route::get('/prueba-pdf', function () {
 
 Route::get('/direccion', function () {return view('direccion');})->name('direccion');
 Route::post('/actualizar-direccion', [UsuarioController::class, 'actualizarDireccion'])->name('perfil.actualizar_direccion');
+
+Route::get('/historial', [UsuarioController::class, 'historial'])->name('historial');

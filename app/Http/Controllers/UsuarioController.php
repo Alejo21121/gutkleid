@@ -239,4 +239,49 @@ class UsuarioController extends Controller
 
         return back()->with('success', 'Dirección actualizada correctamente.');
     }
+
+    public function historial()
+    {
+        $id_persona = session('usuario')['id_persona'];
+
+        $facturas = DB::table('factura_ventas as f')
+            ->join('personas as p', 'p.id_persona', '=', 'f.id_persona')
+            ->join('metodo_pagos as m', 'm.id_metodo_pago', '=', 'f.id_metodo_pago')
+            ->where('f.id_persona', $id_persona)
+            ->select(
+                'f.id_factura_venta',
+                'f.fecha_venta',
+                'f.total',
+                'f.envio',
+                'f.entrega',
+                'm.nombre as metodo_pago',
+                'p.nombres',
+                'p.direccion',
+                'p.telefono'
+            )
+            ->orderByDesc('f.fecha_venta')
+            ->get();
+
+        foreach ($facturas as $factura) {
+            $factura->detalles = DB::table('detalles_factura_v_s as d')
+                ->join('productos as pr', 'pr.id_producto', '=', 'd.id_producto')
+                ->leftJoin('tallas as t', 't.id', '=', 'd.id_talla')
+                ->where('d.id_factura_venta', $factura->id_factura_venta)
+                ->select(
+                    'pr.nombre as nombre_producto',
+                    'pr.color',
+                    'pr.marca',
+                    DB::raw('(SELECT ruta FROM imagenes WHERE id_producto = pr.id_producto LIMIT 1) as imagen'),
+                    't.talla',
+                    'd.subtotal',
+                    'd.iva',
+                    'd.cantidad'
+                )
+                ->get();
+
+       
+        }
+
+        return view('historial', compact('facturas'));
+    }
 }

@@ -70,6 +70,8 @@
             <label for="correo">Correo:</label>
             <input type="email" name="correo" value="{{ $usuario['correo'] }}" required>
 
+            <br><br><br>
+
             <center>
                 <button type="submit" class="filter-bcc">Guardar</button>
                 <a href="{{ route('cuenta') }}"><button type="button" class="filter-bcc">Cancelar</button></a>

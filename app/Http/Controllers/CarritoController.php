@@ -78,6 +78,7 @@ public function finalizar()
             $detalle = new DetalleFacturaV();
             $detalle->id_factura_venta = $factura->id_factura_venta;
             $detalle->id_producto = $producto->id_producto;
+            $detalle->id_talla = $tallaProducto->id; // ← Aquí guardas la talla correcta
             $detalle->cantidad = $cantidad;
             $detalle->subtotal = $subtotal;
             $detalle->iva = $iva;

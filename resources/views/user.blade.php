@@ -18,8 +18,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
-
   <header class="cabeza">
     <nav class="barras">
       <div class="barra1">
@@ -86,7 +84,7 @@
           </li>
 
           <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
-            <a id="order-slips-link" href="https://ld-prestashop.template-help.com/prestashop_15325_demo1/index.php?controller=order-slip">
+            <a id="order-slips-link" href="{{ route('historial') }}">
               <i class="bi bi-receipt-cutoff" aria-hidden="true"></i>
               Historial de pedidos
             </a>
@@ -104,8 +102,8 @@
           </li>
           <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
             <a href="https://ld-prestashop.template-help.com/prestashop_15325_demo1/index.php?fc=module&amp;module=jxheaderaccount&amp;controller=vklogin&amp;id_lang=1" title="VK Login Manager">
-              <i class="fa fa-vk" aria-hidden="true"></i>
-              Connect With VK </a>
+              <i class="bi bi-heart" aria-hidden="true"></i>
+              Favoritos </a>
           </li>
 
           <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
