@@ -59,6 +59,7 @@
                                 <th>Valor U</th>
                                 <th>IVA(19%)</th>
                                 <th>Marca</th>
+                                <th>Sexo</th>
                                 <th>Talla</th>
                                 <th>Color</th>
                                 <th>Categoría</th>
@@ -79,6 +80,7 @@
                              
                                     <td>${{ number_format($iva, 0, ',', '.') }}</td>
                                     <td>{{ $producto->marca }}</td>
+                                    <td>{{ $producto->sexo }}</td>
                                     <td>
                                         @foreach ($producto->tallas as $t)
                                             <span>{{ $t->talla }} ({{ $t->cantidad }})<br></span>

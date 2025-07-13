@@ -71,12 +71,38 @@
           <tr class="pedido-detalle-row">
             <td colspan="6">
               <div class="pedido-detalle p-3 border rounded" id="pedido{{ $factura->id_factura_venta }}">
-                <div class="mb-3 text-start">
-                  <p><strong>Nombre:</strong> {{ session('usuario')['nombres'] }} {{ session('usuario')['apellidos'] }}</p>
-                  <p><strong>Dirección:</strong> {{ session('usuario')['direccion'] }}</p>
-                  <p><strong>Teléfono:</strong> {{ session('usuario')['telefono'] }}</p>
-                  <p><strong>Método de Pago:</strong> {{ $factura->metodo_pago }}</p>
+                <div class="row text-center mb-4">
+                  <div class="col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                      <div class="bg-dark rounded-circle d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-person text-white fs-2"></i>
+                      </div>
+                      <strong class="mt-2">NOMBRE DESTINATARIO</strong>
+                      <div>{{ session('usuario')['nombres'] }} {{ session('usuario')['apellidos'] }}</div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                      <div class="bg-dark rounded-circle d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-geo-alt text-white fs-2"></i>
+                      </div>
+                      <strong class="mt-2">DIRECCIÓN</strong>
+                      <div>{{ session('usuario')['direccion'] ?? 'No registrada' }}</div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="d-flex flex-column align-items-center">
+                      <div class="bg-dark rounded-circle d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-wallet2 text-white fs-2"></i>
+                      </div>
+                      <strong class="mt-2">MÉTODO DE PAGO</strong>
+                      <div>{{ $factura->metodo_pago }}</div>
+                    </div>
+                  </div>
                 </div>
+
 
                 <!-- Detalles del pedido -->
                 <h5 class="text-start">DETALLES DEL PEDIDO</h5>
@@ -110,7 +136,7 @@
                 </table>
 
                 <!-- Totales -->
-        
+
                 <div class="text-end">
                   <p><strong>Subtotal</strong> ${{ number_format(($factura->total - $factura->envio) / 1.19, 0, ',', '.') }}</p>
                   <p><strong>IVA Total:</strong>

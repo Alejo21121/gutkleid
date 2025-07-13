@@ -106,7 +106,7 @@
             <td>{{ $factura->cliente->nombres }} {{ $factura->cliente->apellidos }}</td>
             <td>{{ $factura->cliente->documento }}</td>
             <td>{{ $factura->cliente->correo }}</td>
-            <td>{{ $factura->cliente->direccion }}</td>
+            <td>{{ $factura->cliente->direccion }}<br>{{ $factura->cliente->info_adicional }}</td>
             <td>{{ $factura->cliente->telefono }}</td>
         </tr>
     </table>
@@ -143,7 +143,7 @@
                 @endphp
                 <tr>
                     <td>{{ $detalle->producto->nombre }}</td>
-                    <td>{{ $detalle->talla ?? 'N/A' }}</td>
+                    <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
                     <td>{{ number_format($cantidad, 0) }}</td>
                     <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
                     <td>${{ number_format($subtotal, 0, ',', '.') }}</td>

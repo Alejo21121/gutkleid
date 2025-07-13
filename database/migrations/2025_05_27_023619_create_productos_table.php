@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('iva', 5, 2)->default(0.19); // <--- Aquí el IVA
             $table->string('marca');
             $table->string('color');
+             $table->enum('sexo', ['Hombre', 'Mujer']); // 👈 Aquí lo agregas
             $table->unsignedBigInteger('id_categoria');
             
 

@@ -103,15 +103,8 @@ public function finalizar()
         session()->forget('carrito');
 
         // Cargar relaciones
-        $factura->load(['detalles.producto', 'cliente']);
+        $factura->load(['detalles.producto', 'cliente', 'detalles.talla']);
 
-        // Asignar tallas para cada producto
-        foreach ($factura->detalles as $detalle) {
-            $detalle->talla = Talla::where('id_producto', $detalle->id_producto)
-                ->where('cantidad', '>=', $detalle->cantidad)
-                ->first()
-                ->talla ?? 'N/A';
-        }
 
         // Logo base64
         $logoPath = public_path('IMG/LOGO3.png');

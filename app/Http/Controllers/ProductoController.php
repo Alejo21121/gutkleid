@@ -18,46 +18,46 @@ use Illuminate\Support\Facades\File;
 
 class ProductoController extends Controller
 {
-public function index(Request $request)
-{
-    $buscar = $request->input('buscar');
+    public function index(Request $request)
+    {
+        $buscar = $request->input('buscar');
 
-    $query = Producto::with(['categoria', 'imagenes', 'tallas']);
+        $query = Producto::with(['categoria', 'imagenes', 'tallas']);
 
 
-    if (!empty($buscar)) {
-        $query->where('id_producto', $buscar);
-    }
+        if (!empty($buscar)) {
+            $query->where('id_producto', $buscar);
+        }
 
-    $productos = $query->paginate(6)->appends(['buscar' => $buscar]);
+        $productos = $query->paginate(6)->appends(['buscar' => $buscar]);
 
-    $advertencias = [];
+        $advertencias = [];
 
-    foreach ($productos as $producto) {
-        foreach ($producto->tallas as $talla) {
-            if ($talla->cantidad <= 5) { 
-                $advertencias[] = [
-                    'id' => $producto->id_producto,
-                    'nombre' => $producto->nombre,
-                    'talla' => $talla->talla,
-                    'cantidad' => $talla->cantidad,
-                ];
+        foreach ($productos as $producto) {
+            foreach ($producto->tallas as $talla) {
+                if ($talla->cantidad <= 5) {
+                    $advertencias[] = [
+                        'id' => $producto->id_producto,
+                        'nombre' => $producto->nombre,
+                        'talla' => $talla->talla,
+                        'cantidad' => $talla->cantidad,
+                    ];
+                }
             }
         }
+
+        $paginaActual = $productos->currentPage();
+        $totalPaginas = $productos->lastPage();
+
+        // Cargar categorías con conteo de productos
+        $categoriasConCantidad = Categoria::withCount('productos')->get();
+
+        return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias'));
     }
-
-    $paginaActual = $productos->currentPage();
-    $totalPaginas = $productos->lastPage();
-
-    // Cargar categorías con conteo de productos
-    $categoriasConCantidad = Categoria::withCount('productos')->get();
-
-    return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias'));
-}
 
     public function create()
     {
-        $categorias = Categoria::all(); 
+        $categorias = Categoria::all();
         return view('create', compact('categorias'));
     }
 
@@ -68,6 +68,7 @@ public function index(Request $request)
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
             'color' => 'required|string|max:100',
+            'sexo' => 'required|in:Hombre,Mujer', // 👈 agregado
             'id_categoria' => 'required|exists:categorias,id_categoria',
             'tallas' => 'required|array',
             'tallas.*.talla' => 'required|string|max:10',
@@ -80,6 +81,7 @@ public function index(Request $request)
             'valor' => $validated['valor'],
             'marca' => $validated['marca'],
             'color' => $validated['color'],
+            'sexo' => $validated['sexo'], // 👈 guardado
             'id_categoria' => $validated['id_categoria'],
         ]);
 
@@ -102,7 +104,7 @@ public function index(Request $request)
 
     public function edit(Producto $producto)
     {
-        $categorias = Categoria::all(); 
+        $categorias = Categoria::all();
         return view('producto_edit', compact('producto', 'categorias'));
     }
 
@@ -114,6 +116,7 @@ public function index(Request $request)
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
             'color' => 'required|string|max:100',
+            'sexo' => 'required|in:Hombre,Mujer', // 👈
             'id_categoria' => 'required|exists:categorias,id_categoria',
             'tallas' => 'required|array|min:1',
             'tallas.*.talla' => 'required|string|max:50',
@@ -121,8 +124,8 @@ public function index(Request $request)
         ]);
 
         // Actualizar producto
-        $producto->update($request->only([
-            'nombre', 'valor', 'marca', 'color', 'id_categoria'
+            $producto->update($request->only([
+            'nombre', 'valor', 'marca', 'color', 'sexo', 'id_categoria'
         ]));
 
         // Borrar tallas actuales
@@ -141,75 +144,75 @@ public function index(Request $request)
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
     }
 
-        public function destroy(Producto $producto)
-        {
-            $producto->delete();
-            $page = request()->query('page');
-            $buscar = request()->query('buscar');
+    public function destroy(Producto $producto)
+    {
+        $producto->delete();
+        $page = request()->query('page');
+        $buscar = request()->query('buscar');
 
-            return redirect()->route('producto.index', ['page' => $page, 'buscar' => $buscar])
-                            ->with('success', 'Producto eliminado correctamente.');
-        }
+        return redirect()->route('producto.index', ['page' => $page, 'buscar' => $buscar])
+            ->with('success', 'Producto eliminado correctamente.');
+    }
 
-        public function exportarExcel()
-        {
-            return Excel::download(new ProductosExport, 'productos.xlsx');
-        }
+    public function exportarExcel()
+    {
+        return Excel::download(new ProductosExport, 'productos.xlsx');
+    }
 
-        public function exportarPDF()
-        {
-            return "Exportando productos a PDF...";
-        }
+    public function exportarPDF()
+    {
+        return "Exportando productos a PDF...";
+    }
 
-        public function verProducto($id)
-        {
-            $producto = Producto::with(['imagenes', 'categoria'])->findOrFail($id);
-            return view('producto_ver', compact('producto'));
-        }
+    public function verProducto($id)
+    {
+        $producto = Producto::with(['imagenes', 'categoria'])->findOrFail($id);
+        return view('producto_ver', compact('producto'));
+    }
 
     // Ver vista para gestionar imágenes
     public function gestionarImagenes($id)
     {
         $producto = Producto::findOrFail($id);
-        $imagenes = $producto->imagenes; 
+        $imagenes = $producto->imagenes;
 
         return view('producto_imagenes', compact('producto', 'imagenes'));
     }
 
     // Subir nuevas imágenes
-   
-   public function subirImagen(Request $request, $id)
-{
-    $request->validate([
-        'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
-    ]);
 
-    $producto = Producto::with('imagenes')->findOrFail($id);
+    public function subirImagen(Request $request, $id)
+    {
+        $request->validate([
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
 
-    if ($producto->imagenes->count() >= 4) {
-        return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
-    }
+        $producto = Producto::with('imagenes')->findOrFail($id);
 
-    $imagenesNuevas = $request->file('imagenes') ?? [];
-
-    foreach ($imagenesNuevas as $img) {
-        $nombreOriginal = $img->getClientOriginalName();
-        $rutaDestino = public_path("IMG/imagenes_demo/{$nombreOriginal}");
-
-        // Si no existe ya la imagen, se guarda
-        if (!File::exists($rutaDestino)) {
-            $img->move(public_path('IMG/imagenes_demo'), $nombreOriginal);
+        if ($producto->imagenes->count() >= 4) {
+            return redirect()->route('producto.imagenes', $id)->with('error', 'Ya hay 4 imágenes para este producto.');
         }
 
-        // Registrar en la base de datos
-        Imagen::create([
-            'id_producto' => $id,
-            'ruta' => 'IMG/imagenes_demo/' . $nombreOriginal
-        ]);
-    }
+        $imagenesNuevas = $request->file('imagenes') ?? [];
 
-    return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
-}
+        foreach ($imagenesNuevas as $img) {
+            $nombreOriginal = $img->getClientOriginalName();
+            $rutaDestino = public_path("IMG/imagenes_demo/{$nombreOriginal}");
+
+            // Si no existe ya la imagen, se guarda
+            if (!File::exists($rutaDestino)) {
+                $img->move(public_path('IMG/imagenes_demo'), $nombreOriginal);
+            }
+
+            // Registrar en la base de datos
+            Imagen::create([
+                'id_producto' => $id,
+                'ruta' => 'IMG/imagenes_demo/' . $nombreOriginal
+            ]);
+        }
+
+        return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
+    }
 
     // Eliminar una imagen
     public function eliminarImagen($id)
@@ -221,11 +224,9 @@ public function index(Request $request)
         return back()->with('success', 'Imagen eliminada.');
     }
 
-        public function paginaInicio()
+    public function paginaInicio()
     {
         $productos = Producto::with('imagenes')->get();
         return view('inicio', compact('productos'));
     }
-
-
 }

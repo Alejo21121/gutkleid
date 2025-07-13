@@ -102,16 +102,6 @@ Route::get('/compras/exportar-pdf', [ComprasController::class, 'exportarPDF'])->
 Route::post('/compras/store', [ComprasController::class, 'store'])->name('compra.store');
 
 
-Route::get('/prueba-pdf', function () {
-    $html = '
-        <h1>Factura de prueba</h1>
-        <p>Cliente: Juan Pérez</p>
-        <p>Total: $150.000</p>
-    ';
-    $pdf = Pdf::loadHTML($html);
-    return $pdf->download('factura_prueba.pdf');
-});
-
 Route::get('/direccion', function () {return view('direccion');})->name('direccion');
 Route::post('/actualizar-direccion', [UsuarioController::class, 'actualizarDireccion'])->name('perfil.actualizar_direccion');
 
