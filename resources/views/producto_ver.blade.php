@@ -128,6 +128,7 @@
 
     <br>
     <button type="submit" class="filter-bcc">Agregar al carrito</button>
+    <a href="{{ route('inicio') }}"><button class="filter-bcc">Seguir Mirando</button></a>
 </form>
 
 
