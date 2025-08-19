@@ -9,9 +9,7 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #6b6b6b9f 10%, #6b6b6b56 50%, rgb(194, 149, 106));
-    background-attachment: fixed;
+    min-height: 100px;
 }
 
 .user-name {
@@ -26,7 +24,7 @@ body {
 
 /* === HEADER === */
 .cabeza {
-    background: linear-gradient(to bottom, #474747 10%, #6e6e6e 50%, #6b6b6b00 100%);
+background-color: rgb(221, 221, 221);
     padding: 15px;
     width: 100%;
 }
@@ -121,16 +119,17 @@ body {
     margin: 0 auto;
 }
 
+.texproduc{
+    height: 200px;
+}
 
 .productos {
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
     text-align: center;
     padding: 15px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease-in-out;
-    height: 520px; /* Ajustado para imagen grande + texto */
+    height: 400px; /* Ajustado para imagen grande + texto */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -139,6 +138,7 @@ body {
 
 .productos:hover {
     transform: scale(1.05);
+    background-color: rgb(202, 202, 202);
 }
 
 .productos img {    
@@ -149,21 +149,21 @@ body {
 
 
 .productos h5 {
-    font-size: 20px;
-    margin: 50px 0 5px;
+    font-size: 18px;
 }
 
 .productos p {
-    font-size: 20px;
+    font-size: 20px; 
     margin-bottom: 10px;
 }
 
 .main {
-    padding-top: 100px;
-    padding-bottom: 60px;
+    padding-top: 30px;
+    padding-bottom: 600px;
     width: 100%;
     display: flex;
     justify-content: center;
+    background-color: rgb(241, 241, 241);
 }
 
 /* === MINI-CAROUSEL === */
@@ -215,28 +215,20 @@ body {
 
 /* === FOOTER === */
 .pie {
-    color: white;
+    color: black;
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0;
     margin-top: auto;
+background-color: rgb(221, 221, 221);
 }
-
-.foot {
-    text-align: left;
-    position: absolute;
-    width: 100%;
-    height: 65px;
-    background: linear-gradient(to top, rgb(78, 60, 43) 10%, rgba(148, 113, 80, 0.986) 50%, rgba(194, 149, 106, 0) 100%);
-}
-
 .abaj {
-    color: white;
+    color: black;
     margin: 20px;
     text-decoration: none;
 }
 
 .abaj:hover {
-    color: rgb(245, 159, 61);
+    color: #bb8b06
 }
 
 /* === NAV === */
@@ -431,7 +423,7 @@ body {
     }
 
     .productos {
-        padding: 8px;
+        padding: 100px;
     }
 
     .cabeza, .foot {
@@ -489,7 +481,7 @@ body {
     margin-left: 100px;
 }
 .bottonagreg{
-    background-color: rgb(44, 102, 44);
+    background-color: #dda90d;
     border-radius: 10px;
     box-shadow: #000;
     color: white;
@@ -498,7 +490,7 @@ body {
 }
 .bottonagreg:hover{
     color: white;
-    background-color: rgb(26, 61, 26);
+    background-color: #bb8b06
 }
 .bottonelim{
     background-color: rgb(197, 21, 21);

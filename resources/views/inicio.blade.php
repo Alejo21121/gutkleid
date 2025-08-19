@@ -66,13 +66,12 @@
                             @endforeach
                         </div>
                         <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+                        
                         <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
                     </div>
-                    <br>
+                </a>
                     <h5>{{ $producto->nombre }}</h5>
                     <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
-                </a>
-
                 <a href="{{ route('producto.ver', $producto->id_producto) }}">
                     <button type="button" class="bottonagreg">Ver más</button>
                 </a>
@@ -137,10 +136,8 @@
 <script src="{{ asset('JS/navbar.js') }}"></script>
 
 <footer class="pie">
-    <div class="foot">
         <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
         <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    </div>
     <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
 
