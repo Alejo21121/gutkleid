@@ -14,7 +14,7 @@
 <header class="cabeza">
     <nav class="barras">
         <div class="barra1">
-            <a href="{{ route('reseñas') }}"><button class="filter-btn">Acerca de</button></a>
+            <a href="{{ route('reseñas') }}"><a class="filter-btn" href="{{ route('reseñas') }}">ACERCA DE</a></a>
             @if (session('usuario') && session('usuario')['id_rol'] == 1)
                 <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
             @endif
@@ -33,22 +33,18 @@
                                 class="perfil-icono">
                         </a>
                     @endif                    
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                    <a href="{{ route('logout') }}"><a class="filter-btn"><i class="bi bi-door-open"></i></a></a>
                 @else
-                    <a href="{{ route('login') }}" class="inis"><p class="filter-btna">Inicia sesión</p></a>
+                    <a href="{{ route('login') }}" class="inis"><p class="filter-btn">INICIAR SESION</p></a>
                 @endif
                 <div class="iconos">
-                    <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
+                    <a href="{{ route('carrito.index') }}"><bottom class="fontcarr"><i class="bi bi-cart3"></i></bottom></a>
                 </div>
-            </div> 
+            </div>     
         </div>
+            <input type="text" id="search" placeholder="Buscar">
     </nav>
 </header>
-
-<div class="contenedor">
-    <input type="text" id="search" placeholder="Buscar" class="busca">
-    <a href="#"><button class="botonbusca"><i class="bi bi-search"></i></button></a>
-</div>
 
 <main class="main">
     <br>
@@ -136,8 +132,9 @@
 <script src="{{ asset('JS/navbar.js') }}"></script>
 
 <footer class="pie">
-        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    <a href="{{ route('reseñas') }}"><a class="filter-btn">ACERCA DE</a></a>
+    <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
     <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
 
