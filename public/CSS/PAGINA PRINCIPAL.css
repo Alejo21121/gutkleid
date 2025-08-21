@@ -24,7 +24,7 @@ body {
 
 /* === HEADER === */
 .cabeza {
-background-color: rgb(221, 221, 221);
+background-color: rgb(231, 231, 231);
     padding: 15px;
     width: 100%;
 }
@@ -205,11 +205,6 @@ background-color: rgb(221, 221, 221);
     cursor: pointer;
     font-size: 18px;
 }
-
-.prev:hover, .next:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-
 .prev { left: 5px; }
 .next { right: 5px; }
 

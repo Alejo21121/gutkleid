@@ -61,9 +61,9 @@
                 <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
                     <div class="mini-carousel" onclick="event.stopPropagation();">
                         <div class="mini-carousel-images">
-                            @foreach ($producto->imagenes as $imagen)
-                                <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
-                            @endforeach
+                            @foreach ($producto->imagenes->take(2) as $imagen)
+    <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
+@endforeach
                         </div>
                         <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
                         
