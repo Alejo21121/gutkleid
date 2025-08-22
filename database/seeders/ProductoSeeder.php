@@ -10,7 +10,7 @@ class ProductoSeeder extends Seeder
     public function run(): void
     {
         DB::table('productos')->insert([
-            ['nombre' => 'Buzo',              'valor' => 64999, 'marca' => 'Rod Style', 'sexo' => 'Hombre',    'color' => 'Beige',     'id_categoria' => 2],
+            ['nombre' => 'Buzo',              'valor' => 90000, 'marca' => 'Rod Style', 'sexo' => 'Hombre',    'color' => 'Beige',     'id_categoria' => 2],
             ['nombre' => 'Jean Clásico',      'valor' => 59999, 'marca' => 'Huba',  'sexo' => 'Hombre',      'color' => 'Azul',      'id_categoria' => 1],
             ['nombre' => 'Chaqueta Jean',     'valor' => 99999, 'marca' => 'Levítico', 'sexo' => 'Hombre',  'color' => 'Negra',     'id_categoria' => 3],
             ['nombre' => 'Buzo Capotero',     'valor' => 44999, 'marca' => 'Old school','sexo' => 'Mujer',   'color' => 'Verde',     'id_categoria' => 2],
