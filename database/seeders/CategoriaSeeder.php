@@ -10,19 +10,19 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
           DB::table('categorias')->insert([
-    ['nombre' => 'Pantalones'],
-    ['nombre' => 'Buzos'],
-    ['nombre' => 'Chaquetas'],
-    ['nombre' => 'Ropa Casual'],
-    ['nombre' => 'Faldas'],
-    ['nombre' => 'Blusas'],
-    ['nombre' => 'Calzados'],
-    ['nombre' => 'Accesorios'],
-    ['nombre' => 'Gorras'],
-    ['nombre' => 'Ropa interior'],
-    ['nombre' => 'Camisas'],
-    ['nombre' => 'Traje de baño'],
-    ['nombre' => 'Ropa Dormir'],
+    ['nombre' => 'Pantalones','genero' => 'unisex'],
+    ['nombre' => 'Buzos','genero' => 'unisex'],
+    ['nombre' => 'Chaquetas','genero' => 'unisex'],
+    ['nombre' => 'Ropa Casual','genero' => 'unisex'],
+    ['nombre' => 'Faldas','genero' => 'mujer'],
+    ['nombre' => 'Blusas','genero' => 'mujer'],
+    ['nombre' => 'Calzados','genero' => 'unisex'],
+    ['nombre' => 'Accesorios','genero' => 'unisex'],
+    ['nombre' => 'Gorras','genero' => 'unisex'],
+    ['nombre' => 'Ropa interior','genero' => 'unisex'],
+    ['nombre' => 'Camisas','genero' => 'unisex'],
+    ['nombre' => 'Traje de baño','genero' => 'unisex'],
+    ['nombre' => 'Ropa Dormir','genero' => 'unisex'],
 ]);
      
     }

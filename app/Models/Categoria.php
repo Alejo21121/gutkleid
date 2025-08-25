@@ -11,7 +11,8 @@ class Categoria extends Model
     protected $primaryKey = 'id_categoria'; // Tu clave primaria personalizada
 
     protected $fillable = [
-        'id_categoria', 'nombre'
+        'id_categoria', 'nombre', 'genero'
+
     ];
 
     public $timestamps = true; // Si tienes created_at y updated_at

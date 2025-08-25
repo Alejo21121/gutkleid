@@ -116,7 +116,7 @@ class ProductoController extends Controller
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
             'color' => 'required|string|max:100',
-            'sexo' => 'required|in:Hombre,Mujer', // 👈
+            'sexo' => 'required|in:Hombre,Mujer,Unisex', // 👈
             'id_categoria' => 'required|exists:categorias,id_categoria',
             'tallas' => 'required|array|min:1',
             'tallas.*.talla' => 'required|string|max:50',
@@ -224,9 +224,31 @@ class ProductoController extends Controller
         return back()->with('success', 'Imagen eliminada.');
     }
 
-    public function paginaInicio()
-    {
-        $productos = Producto::with('imagenes')->get();
-        return view('inicio', compact('productos'));
+public function paginaInicio(Request $request)
+{
+    $sexo = $request->query('sexo'); // "Mujer" | "Hombre" | null
+
+    // Consulta base con imágenes
+    $query = Producto::with('imagenes');
+
+    // Si se selecciona MUJER u HOMBRE, incluir también UNISEX
+    if ($sexo === 'Mujer') {
+        $query->whereIn('sexo', ['Mujer', 'Unisex']);
+    } elseif ($sexo === 'Hombre') {
+        $query->whereIn('sexo', ['Hombre', 'Unisex']);
     }
+
+    // Traemos productos
+    $productos = $query->get();
+
+    // Categorías Mujer + Unisex
+    $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])->get();
+
+    // Categorías Hombre + Unisex
+    $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])->get();
+
+    return view('inicio', compact('productos', 'categoriasMujer', 'categoriasHombre'));
+}
+
+    
 }

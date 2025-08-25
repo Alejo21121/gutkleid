@@ -18,6 +18,7 @@ class Producto extends Model
         'nombre',
         'valor',
         'marca',
+        'sexo',
         'talla',
         'color',
         'id_categoria',

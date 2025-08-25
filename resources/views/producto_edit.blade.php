@@ -36,12 +36,14 @@
                 <input type="text" name="marca" value="{{ old('marca', $producto->marca) }}" class="form-control" required>
             </div>
 
-            <label for="sexo">Sexo:</label>
-            <select name="sexo" class="form-control" required>
-                <option value="Hombre" {{ old('sexo', $producto->sexo ?? '') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
-                <option value="Mujer" {{ old('sexo', $producto->sexo ?? '') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
-            </select>
-
+            <div class="mb-3">
+                <label for="sexo">Sexo:</label>
+                <select name="sexo" class="form-control" required>
+                    <option value="Hombre" {{ strtolower(old('sexo', $producto->sexo ?? '')) == 'hombre' ? 'selected' : '' }}>Hombre</option>
+                    <option value="Mujer" {{ strtolower(old('sexo', $producto->sexo ?? '')) == 'mujer' ? 'selected' : '' }}>Mujer</option>
+                    <option value="Unisex" {{ strtolower(old('sexo', $producto->sexo ?? '')) == 'unisex' ? 'selected' : '' }}>Unisex</option>
+                </select>
+            </div>
 
             <div class="mb-3">
                 <label for="color" class="form-label">Color:</label>

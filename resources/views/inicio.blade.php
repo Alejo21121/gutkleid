@@ -14,18 +14,45 @@
 <header class="cabeza">
     <nav class="barras">
         <div class="barra1">
-            <a href="{{ route('reseñas') }}"><a class="filter-btn" href="{{ route('reseñas') }}">ACERCA DE</a></a>
+<!-- Menú Mujer -->
+<div class="categoria-menu" onmouseenter="mostrarMenu('mujer')" onmouseleave="ocultarMenu('mujer')">
+    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">MUJER</a>
+    <div class="dropdown-menu-custom" id="menu-mujer">
+        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">Todo</a>
+        @foreach($categoriasMujer as $categoria)
+            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
+                {{ $categoria->nombre }}
+            </a>
+        @endforeach
+    </div>
+</div>
+
+<!-- Menú Hombre -->
+<div class="categoria-menu" onmouseenter="mostrarMenu('hombre')" onmouseleave="ocultarMenu('hombre')">
+    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">HOMBRE</a>
+    <div class="dropdown-menu-custom" id="menu-hombre">
+        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
+        @foreach($categoriasHombre as $categoria)
+            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                {{ $categoria->nombre }}
+            </a>
+        @endforeach
+    </div>
+</div>
             @if (session('usuario') && session('usuario')['id_rol'] == 1)
-                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+                <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
             @endif
         </div>
-        <div class="logo">
-            <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
-        </div>
+            <div class="logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+                </a>
+            </div>
+
         <div class="barra2">
             <div class="usuario-info">
                 @if (session('usuario'))
-                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <p class="sesionn">HOLA {{ session('usuario')['nombres'] }}</p>
                     @if (session('usuario'))
                         <a href="{{ route('cuenta') }}">
                             <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
@@ -33,7 +60,7 @@
                                 class="perfil-icono">
                         </a>
                     @endif                    
-                    <a href="{{ route('logout') }}"><a class="filter-btn"><i class="bi bi-door-open"></i></a></a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                 @else
                     <a href="{{ route('login') }}" class="inis"><p class="filter-btn">INICIAR SESION</p></a>
                 @endif
@@ -130,6 +157,43 @@
 <script src="{{ asset('JS/script.js') }}"></script>
 <script src="{{ asset('JS/script2.js') }}"></script>
 <script src="{{ asset('JS/navbar.js') }}"></script>
+
+<script>
+    // Funciones para el menú hover
+    function mostrarMenu(tipo) {
+        const menu = document.getElementById(`menu-${tipo}`);
+        menu.classList.add('show');
+    }
+    
+    function ocultarMenu(tipo) {
+        const menu = document.getElementById(`menu-${tipo}`);
+        // Pequeño delay para permitir mover el mouse al menú
+        setTimeout(() => {
+            if (!menu.matches(':hover')) {
+                menu.classList.remove('show');
+            }
+        }, 100);
+    }
+    // Permitir que el menú permanezca abierto cuando el mouse está sobre él
+    document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+        menu.addEventListener('mouseenter', function() {
+            this.classList.add('show');
+        });
+        
+        menu.addEventListener('mouseleave', function() {
+            this.classList.remove('show');
+        });
+    });
+    
+    // Cerrar menús al hacer clic fuera
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.categoria-menu')) {
+            document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+    });
+</script>
 
 <footer class="pie">
     <a href="{{ route('reseñas') }}"><a class="filter-btn">ACERCA DE</a></a>

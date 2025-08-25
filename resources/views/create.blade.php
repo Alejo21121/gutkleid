@@ -36,6 +36,7 @@
             <option value="">Seleccione el sexo</option>
             <option value="Hombre" {{ old('sexo', $producto->sexo ?? '') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
             <option value="Mujer" {{ old('sexo', $producto->sexo ?? '') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+            <option value="Unisex" {{ old('sexo', $producto->sexo ?? '') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
         </select>
 
         <label for="color">Color:</label>
