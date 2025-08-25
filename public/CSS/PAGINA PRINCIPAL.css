@@ -30,9 +30,10 @@ background-color: rgb(231, 231, 231);
 }
 
 .barras {
+    position: relative;
     display: flex;
+    align-items: center; /* Alinea todo verticalmente */
     justify-content: space-between;
-    align-items: center;
 }
 
 .barra1, .barra2 {
@@ -93,11 +94,11 @@ background-color: rgb(231, 231, 231);
 }
 
 .logo img {
-    height: 60px;
-    display: block;
-    margin: 0 auto;
-    position: relative;
-    margin-left: 100px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .usuario-info {
@@ -123,7 +124,7 @@ background-color: rgb(231, 231, 231);
     font-weight: bold;
     transition: transform 0.3s ease, box-shadow 1.8s ease;
     text-decoration: none;
-    
+    border: none;
 }
 
 .fontcarr{
@@ -157,7 +158,7 @@ background-color: rgb(231, 231, 231);
 }
 
 .sesionn {
-    color: white;
+    color: rgb(0, 0, 0);
     margin: 0; /* Antes tenías margin-top: 7px */
     display: flex;
     align-items: center;
@@ -274,12 +275,14 @@ background-color: rgb(231, 231, 231);
     text-align: center;
     padding: 10px 0;
     margin-top: auto;
-background-color: rgb(221, 221, 221);
+    background: linear-gradient(to bottom, rgb(231, 231, 231), rgb(229, 229, 229), rgb(210, 210, 210));
 }
 .abaj {
     color: black;
     margin: 20px;
     text-decoration: none;
+    text-align: right;
+    position: relative;
 }
 
 .abaj:hover {
@@ -377,7 +380,6 @@ background-color: rgb(221, 221, 221);
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid white;
     transition: 0.3s;
 }
 
@@ -639,4 +641,26 @@ background-color: rgb(221, 221, 221);
 }
 tbody, td, tr{
     text-align: center;
+}
+
+.search-panel {
+    display: none;
+background-color: rgb(231, 231, 231);
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    animation: slideDown 0.3s ease forwards;
+}
+@keyframes slideDown {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+.busqueda{
+    padding: 5x;
+    margin-right: 10px;
+}
+
+hr {
+    margin: 0; /* Elimina el margen */
+    border: 1px solid #ccc; /* Color y grosor de la línea */
 }

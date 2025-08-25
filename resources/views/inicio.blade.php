@@ -39,6 +39,8 @@
         @endforeach
     </div>
 </div>
+        <!-- IZQUIERDA -->
+        <div class="nav-left">
             @if (session('usuario') && session('usuario')['id_rol'] == 1)
                 <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
             @endif
@@ -60,19 +62,50 @@
                                 class="perfil-icono">
                         </a>
                     @endif                    
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <div class="logo">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="nav-right">
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil"
+                             class="perfil-icono">
+                    </a>
                     <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                 @else
-                    <a href="{{ route('login') }}" class="inis"><p class="filter-btn">INICIAR SESION</p></a>
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
                 @endif
-                <div class="iconos">
-                    <a href="{{ route('carrito.index') }}"><bottom class="fontcarr"><i class="bi bi-cart3"></i></bottom></a>
-                </div>
-            </div>     
-        </div>
-            <input type="text" id="search" placeholder="Buscar">
-    </nav>
-</header>
 
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+
+                <!-- Buscador -->
+                <button id="toggleSearch" style="border:none; background:none; cursor:pointer;" class="busqueda">
+                    <i class="bi bi-search" style="font-size:1.5rem;"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- Panel de búsqueda -->
+    <div id="search-panel" class="search-panel">
+        <form  method="GET" class="d-flex container" role="search">
+            <input type="text" name="q" class="form-control me-2" placeholder="Buscar..." />
+            <button type="submit" class="btn btn-dark">Buscar</button>
+        </form>
+    </div>
+    <hr>
 <main class="main">
     <br>
     <div class="productosbar">
@@ -151,7 +184,26 @@
     index = (index + direccion + slides.length) % slides.length;
     slides[index].classList.add('active');
 }
+</script>
+<script>
+const btn   = document.getElementById('toggleSearch');
+const panel = document.getElementById('search-panel');
+let input   = panel.querySelector('input[type="text"]');
 
+btn.addEventListener('click', () => {
+    if(panel.style.display === "block"){
+        panel.style.display = "none";
+    } else {
+        panel.style.display = "block";
+        input.focus();
+    }
+});
+
+document.addEventListener('keydown', (e)=>{
+    if(e.key === "Escape"){
+        panel.style.display = "none";
+    }
+});
 </script>
 
 <script src="{{ asset('JS/script.js') }}"></script>
@@ -196,9 +248,13 @@
 </script>
 
 <footer class="pie">
-    <a href="{{ route('reseñas') }}"><a class="filter-btn">ACERCA DE</a></a>
     <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
     <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+    <a href="{{ route('redes') }}" class="abaj">Redes</a>
+    <br>
+    <br>
     <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
 

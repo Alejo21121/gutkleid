@@ -12,39 +12,59 @@
 <body>
 <header class="cabeza">
     <nav class="barras">
-        <div class="barra1">
-            <a href="{{ url()->previous() }}">
-                <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
-            </a>
-            <a href="{{ route('reseñas') }}"><button class="filter-btn">Acerca de</button></a>
+        <!-- IZQUIERDA -->
+        <div class="nav-left">
             @if (session('usuario') && session('usuario')['id_rol'] == 1)
                 <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
             @endif
         </div>
-        <div class="logo">
-            <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
+            <div class="logo">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div>
+        </a>
         </div>
-        <div class="barra2">
+
+        <!-- DERECHA -->
+        <div class="nav-right">
             <div class="usuario-info">
                 @if (session('usuario'))
                     <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
-                    @if (session('usuario'))
-                        <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" 
-                            alt="Perfil" class="perfil-icono">
-                        </a>
-                    @endif                    
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil"
+                             class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                 @else
-                    <a href="{{ route('login') }}" class="inis"><p class="filter-btna">Inicia sesión</p></a>
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
                 @endif
-                <div class="iconos">
-                    <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
-                </div>
+
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+
+                <!-- Buscador -->
+                <button id="toggleSearch" style="border:none; background:none; cursor:pointer;" class="busqueda">
+                    <i class="bi bi-search" style="font-size:1.5rem;"></i>
+                </button>
             </div>
         </div>
     </nav>
-</header>
+    <!-- Panel de búsqueda -->
+    <div id="search-panel" class="search-panel">
+        <form  method="GET" class="d-flex container" role="search">
+            <input type="text" name="q" class="form-control me-2" placeholder="Buscar..." />
+            <button type="submit" class="btn btn-dark">Buscar</button>
+        </form>
+    </div>
+    <hr>
 
 <main class="main">
     <div class="containercar">

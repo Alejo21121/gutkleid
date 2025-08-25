@@ -9,25 +9,49 @@
     <link rel="icon" href="IMG/icono2.ico" type="image/x-icon">
 </head>
 <body>
-    <header class="cabeza">
-        <nav class="barras">
-            <div class="barra1">
-                <a href="{{ url()->previous() }}">
-                    <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
-                </a>
-                <button class="filter-btn">Acerca de</button>
-            </div>
-            <div class="logo">
-        <div class="logo">
-            <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+<header class="cabeza">
+    <nav class="barras">
+        <!-- IZQUIERDA -->
+        <div class="nav-left">
+            @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+            @endif
         </div>
-                <div class="barra2">
-                    <a href="INICIO DE SESION.php"><button class="filter-btn">Iniciar sesión</button></a>
-                </div>
-            </div>
-        </nav>
-    </header>
 
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
+            <div class="logo">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div></a>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="nav-right">
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil"
+                             class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                @else
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
+                @endif
+
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <main class="main">
     <main class="container mt-5">
         <h1 class="text-center mb-4">Regístrate</h1>
 
@@ -37,7 +61,7 @@
             <input type="text" name="documento" placeholder="Documento de identidad" required value="{{ old('documento') }}"><br>
             @error('documento') <div style="color:red;">{{ $message }}</div> @enderror
 
-           <select name="id_tipo_documento" required>
+           <select name="id_tipo_documento" required class="menuin">
                 <option value="">Tipo de documento</option>
                 @foreach ($tipos as $tipo)
                     <option value="{{ $tipo->id_tipo_documento }}" {{ old('id_tipo_documento') == $tipo->id_tipo_documento ? 'selected' : '' }}>
@@ -55,7 +79,7 @@
 
            <div class="mb-3">
                 <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                <input type="date" name="fecha_nacimiento" class="form-control" required value="{{ old('fecha_nacimiento') }}">
+                <input type="date" name="fecha_nacimiento" class="menuin" required value="{{ old('fecha_nacimiento') }}">
                 @error('fecha_nacimiento') <div style="color:red;">{{ $message }}</div> @enderror
             </div>
 
@@ -84,18 +108,19 @@
                     <i id="iconoConfirmacion" class="bi bi-eye-slash"></i>
                 </button>
             </div>
-
             <button type="submit" class="filter-bcc mt-3">Registrarse</button>
         </form>
     </main>
-
-    <footer class="pie mt-5">
-        <div class="foot">
-            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-        </div>
-        <p class="text-center">&copy; 2024 - GUT KLEID.</p>
-    </footer>
+    </main>
+<footer class="pie">
+    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+    <a href="{{ route('redes') }}" class="abaj">Redes</a>
+    <br>
+    <br>
+    <p>&copy; 2024 - GUT KLEID.</p>
+</footer>
 </body>
 </html>
 
