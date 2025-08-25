@@ -14,55 +14,58 @@
 <header class="cabeza">
     <nav class="barras">
         <div class="barra1">
-<!-- Menú Mujer -->
-<div class="categoria-menu" onmouseenter="mostrarMenu('mujer')" onmouseleave="ocultarMenu('mujer')">
-    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">MUJER</a>
-    <div class="dropdown-menu-custom" id="menu-mujer">
-        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">Todo</a>
-        @foreach($categoriasMujer as $categoria)
-            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
-                {{ $categoria->nombre }}
-            </a>
-        @endforeach
-    </div>
-</div>
+            <!-- Menú Mujer -->
+            <div class="categoria-menu" onmouseenter="mostrarMenu('mujer')" onmouseleave="ocultarMenu('mujer')">
+                <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">MUJER</a>
+                <div class="dropdown-menu-custom" id="menu-mujer">
+                    <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">Todo</a>
+                    @foreach($categoriasMujer as $categoria)
+                        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
+                            {{ $categoria->nombre }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
 
-<!-- Menú Hombre -->
-<div class="categoria-menu" onmouseenter="mostrarMenu('hombre')" onmouseleave="ocultarMenu('hombre')">
-    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">HOMBRE</a>
-    <div class="dropdown-menu-custom" id="menu-hombre">
-        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
-        @foreach($categoriasHombre as $categoria)
-            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
-                {{ $categoria->nombre }}
-            </a>
-        @endforeach
-    </div>
-</div>
-        <!-- IZQUIERDA -->
-        <div class="nav-left">
-            @if (session('usuario') && session('usuario')['id_rol'] == 1)
-                <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
-            @endif
-        </div>
+            <!-- Menú Hombre -->
+            <div class="categoria-menu" onmouseenter="mostrarMenu('hombre')" onmouseleave="ocultarMenu('hombre')">
+                <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">HOMBRE</a>
+                <div class="dropdown-menu-custom" id="menu-hombre">
+                    <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
+                    @foreach($categoriasHombre as $categoria)
+                        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                            {{ $categoria->nombre }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- IZQUIERDA -->
+            <div class="nav-left">
+                @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                    <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
+                @endif
+            </div>
+
             <div class="logo">
-                <a href="{{ url('/') }}">
+                <a href="/">
                     <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
                 </a>
             </div>
 
-        <div class="barra2">
-            <div class="usuario-info">
-                @if (session('usuario'))
-                    <p class="sesionn">HOLA {{ session('usuario')['nombres'] }}</p>
+            <div class="barra2">
+                <div class="usuario-info">
                     @if (session('usuario'))
+                        <p class="sesionn">HOLA {{ session('usuario')['nombres'] }}</p>
                         <a href="{{ route('cuenta') }}">
                             <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
                                 alt="Perfil"
                                 class="perfil-icono">
                         </a>
-                    @endif                    
-        <!-- CENTRO -->
+                    @endif
+                </div>
+            </div>
+        </div>        <!-- CENTRO -->
         <div class="nav-center">
             <div class="logo">
                 <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
