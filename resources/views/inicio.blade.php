@@ -46,29 +46,12 @@
                     <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
                 @endif
             </div>
-
-            <div class="logo">
-                <a href="/">
-                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
-                </a>
-            </div>
-
-            <div class="barra2">
-                <div class="usuario-info">
-                    @if (session('usuario'))
-                        <p class="sesionn">HOLA {{ session('usuario')['nombres'] }}</p>
-                        <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                                alt="Perfil"
-                                class="perfil-icono">
-                        </a>
-                    @endif
-                </div>
-            </div>
         </div>        <!-- CENTRO -->
         <div class="nav-center">
             <div class="logo">
+                <a href="/">
                 <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+                </a>
             </div>
         </div>
 
