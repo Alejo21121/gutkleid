@@ -68,7 +68,7 @@
                     <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                 @else
                     <a href="{{ route('login') }}" class="inis">
-                        <p class="filter-btn">INICIAR SESION</p>
+                        <p class="filter-btn">INICIAR SESIONNN</p>
                     </a>
                 @endif
 
