@@ -117,8 +117,58 @@
             </form>
         </div>
         <hr>
+
+        <!-- Botón de filtro -->
+        <button class="btn btn-dark" type="button" id="btnToggleSidebar">
+            <i class="bi bi-funnel"></i> Filtrar
+        </button>
+
+        <!-- Sidebar de filtros -->
+        <div id="sidebar" class="filter-sidebar">
+            <form method="GET" action="{{ route('inicio') }}">
+                <!-- Mantener categoría y sexo -->
+                <input type="hidden" name="categoria" value="{{ $categoriaId ?? '' }}">
+                <input type="hidden" name="sexo" value="{{ $sexo ?? '' }}">
+
+                <!-- Filtro de Color -->
+                <div class="mb-3">
+                    <label>Color</label>
+                    <select class="form-select" name="color">
+                        <option value="">Todos</option>
+                        @foreach($coloresDisponibles as $c)
+                        <option value="{{ $c }}" {{ ($color ?? '') == $c ? 'selected' : '' }}>
+                            {{ ucfirst($c) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Filtro de Talla -->
+                <div class="mb-3">
+                    <label>Talla</label>
+                    <select class="form-select" name="talla">
+                        <option value="">Todas</option>
+                        @foreach($tallasDisponibles as $t)
+                        <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
+                            {{ strtoupper($t) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+                <button type="submit" class="btn btn-dark w-100">Aplicar filtros</button>
+                <button type="button" id="btnCerrarSidebar" class="btn btn-secondary w-100 mt-2">Cerrar</button>
+            </form>
+        </div>
+
+
+
+        <br><br>
+
         <main class="main">
             <br>
+
             <div class="productosbar">
                 @foreach ($productos as $producto)
                 @php
@@ -257,6 +307,21 @@
                 }
             });
         </script>
+
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const btnOpen = document.getElementById('btnToggleSidebar');
+            const btnClose = document.getElementById('btnCerrarSidebar');
+
+            btnOpen.addEventListener('click', () => {
+                sidebar.style.right = '0';
+            });
+
+            btnClose.addEventListener('click', () => {
+                sidebar.style.right = '-300px';
+            });
+        </script>
+
 
         <footer class="pie">
             <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>

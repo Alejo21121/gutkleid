@@ -235,42 +235,73 @@ class ProductoController extends Controller
 
     public function paginaInicio(Request $request)
     {
-        $sexo = $request->query('sexo'); // "Mujer" | "Hombre" | null
-        $categoria = $request->query('categoria'); // id_categoria | null
-        $subcategoria = $request->query('subcategoria'); // id_subcategoria | null
+        $categoriaId = $request->query('categoria');
+        $sexo = $request->query('sexo');
+        $subcategoria = $request->query('subcategoria');
+        $color = $request->query('color');
+        $talla = $request->query('talla');
+        $precio_max = $request->query('precio_max');
 
-        // Consulta base con imágenes
-        $query = Producto::with('imagenes');
-
-        // Filtrar por sexo
+        // Consulta base con filtros por sexo
+        $query = Producto::with(['imagenes', 'tallas']);
         if ($sexo === 'Mujer') {
             $query->whereIn('sexo', ['Mujer', 'Unisex']);
         } elseif ($sexo === 'Hombre') {
             $query->whereIn('sexo', ['Hombre', 'Unisex']);
         }
 
-        // Filtrar por categoría si se envía
-        if (!empty($categoria)) {
-            $query->where('id_categoria', $categoria);
+        // Aplicar filtros
+        if (!empty($categoriaId)) {
+            $query->where('id_categoria', $categoriaId);
         }
-
-        // Filtrar por subcategoría si se envía
         if (!empty($subcategoria)) {
             $query->where('id_subcategoria', $subcategoria);
+        }
+        if (!empty($color)) {
+            $query->where('color', $color);
+        }
+        if (!empty($talla)) {
+            $query->whereHas('tallas', function ($q) use ($talla) {
+                $q->where('talla', $talla)->where('cantidad', '>', 0);
+            });
+        }
+        if (!empty($precio_max)) {
+            $query->where('valor', '<=', $precio_max);
         }
 
         $productos = $query->get();
 
-        // Categorías Mujer + Unisex
-        $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])
-            ->with('subcategorias')
-            ->get();
+        // Para calcular colores y tallas disponibles solo del sexo seleccionado
+        $productosSexo = Producto::with('tallas');
+        if ($sexo === 'Mujer') {
+            $productosSexo->whereIn('sexo', ['Mujer', 'Unisex']);
+        } elseif ($sexo === 'Hombre') {
+            $productosSexo->whereIn('sexo', ['Hombre', 'Unisex']);
+        }
+        if (!empty($categoriaId)) {
+            $productosSexo->where('id_categoria', $categoriaId);
+        }
+        $productosSexo = $productosSexo->get();
 
-        // Categorías Hombre + Unisex
-        $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])
-            ->with('subcategorias')
-            ->get();
+        $coloresDisponibles = $productosSexo->pluck('color')->unique();
+        $tallasDisponibles = $productosSexo->flatMap(fn($p) => $p->tallas->pluck('talla'))->unique();
 
-        return view('inicio', compact('productos', 'categoriasMujer', 'categoriasHombre'));
+        // Categorías para menú
+        $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])->with('subcategorias')->get();
+        $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])->with('subcategorias')->get();
+
+        return view('inicio', compact(
+            'productos',
+            'categoriasMujer',
+            'categoriasHombre',
+            'coloresDisponibles',
+            'tallasDisponibles',
+            'sexo',
+            'categoriaId',
+            'subcategoria',
+            'color',
+            'talla',
+            'precio_max'
+        ));
     }
 }
