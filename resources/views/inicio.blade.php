@@ -41,32 +41,29 @@
                         @endforeach
                     </div>
                 </div>
-<!-- Menú Hombre -->
-<div class="categoria-menu" onmouseenter="mostrarMenu('hombre')" onmouseleave="ocultarMenu('hombre')">
-    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">HOMBRE</a>
-    <div class="dropdown-menu-custom" id="menu-hombre">
-        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
-        @foreach($categoriasHombre as $categoria)
-        <div class="submenu">
-                <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
-                    {{ $categoria->nombre }}
-                </a>
-                @if($categoria->subcategorias->count() > 0)
-                    <div class="submenu-items">
-                        @foreach($categoria->subcategorias as $sub)
-                            <a class="dropdown-subitem-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
-                                {{ $sub->nombre }}
+                <!-- Menú Hombre -->
+                <div class="categoria-menu" onmouseenter="mostrarMenu('hombre')" onmouseleave="ocultarMenu('hombre')">
+                    <a class="filter-btn" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">HOMBRE</a>
+                    <div class="dropdown-menu-custom" id="menu-hombre">
+                        <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
+                        @foreach($categoriasHombre as $categoria)
+                        <div class="submenu">
+                            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                                {{ $categoria->nombre }}
                             </a>
+                            @if($categoria->subcategorias->count() > 0)
+                            <div class="submenu-items">
+                                @foreach($categoria->subcategorias as $sub)
+                                <a class="dropdown-subitem-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                    {{ $sub->nombre }}
+                                </a>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
                         @endforeach
                     </div>
-                @endif
-            </div>
-        @endforeach
-    </div>
-</div>
-
-
-
+                </div>
 
                 <!-- IZQUIERDA -->
                 <div class="nav-left">
@@ -96,7 +93,7 @@
                     <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                     @else
                     <a href="{{ route('login') }}" class="inis">
-                        <p class="filter-btn">INICIAR SESIONNN</p>
+                        <p class="filter-btn">INICIAR SESION</p>
                     </a>
                     @endif
 

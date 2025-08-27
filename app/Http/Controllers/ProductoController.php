@@ -236,26 +236,37 @@ class ProductoController extends Controller
     public function paginaInicio(Request $request)
     {
         $sexo = $request->query('sexo'); // "Mujer" | "Hombre" | null
+        $categoria = $request->query('categoria'); // id_categoria | null
+        $subcategoria = $request->query('subcategoria'); // id_subcategoria | null
 
         // Consulta base con imágenes
         $query = Producto::with('imagenes');
 
-        // Si se selecciona MUJER u HOMBRE, incluir también UNISEX
+        // Filtrar por sexo
         if ($sexo === 'Mujer') {
             $query->whereIn('sexo', ['Mujer', 'Unisex']);
         } elseif ($sexo === 'Hombre') {
             $query->whereIn('sexo', ['Hombre', 'Unisex']);
         }
 
-        // Traemos productos
+        // Filtrar por categoría si se envía
+        if (!empty($categoria)) {
+            $query->where('id_categoria', $categoria);
+        }
+
+        // Filtrar por subcategoría si se envía
+        if (!empty($subcategoria)) {
+            $query->where('id_subcategoria', $subcategoria);
+        }
+
         $productos = $query->get();
 
-        // Categorías Mujer + Unisex (con subcategorías)
+        // Categorías Mujer + Unisex
         $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])
             ->with('subcategorias')
             ->get();
 
-        // Categorías Hombre + Unisex (con subcategorías)
+        // Categorías Hombre + Unisex
         $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])
             ->with('subcategorias')
             ->get();
