@@ -22,6 +22,7 @@ class Producto extends Model
         'talla',
         'color',
         'id_categoria',
+        'id_subcategoria', // 👈 agrega esto
         'cantidad'
     ];
 
@@ -31,6 +32,11 @@ class Producto extends Model
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');
+    }
+
+    public function subcategoria()
+    {
+        return $this->belongsTo(Subcategoria::class, 'id_subcategoria');
     }
 
     public function imagenes()

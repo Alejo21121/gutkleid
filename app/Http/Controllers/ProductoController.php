@@ -22,8 +22,7 @@ class ProductoController extends Controller
     {
         $buscar = $request->input('buscar');
 
-        $query = Producto::with(['categoria', 'imagenes', 'tallas']);
-
+        $query = Producto::with(['categoria', 'subcategoria', 'imagenes', 'tallas']);
 
         if (!empty($buscar)) {
             $query->where('id_producto', $buscar);
@@ -57,7 +56,7 @@ class ProductoController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::with('subcategorias')->get();
         return view('create', compact('categorias'));
     }
 
@@ -68,8 +67,9 @@ class ProductoController extends Controller
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
             'color' => 'required|string|max:100',
-            'sexo' => 'required|in:Hombre,Mujer', // 👈 agregado
+            'sexo' => 'required|in:Hombre,Mujer,Unisex',
             'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_subcategoria' => 'nullable|exists:subcategorias,id_subcategoria',
             'tallas' => 'required|array',
             'tallas.*.talla' => 'required|string|max:10',
             'tallas.*.cantidad' => 'required|integer|min:0',
@@ -81,8 +81,9 @@ class ProductoController extends Controller
             'valor' => $validated['valor'],
             'marca' => $validated['marca'],
             'color' => $validated['color'],
-            'sexo' => $validated['sexo'], // 👈 guardado
+            'sexo' => $validated['sexo'],
             'id_categoria' => $validated['id_categoria'],
+            'id_subcategoria' => $validated['id_subcategoria'] ?? null, // 👈 agregado
         ]);
 
         // Agregar las tallas asociadas
@@ -104,29 +105,37 @@ class ProductoController extends Controller
 
     public function edit(Producto $producto)
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::with('subcategorias')->get();
         return view('producto_edit', compact('producto', 'categorias'));
     }
 
     public function update(Request $request, Producto $producto)
     {
+
         // Validación 
         $request->validate([
             'nombre' => 'required|string|max:255',
             'valor' => 'required|numeric|min:0',
             'marca' => 'required|string|max:255',
             'color' => 'required|string|max:100',
-            'sexo' => 'required|in:Hombre,Mujer,Unisex', // 👈
+            'sexo' => 'required|in:Hombre,Mujer,Unisex',
             'id_categoria' => 'required|exists:categorias,id_categoria',
+            'id_subcategoria' => 'nullable|exists:subcategorias,id_subcategoria',
             'tallas' => 'required|array|min:1',
             'tallas.*.talla' => 'required|string|max:50',
             'tallas.*.cantidad' => 'required|integer|min:0',
         ]);
 
-        // Actualizar producto
-            $producto->update($request->only([
-            'nombre', 'valor', 'marca', 'color', 'sexo', 'id_categoria'
+        $producto->update($request->only([
+            'nombre',
+            'valor',
+            'marca',
+            'color',
+            'sexo',
+            'id_categoria',
+            'id_subcategoria'
         ]));
+
 
         // Borrar tallas actuales
         $producto->tallas()->delete();
@@ -166,7 +175,7 @@ class ProductoController extends Controller
 
     public function verProducto($id)
     {
-        $producto = Producto::with(['imagenes', 'categoria'])->findOrFail($id);
+        $producto = Producto::with(['imagenes', 'categoria', 'subcategoria'])->findOrFail($id);
         return view('producto_ver', compact('producto'));
     }
 
@@ -224,31 +233,33 @@ class ProductoController extends Controller
         return back()->with('success', 'Imagen eliminada.');
     }
 
-public function paginaInicio(Request $request)
-{
-    $sexo = $request->query('sexo'); // "Mujer" | "Hombre" | null
+    public function paginaInicio(Request $request)
+    {
+        $sexo = $request->query('sexo'); // "Mujer" | "Hombre" | null
 
-    // Consulta base con imágenes
-    $query = Producto::with('imagenes');
+        // Consulta base con imágenes
+        $query = Producto::with('imagenes');
 
-    // Si se selecciona MUJER u HOMBRE, incluir también UNISEX
-    if ($sexo === 'Mujer') {
-        $query->whereIn('sexo', ['Mujer', 'Unisex']);
-    } elseif ($sexo === 'Hombre') {
-        $query->whereIn('sexo', ['Hombre', 'Unisex']);
+        // Si se selecciona MUJER u HOMBRE, incluir también UNISEX
+        if ($sexo === 'Mujer') {
+            $query->whereIn('sexo', ['Mujer', 'Unisex']);
+        } elseif ($sexo === 'Hombre') {
+            $query->whereIn('sexo', ['Hombre', 'Unisex']);
+        }
+
+        // Traemos productos
+        $productos = $query->get();
+
+        // Categorías Mujer + Unisex (con subcategorías)
+        $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])
+            ->with('subcategorias')
+            ->get();
+
+        // Categorías Hombre + Unisex (con subcategorías)
+        $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])
+            ->with('subcategorias')
+            ->get();
+
+        return view('inicio', compact('productos', 'categoriasMujer', 'categoriasHombre'));
     }
-
-    // Traemos productos
-    $productos = $query->get();
-
-    // Categorías Mujer + Unisex
-    $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])->get();
-
-    // Categorías Hombre + Unisex
-    $categoriasHombre = Categoria::whereIn('genero', ['Hombre', 'Unisex'])->get();
-
-    return view('inicio', compact('productos', 'categoriasMujer', 'categoriasHombre'));
-}
-
-    
 }
