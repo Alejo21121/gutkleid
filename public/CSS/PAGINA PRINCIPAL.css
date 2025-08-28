@@ -170,6 +170,7 @@ body {
     transition: transform 0.3s ease, box-shadow 1.8s ease;
     text-decoration: none;
     border: none;
+        background-color: rgb(231, 231, 231);
 }
 
 .fontcarr {
@@ -288,6 +289,7 @@ body {
     display: flex;
     justify-content: center;
     background-color: rgb(241, 241, 241);
+    height: 900px;
 }
 
 /* === MINI-CAROUSEL === */
@@ -771,4 +773,12 @@ hr {
     /* Elimina el margen */
     border: 1px solid #ccc;
     /* Color y grosor de la línea */
+}
+.filtropag{
+    color: black;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
 }

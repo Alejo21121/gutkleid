@@ -22,22 +22,22 @@
                     <div class="dropdown-menu-custom" id="menu-mujer">
                         <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">Todo</a>
                         @foreach($categoriasMujer as $categoria)
-                        <div class="submenu">
-                            <a class="dropdown-item-custom"
-                                href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
-                                {{ $categoria->nombre }}
-                            </a>
-                            @if($categoria->subcategorias->count() > 0)
-                            <div class="submenu-items">
-                                @foreach($categoria->subcategorias as $sub)
-                                <a class="dropdown-subitem-custom"
-                                    href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
-                                    {{ $sub->nombre }}
+                            <div class="submenu">
+                                <a class="dropdown-item-custom"
+                                    href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
+                                    {{ $categoria->nombre }}
                                 </a>
-                                @endforeach
+                                @if($categoria->subcategorias->count() > 0)
+                                    <div class="submenu-items">
+                                        @foreach($categoria->subcategorias as $sub)
+                                            <a class="dropdown-subitem-custom"
+                                                href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                                {{ $sub->nombre }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
-                            @endif
-                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -47,20 +47,22 @@
                     <div class="dropdown-menu-custom" id="menu-hombre">
                         <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
                         @foreach($categoriasHombre as $categoria)
-                        <div class="submenu">
-                            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
-                                {{ $categoria->nombre }}
-                            </a>
-                            @if($categoria->subcategorias->count() > 0)
-                            <div class="submenu-items">
-                                @foreach($categoria->subcategorias as $sub)
-                                <a class="dropdown-subitem-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
-                                    {{ $sub->nombre }}
+                            <div class="submenu">
+                                <a class="dropdown-item-custom"
+                                    href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                                    {{ $categoria->nombre }}
                                 </a>
-                                @endforeach
+                                @if($categoria->subcategorias->count() > 0)
+                                    <div class="submenu-items">
+                                        @foreach($categoria->subcategorias as $sub)
+                                            <a class="dropdown-subitem-custom"
+                                                href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                                {{ $sub->nombre }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
-                            @endif
-                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -68,7 +70,7 @@
                 <!-- IZQUIERDA -->
                 <div class="nav-left">
                     @if (session('usuario') && session('usuario')['id_rol'] == 1)
-                    <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
+                        <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
                     @endif
                 </div>
             </div> <!-- CENTRO -->
@@ -84,17 +86,16 @@
             <div class="nav-right">
                 <div class="usuario-info">
                     @if (session('usuario'))
-                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
-                    <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                            alt="Perfil"
-                            class="perfil-icono">
-                    </a>
-                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                        <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                        <a href="{{ route('cuenta') }}">
+                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil"
+                                class="perfil-icono">
+                        </a>
+                        <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                     @else
-                    <a href="{{ route('login') }}" class="inis">
-                        <p class="filter-btn">INICIAR SESION</p>
-                    </a>
+                        <a href="{{ route('login') }}" class="inis">
+                            <p class="filter-btn">INICIAR SESION</p>
+                        </a>
                     @endif
 
                     <!-- Carrito -->
@@ -119,10 +120,9 @@
         <hr>
 
         <!-- Botón de filtro -->
-        <button class="btn btn-dark" type="button" id="btnToggleSidebar">
-            <i class="bi bi-funnel"></i> Filtrar
+        <button class="filter-btn" type="button" id="btnToggleSidebar">
+            FILTRAR
         </button>
-
         <!-- Sidebar de filtros -->
         <div id="sidebar" class="filter-sidebar">
             <form method="GET" action="{{ route('inicio') }}">
@@ -136,9 +136,9 @@
                     <select class="form-select" name="color">
                         <option value="">Todos</option>
                         @foreach($coloresDisponibles as $c)
-                        <option value="{{ $c }}" {{ ($color ?? '') == $c ? 'selected' : '' }}>
-                            {{ ucfirst($c) }}
-                        </option>
+                            <option value="{{ $c }}" {{ ($color ?? '') == $c ? 'selected' : '' }}>
+                                {{ ucfirst($c) }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -149,9 +149,9 @@
                     <select class="form-select" name="talla">
                         <option value="">Todas</option>
                         @foreach($tallasDisponibles as $t)
-                        <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
-                            {{ $t }}
-                        </option>
+                            <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
+                                {{ $t }}
+                            </option>
 
                         @endforeach
                     </select>
@@ -169,28 +169,30 @@
 
             <div class="productosbar">
                 @foreach ($productos as $producto)
-                @php
-                $precioConIVA = round($producto->valor * (1 + $producto->iva));
-                @endphp
-                <div class="productos">
-                    <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
-                        <div class="mini-carousel" onclick="event.stopPropagation();">
-                            <div class="mini-carousel-images">
-                                @foreach ($producto->imagenes->take(2) as $imagen)
-                                <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
-                                @endforeach
-                            </div>
-                            <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+                    @php
+                        $precioConIVA = round($producto->valor * (1 + $producto->iva));
+                    @endphp
+                    <div class="productos">
+                        <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"
+                            style="text-decoration: none; color: inherit;">
+                            <div class="mini-carousel" onclick="event.stopPropagation();">
+                                <div class="mini-carousel-images">
+                                    @foreach ($producto->imagenes->take(2) as $imagen)
+                                        <img src="{{ asset($imagen->ruta) }}"
+                                            class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                                    @endforeach
+                                </div>
+                                <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
 
-                            <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
-                        </div>
-                    </a>
-                    <h5>{{ $producto->nombre }}</h5>
-                    <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
-                    <a href="{{ route('producto.ver', $producto->id_producto) }}">
-                        <button type="button" class="bottonagreg">Ver más</button>
-                    </a>
-                </div>
+                                <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+                            </div>
+                        </a>
+                        <h5>{{ $producto->nombre }}</h5>
+                        <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
+                        <a href="{{ route('producto.ver', $producto->id_producto) }}">
+                            <button type="button" class="bottonagreg">Ver más</button>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         </main>
@@ -198,12 +200,14 @@
 
         <!-- Toast de éxito -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
-            <div id="toastAgregado" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+            <div id="toastAgregado" class="toast align-items-center text-white bg-success border-0" role="alert"
+                aria-live="polite" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         ✅ Producto agregado al carrito con éxito.
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Cerrar"></button>
                 </div>
             </div>
         </div>
@@ -287,17 +291,17 @@
             }
             // Permitir que el menú permanezca abierto cuando el mouse está sobre él
             document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
-                menu.addEventListener('mouseenter', function() {
+                menu.addEventListener('mouseenter', function () {
                     this.classList.add('show');
                 });
 
-                menu.addEventListener('mouseleave', function() {
+                menu.addEventListener('mouseleave', function () {
                     this.classList.remove('show');
                 });
             });
 
             // Cerrar menús al hacer clic fuera
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!e.target.closest('.categoria-menu')) {
                     document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
                         menu.classList.remove('show');
