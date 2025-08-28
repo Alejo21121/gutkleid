@@ -90,7 +90,7 @@ class ProductoController extends Controller
         foreach ($validated['tallas'] as $talla) {
             Talla::create([
                 'id_producto' => $producto->id_producto,
-                'talla' => $talla['talla'],
+                'talla' => strtoupper($talla['talla']), // <-- aquí
                 'cantidad' => $talla['cantidad'],
             ]);
         }
@@ -144,11 +144,12 @@ class ProductoController extends Controller
         foreach ($request->input('tallas') as $t) {
             if (!empty($t['talla']) && isset($t['cantidad'])) {
                 $producto->tallas()->create([
-                    'talla' => $t['talla'],
+                    'talla' => strtoupper($t['talla']), // <-- aquí
                     'cantidad' => $t['cantidad'],
                 ]);
             }
         }
+
 
         return redirect()->route('producto.index')->with('success', 'Producto actualizado correctamente.');
     }
@@ -284,7 +285,11 @@ class ProductoController extends Controller
         $productosSexo = $productosSexo->get();
 
         $coloresDisponibles = $productosSexo->pluck('color')->unique();
-        $tallasDisponibles = $productosSexo->flatMap(fn($p) => $p->tallas->pluck('talla'))->unique();
+        $tallasDisponibles = $productosSexo
+            ->flatMap(fn($p) => $p->tallas->pluck('talla')) // coleccion de tallas
+            ->toArray();                                     // convertir a array simple
+        $tallasDisponibles = collect(array_unique($tallasDisponibles)) // eliminar duplicados
+            ->values();       // reindexar
 
         // Categorías para menú
         $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])->with('subcategorias')->get();

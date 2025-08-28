@@ -150,19 +150,17 @@
                         <option value="">Todas</option>
                         @foreach($tallasDisponibles as $t)
                         <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
-                            {{ strtoupper($t) }}
+                            {{ $t }}
                         </option>
+
                         @endforeach
                     </select>
                 </div>
-
 
                 <button type="submit" class="btn btn-dark w-100">Aplicar filtros</button>
                 <button type="button" id="btnCerrarSidebar" class="btn btn-secondary w-100 mt-2">Cerrar</button>
             </form>
         </div>
-
-
 
         <br><br>
 
