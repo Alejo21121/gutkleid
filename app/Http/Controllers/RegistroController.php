@@ -21,10 +21,10 @@ class RegistroController extends Controller
     $request->validate([
         'documento' => 'required',
         'id_tipo_documento' => 'required',
-        'nombres' => 'required',
-        'apellidos' => 'required',
+        'nombres' => 'required|regex:/^[\pL\s]+$/u',
+        'apellidos' => 'required|regex:/^[\pL\s]+$/u',
         'direccion' => 'required',
-        'telefono' => 'required',
+        'telefono' => 'required|numeric|digits_between:10,10',
         'correo' => 'required|email|unique:personas,correo',
         'contraseña' => [
             'required',
@@ -38,12 +38,16 @@ class RegistroController extends Controller
         }
     }]
     ], [
-        'correo.unique' => 'El correo ya está registrado.',
-        'contraseña.min' => 'La contraseña debe tener al menos 8 caracteres.',
-        'contraseña.regex' => 'La contraseña debe tener al menos una mayúscula, un número y un carácter especial.',
+        'correo.unique' => 'El correo ya está registrado',
+        'contraseña.min' => 'La contraseña debe tener al menos 8 caracteres',
+        'contraseña.regex' => 'La contraseña debe tener al menos una mayúscula, un número y un carácter especial',
         'contraseña.confirmed' => 'Las contraseñas no coinciden.',
         'required' => 'El campo :attribute es obligatorio.',
-        'email' => 'El campo :attribute debe ser un correo válido.'
+        'email' => 'El campo :attribute debe ser un correo válido.',
+        'nombres.regex' => 'El campo nombres solo puede contener letras',
+        'apellidos.regex' => 'El campo apellidos solo puede contener letras ',
+        'telefono.digits' => 'El número de teléfono debe tener 10 numeros exactamente',
+        'telefono.numeric'  => 'El teléfono solo debe tener números.'
     ]);
 
         DB::table('personas')->insert([

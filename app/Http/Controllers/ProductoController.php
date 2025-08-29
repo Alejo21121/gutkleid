@@ -10,6 +10,8 @@ use App\Exports\ProductosExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Categoria;
+use App\Models\Subcategoria;
+
 
 use App\Models\Imagen;
 use App\Models\Talla;
@@ -47,18 +49,22 @@ class ProductoController extends Controller
 
         $paginaActual = $productos->currentPage();
         $totalPaginas = $productos->lastPage();
+        $subcategorias = Subcategoria::all();
 
         // Cargar categorías con conteo de productos
         $categoriasConCantidad = Categoria::withCount('productos')->get();
 
-        return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias'));
+        return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias','subcategorias'));
     }
 
     public function create()
     {
         $categorias = Categoria::with('subcategorias')->get();
-        return view('create', compact('categorias'));
+        $subcategorias = Subcategoria::all(); // 👈 agregado
+
+        return view('create', compact('categorias', 'subcategorias'));
     }
+
 
     public function store(Request $request)
     {
@@ -308,5 +314,67 @@ class ProductoController extends Controller
             'talla',
             'precio_max'
         ));
+    }
+
+    // Crear categoría desde modal
+    public function storeCategoria(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:categorias,nombre',
+            'genero' => 'required|in:hombre,mujer,unisex',
+        ], [
+            'nombre.required' => 'El nombre de la categoría es obligatorio.',
+            'nombre.unique' => 'Ya existe una categoría con ese nombre.',
+            'genero.required' => 'Debes seleccionar un género.'
+        ]);
+
+        Categoria::create([
+            'nombre' => $request->nombre,
+            'genero' => ucfirst($request->genero),
+        ]);
+
+        return redirect()->back()->with('mensaje', '✅ Categoría creada correctamente.');
+    }
+
+
+    // Crear subcategoría desde modal
+    public function storeSubcategoria(Request $request)
+    {
+        $request->validate([
+            'id_categoria' => 'required|exists:categorias,id_categoria',
+            'nombre' => 'required|string|max:255',
+        ], [
+            'id_categoria.required' => 'Debes seleccionar una categoría.',
+            'nombre.required' => 'El nombre de la subcategoría es obligatorio.'
+        ]);
+
+        Subcategoria::create([
+            'id_categoria' => $request->id_categoria,
+            'nombre' => $request->nombre,
+        ]);
+
+        return redirect()->back()->with('mensaje', '✅ Subcategoría creada correctamente.');
+    }
+
+    // Eliminar categoría
+    public function destroyCat($id)
+    {
+        $categoria = Categoria::findOrFail($id);
+
+        // Eliminar también las subcategorías asociadas
+        $categoria->subcategorias()->delete();
+
+        $categoria->delete();
+
+        return redirect()->back()->with('mensaje', 'Categoría eliminada correctamente');
+    }
+
+    // Eliminar subcategoría
+    public function destroySub($id)
+    {
+        $sub = Subcategoria::findOrFail($id);
+        $sub->delete();
+
+        return redirect()->back()->with('mensaje', 'Subcategoría eliminada correctamente');
     }
 }

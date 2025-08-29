@@ -29,25 +29,34 @@ class RecuperarController extends Controller
             ['token' => $token, 'created_at' => now()]
         );
 
-      
+
         Mail::to($request->email)->send(new CodigoRecuperacion($token));
         session(['correo_recuperacion' => $request->email]);
 
-        return redirect()->route('codigo')->with('codigo', $token); 
+        return redirect()->route('codigo')->with('codigo', $token);
     }
 
     public function vistaCodigo()
     {
-        return view('contraseña'); 
+        return view('contraseña');
     }
 
     public function validarCodigo(Request $request)
     {
-
         $request->validate([
-        'codigo' => 'required',
-        'nueva-password' => 'required|min:6|same:nueva-password_confirmation',
-    ]);
+            'codigo' => 'required',
+            'nueva-password' => [
+                'required',
+                'string',
+                'min:8',
+                'same:nueva-password_confirmation',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'
+            ],
+        ], [
+            'nueva-password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'nueva-password.regex' => 'La contraseña debe contener al menos una mayúscula, un número y un signo.',
+            'nueva-password.same' => 'Las contraseñas no coinciden.'
+        ]);
 
         $email = session('correo_recuperacion');
 
@@ -65,9 +74,9 @@ class RecuperarController extends Controller
             'contraseña' => Hash::make($request->input('nueva-password'))
         ]);
 
-        // Eliminar código
+        // Eliminar código usado
         DB::table('password_resets')->where('email', $email)->delete();
 
-        return redirect()->route('recuperar_cuenta')->with('success', 'Contraseña actualizada');
+        return redirect()->route('login')->with('success', 'Contraseña actualizada correctamente.');
     }
 }
