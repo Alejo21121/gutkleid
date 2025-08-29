@@ -54,7 +54,7 @@ class ProductoController extends Controller
         // Cargar categorías con conteo de productos
         $categoriasConCantidad = Categoria::withCount('productos')->get();
 
-        return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias','subcategorias'));
+        return view('inventario', compact('productos', 'buscar', 'paginaActual', 'totalPaginas', 'categoriasConCantidad', 'advertencias', 'subcategorias'));
     }
 
     public function create()
@@ -247,6 +247,7 @@ class ProductoController extends Controller
         $subcategoria = $request->query('subcategoria');
         $color = $request->query('color');
         $talla = $request->query('talla');
+        $precio_min = $request->query('precio_min');
         $precio_max = $request->query('precio_max');
 
         // Consulta base con filtros por sexo
@@ -272,7 +273,13 @@ class ProductoController extends Controller
                 $q->where('talla', $talla)->where('cantidad', '>', 0);
             });
         }
-        if (!empty($precio_max)) {
+
+        // 🔹 Filtro de rango de precios
+        if (!empty($precio_min) && !empty($precio_max)) {
+            $query->whereBetween('valor', [$precio_min, $precio_max]);
+        } elseif (!empty($precio_min)) {
+            $query->where('valor', '>=', $precio_min);
+        } elseif (!empty($precio_max)) {
             $query->where('valor', '<=', $precio_max);
         }
 
@@ -312,6 +319,7 @@ class ProductoController extends Controller
             'subcategoria',
             'color',
             'talla',
+            'precio_min',
             'precio_max'
         ));
     }

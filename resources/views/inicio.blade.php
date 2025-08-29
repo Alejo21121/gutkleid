@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 
@@ -22,22 +25,22 @@
                     <div class="dropdown-menu-custom" id="menu-mujer">
                         <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Mujer']) }}">Todo</a>
                         @foreach($categoriasMujer as $categoria)
-                            <div class="submenu">
-                                <a class="dropdown-item-custom"
-                                    href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
-                                    {{ $categoria->nombre }}
+                        <div class="submenu">
+                            <a class="dropdown-item-custom"
+                                href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria]) }}">
+                                {{ $categoria->nombre }}
+                            </a>
+                            @if($categoria->subcategorias->count() > 0)
+                            <div class="submenu-items">
+                                @foreach($categoria->subcategorias as $sub)
+                                <a class="dropdown-subitem-custom"
+                                    href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                    {{ $sub->nombre }}
                                 </a>
-                                @if($categoria->subcategorias->count() > 0)
-                                    <div class="submenu-items">
-                                        @foreach($categoria->subcategorias as $sub)
-                                            <a class="dropdown-subitem-custom"
-                                                href="{{ route('inicio', ['sexo' => 'Mujer', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
-                                                {{ $sub->nombre }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                @endif
+                                @endforeach
                             </div>
+                            @endif
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -47,22 +50,22 @@
                     <div class="dropdown-menu-custom" id="menu-hombre">
                         <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
                         @foreach($categoriasHombre as $categoria)
-                            <div class="submenu">
-                                <a class="dropdown-item-custom"
-                                    href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
-                                    {{ $categoria->nombre }}
+                        <div class="submenu">
+                            <a class="dropdown-item-custom"
+                                href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                                {{ $categoria->nombre }}
+                            </a>
+                            @if($categoria->subcategorias->count() > 0)
+                            <div class="submenu-items">
+                                @foreach($categoria->subcategorias as $sub)
+                                <a class="dropdown-subitem-custom"
+                                    href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                    {{ $sub->nombre }}
                                 </a>
-                                @if($categoria->subcategorias->count() > 0)
-                                    <div class="submenu-items">
-                                        @foreach($categoria->subcategorias as $sub)
-                                            <a class="dropdown-subitem-custom"
-                                                href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
-                                                {{ $sub->nombre }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                @endif
+                                @endforeach
                             </div>
+                            @endif
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -70,7 +73,7 @@
                 <!-- IZQUIERDA -->
                 <div class="nav-left">
                     @if (session('usuario') && session('usuario')['id_rol'] == 1)
-                        <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
+                    <a class="filter-btn" href="{{ route('producto.index') }}">PANEL</a>
                     @endif
                 </div>
             </div> <!-- CENTRO -->
@@ -86,16 +89,16 @@
             <div class="nav-right">
                 <div class="usuario-info">
                     @if (session('usuario'))
-                        <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
-                        <a href="{{ route('cuenta') }}">
-                            <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil"
-                                class="perfil-icono">
-                        </a>
-                        <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil"
+                            class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                     @else
-                        <a href="{{ route('login') }}" class="inis">
-                            <p class="filter-btn">INICIAR SESION</p>
-                        </a>
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
                     @endif
 
                     <!-- Carrito -->
@@ -136,9 +139,9 @@
                     <select class="form-select" name="color">
                         <option value="">Todos</option>
                         @foreach($coloresDisponibles as $c)
-                            <option value="{{ $c }}" {{ ($color ?? '') == $c ? 'selected' : '' }}>
-                                {{ ucfirst($c) }}
-                            </option>
+                        <option value="{{ $c }}" {{ ($color ?? '') == $c ? 'selected' : '' }}>
+                            {{ ucfirst($c) }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -149,13 +152,31 @@
                     <select class="form-select" name="talla">
                         <option value="">Todas</option>
                         @foreach($tallasDisponibles as $t)
-                            <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
-                                {{ $t }}
-                            </option>
+                        <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
+                            {{ $t }}
+                        </option>
 
                         @endforeach
                     </select>
                 </div>
+
+                <!-- Filtro de Precio -->
+                <div class="mb-3">
+                    <label><strong>PRECIO</strong></label>
+                    <div id="price-slider" class="mb-3"></div>
+
+                    <div class="d-flex align-items-center">
+                        <span class="me-1">$</span>
+                        <input type="number" id="precio_min_input" name="precio_min"
+                            class="form-control me-2" style="max-width: 120px;"
+                            value="{{ $precio_min ?? 0 }}">
+                        <span class="me-1">a $</span>
+                        <input type="number" id="precio_max_input" name="precio_max"
+                            class="form-control" style="max-width: 120px;"
+                            value="{{ $precio_max ?? 300000 }}">
+                    </div>
+                </div>
+
 
                 <button type="submit" class="btn btn-dark w-100">Aplicar filtros</button>
                 <button type="button" id="btnCerrarSidebar" class="btn btn-secondary w-100 mt-2">Cerrar</button>
@@ -169,30 +190,30 @@
 
             <div class="productosbar">
                 @foreach ($productos as $producto)
-                    @php
-                        $precioConIVA = round($producto->valor * (1 + $producto->iva));
-                    @endphp
-                    <div class="productos">
-                        <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"
-                            style="text-decoration: none; color: inherit;">
-                            <div class="mini-carousel" onclick="event.stopPropagation();">
-                                <div class="mini-carousel-images">
-                                    @foreach ($producto->imagenes->take(2) as $imagen)
-                                        <img src="{{ asset($imagen->ruta) }}"
-                                            class="mini-slide {{ $loop->first ? 'active' : '' }}">
-                                    @endforeach
-                                </div>
-                                <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
-
-                                <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+                @php
+                $precioConIVA = round($producto->valor * (1 + $producto->iva));
+                @endphp
+                <div class="productos">
+                    <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"
+                        style="text-decoration: none; color: inherit;">
+                        <div class="mini-carousel" onclick="event.stopPropagation();">
+                            <div class="mini-carousel-images">
+                                @foreach ($producto->imagenes->take(2) as $imagen)
+                                <img src="{{ asset($imagen->ruta) }}"
+                                    class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                                @endforeach
                             </div>
-                        </a>
-                        <h5>{{ $producto->nombre }}</h5>
-                        <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
-                        <a href="{{ route('producto.ver', $producto->id_producto) }}">
-                            <button type="button" class="bottonagreg">Ver más</button>
-                        </a>
-                    </div>
+                            <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+
+                            <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+                        </div>
+                    </a>
+                    <h5>{{ $producto->nombre }}</h5>
+                    <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
+                    <a href="{{ route('producto.ver', $producto->id_producto) }}">
+                        <button type="button" class="bottonagreg">Ver más</button>
+                    </a>
+                </div>
                 @endforeach
             </div>
         </main>
@@ -291,17 +312,17 @@
             }
             // Permitir que el menú permanezca abierto cuando el mouse está sobre él
             document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
-                menu.addEventListener('mouseenter', function () {
+                menu.addEventListener('mouseenter', function() {
                     this.classList.add('show');
                 });
 
-                menu.addEventListener('mouseleave', function () {
+                menu.addEventListener('mouseleave', function() {
                     this.classList.remove('show');
                 });
             });
 
             // Cerrar menús al hacer clic fuera
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 if (!e.target.closest('.categoria-menu')) {
                     document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
                         menu.classList.remove('show');
@@ -320,8 +341,57 @@
             });
 
             btnClose.addEventListener('click', () => {
-                sidebar.style.right = '-300px';
+                sidebar.style.right = '-360px';
             });
+        </script>
+
+        <script>
+            var slider = document.getElementById('price-slider');
+
+            noUiSlider.create(slider, {
+                start: [{
+                    {
+                        $precio_min ?? 0
+                    }
+                }, {
+                    {
+                        $precio_max ?? 300000
+                    }
+                }], // valores iniciales
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 300000 // 👈 Máximo global (ajústalo a lo que tengas en DB)
+                },
+                step: 500, // de $500 en $500
+                tooltips: true,
+                format: {
+                    to: value => Math.round(value),
+                    from: value => Number(value)
+                }
+            });
+
+            var minInput = document.getElementById('precio_min_input');
+            var maxInput = document.getElementById('precio_max_input');
+
+            // 🔹 Actualiza inputs cuando mueves el slider
+            slider.noUiSlider.on('update', function(values, handle) {
+                if (handle === 0) {
+                    minInput.value = values[0];
+                } else {
+                    maxInput.value = values[1];
+                }
+            });
+
+            // 🔹 Actualiza el slider si escribes en los inputs
+            minInput.addEventListener('change', function() {
+                slider.noUiSlider.set([this.value || 0, null]);
+            });
+            maxInput.addEventListener('change', function() {
+                slider.noUiSlider.set([null, this.value || 600000]);
+            });
+
+            
         </script>
 
 
