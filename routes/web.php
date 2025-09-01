@@ -103,3 +103,4 @@ Route::post('/actualizar-direccion', [UsuarioController::class, 'actualizarDirec
 
 // --- Historial ---
 Route::get('/historial', [UsuarioController::class, 'historial'])->name('historial');
+Route::get('/productos', [ProductoController::class, 'paginaFiltrada'])->name('productos.filtrados');

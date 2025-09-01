@@ -43,12 +43,20 @@
         <input type="text" name="color" id="color" required>
 
         <label for="id_categoria">Categoría:</label>
-        <select name="id_categoria" id="id_categoria" required>
+        <select name="id_categoria" id="id_categoria" required onchange="mostrarSubcategorias()">
             <option value="">Seleccione una categoría</option>
             @foreach ($categorias as $categoria)
-            <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre }}</option>
+            <option value="{{ $categoria->id_categoria }}"
+                data-subcategorias='@json($categoria->subcategorias)'>
+                {{ $categoria->nombre }}
+            </option>
             @endforeach
         </select>
+
+        <div id="subcategoria-container" style="display:none;">
+            <label for="id_subcategoria">Subcategoría:</label>
+            <select name="id_subcategoria" id="id_subcategoria"></select>
+        </div>
 
         <label>Tallas y cantidades:</label>
         <div id="tallas-container">
@@ -89,6 +97,41 @@
             boton.parentElement.remove();
         }
     </script>
+
+    <script>
+        function mostrarSubcategorias() {
+            let categoriaSelect = document.getElementById('id_categoria');
+            let subcategoriaContainer = document.getElementById('subcategoria-container');
+            let subcategoriaSelect = document.getElementById('id_subcategoria');
+
+            // limpiar
+            subcategoriaSelect.innerHTML = "";
+
+            // obtener la opción seleccionada
+            let option = categoriaSelect.options[categoriaSelect.selectedIndex];
+            let subcategorias = option.getAttribute('data-subcategorias');
+
+            if (subcategorias) {
+                subcategorias = JSON.parse(subcategorias);
+
+                if (subcategorias.length > 0) {
+                    subcategoriaContainer.style.display = "block"; // mostrar select
+
+                    subcategorias.forEach(sub => {
+                        let opt = document.createElement("option");
+                        opt.value = sub.id_subcategoria;
+                        opt.textContent = sub.nombre;
+                        subcategoriaSelect.appendChild(opt);
+                    });
+                } else {
+                    subcategoriaContainer.style.display = "none"; // ocultar si no hay
+                }
+            } else {
+                subcategoriaContainer.style.display = "none";
+            }
+        }
+    </script>
+
 
 </body>
 
