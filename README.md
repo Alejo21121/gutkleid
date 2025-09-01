@@ -7,6 +7,50 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
+# Gutkleid - Ecommerce de Ropa
+
+Este proyecto es una plataforma de ecommerce desarrollada para la venta de ropa, construida con el framework PHP Laravel, utilizando MySQL como gestor de base de datos y Bootstrap para el frontend.
+
+## 🚀 Características Principales
+
+- Catálogo de productos con filtros.
+- Carrito de compras.
+- Sistema de autenticación de usuarios.
+- Panel de administración.
+- Pasarela de pago (integrada con [Nombre de la pasarela, ej: Pse]).
+
+## 🛠️ Stack Tecnológico
+
+- **Backend:** PHP Laravel
+- **Frontend:** Bootstrap, JavaScript
+- **Base de Datos:** MySQL
+- **Control de Versiones:** Git / GitHub
+
+## 📦 Instalación y Despliegue
+
+1.  Clona el repositorio: `git clone https://github.com/Alejo21121/gutkleid.git`
+2.  Instala las dependencias: `composer install`
+3.  Copia el archivo de entorno: `cp .env.example .env`
+4.  Genera la key de la aplicación: `php artisan key:generate`
+5.  Configura tu base de datos en el archivo `.env`
+6.  Ejecuta las migraciones: `php artisan migrate --seed`
+
+
+## 📚 Documentación
+
+La documentación detallada del proceso de implantación, mantenimiento y estrategias de resiliencia del software se encuentra en la carpeta [`/docs`](./docs/).
+
+- [Estrategia de Backup y Recuperación](./docs/ESTRATEGIA_BACKUP.md)
+- [Documentación Final del Proyecto ADSO](./docs/DOCUMENTACION_FINAL_ADSO.md) (En desarrollo)
+
+## 👥 Desarrollo
+
+- [Alejo21121](https://github.com/Alejo21121)
+- [Mao_cortes](https://github.com/Mao-cortes)
+- [JuanDav17](https://github.com/JuanDav17)
+- [linowt](https://github.com/linowt)
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

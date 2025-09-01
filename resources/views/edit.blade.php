@@ -6,6 +6,7 @@
     <title>Gut Kleid - Editar Usuario</title>
     <link rel="stylesheet" href="{{ asset('CSS/estiloagre.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 <body>

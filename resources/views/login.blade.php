@@ -1,85 +1,98 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Gut Kleid - Iniciar Sesión</title>
-    <link rel="stylesheet" href="{{ asset('CSS/INICIO DE SESION CLIENTE.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gut Kleid</title>
+        <link rel="stylesheet" href="CSS/STYLE LOGIN.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
 </head>
 <body>
 <header class="cabeza">
     <nav class="barras">
-        <div class="barra1">
-            <a href="{{ url()->previous() }}">
-                <button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button>
-            </a>
-            <a href="RESEÑAS.html"><button class="filter-btn">Acerca de</button></a>
+        <!-- IZQUIERDA -->
+        <div class="nav-left">
+            @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+            @endif
         </div>
 
-        <div class="logo">
-            <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
+            <div class="logo">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div></a>
         </div>
-
-        <div class="barra2"></div> <!-- Este sirve para que el logo quede en el centro real -->
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+            </div>
+        </div>
     </nav>
+    <hr>
 </header>
-<main class="container mt-5">
-    <h2 class="text-center">Inicio de Sesión</h2>
 
-    @if (session('error'))
+  <!-- MAIN con imagen de fondo -->
+  <main class="main">
+    <!-- Caja de login -->
+    <div class="container-login">
+      <h2>Inicio de Sesión</h2>
+
+      <!-- Mensaje de error -->
+      @if (session('error'))
         <div class="alert alert-danger text-center">
-            {{ session('error') }}
+          {{ session('error') }}
         </div>
-    @endif
+      @endif
 
-   <form method="POST" action="{{ route('login') }}" class="text-center">
+      <!-- Formulario -->
+      <form method="POST" action="{{ route('login') }}">
         @csrf
-        <label for="username">Correo:</label>
-        <input type="email" id="username" name="username" required placeholder="Ingrese su correo"><br>
+        <input type="email" id="username" name="username" required placeholder="Ingrese su correo" class="fontinput">
 
-        <label for="password">Contraseña:</label>
-        <div style="position: relative;">
-            <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña">
-            <button type="button" onclick="togglePassword()" 
-                    style="position: absolute; right: 20px; top: 10px; background: none; border: none; cursor: pointer;">
-                <i id="togglePasswordIcon" class="bi bi-eye-slash"></i>
-            </button>
-        </div><br>
+        <div class="password-container" style="display:flex; align-items:center; justify-content:center; gap:10px;">
+          <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña" class="fontinput">
+          <button type="button" onclick="togglePassword()" class="botons">
+            <i id="togglePasswordIcon" class="bi bi-eye-slash"></i>
+          </button>
+        </div>
 
-        <button type="submit" class="filter-bcc">Ingresar</button>
-    </form>
+        <button type="submit" class="botoningre">Ingresar</button>
+      </form>
 
-
-    <div class="mt-3 text-center">
-        <a href="{{ route('correo_cliente') }}" class="recuper">Recuperar contraseña</a> 
-        <a href="{{ route('registro.form') }}" class="register">Registrarse</a>
+      <!-- Links -->
+      <a href="{{ route('correo_cliente') }}" class="recuper">Recuperar contraseña</a>
+      <a href="{{ route('registro.form') }}" class="register">Registrarse</a>
     </div>
-</main>
+  </main>
 
-<footer class="pie mt-5">
-    <div class="foot">
-        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-        <center><h6>&copy; 2024 - GUT KLEID.</h6></center>
-    </div>
+  <!-- Script mostrar/ocultar contraseña -->
+  <script>
+      function togglePassword() {
+          const input = document.getElementById("password");
+          const icon = document.getElementById("togglePasswordIcon");
+
+          const isPassword = input.type === "password";
+          input.type = isPassword ? "text" : "password";
+
+          // Cambia el ícono
+          icon.classList.toggle("bi-eye-slash");
+          icon.classList.toggle("bi-eye");
+      }
+  </script>
+
+  <!-- FOOTER igual que términos -->
+<footer class="pie">
+    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+    <a href="{{ route('redes') }}" class="abaj">Redes</a>
+    <br>
+    <br>
+    <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
-</body>
 </html>
-
-<script>
-
-function togglePassword() {
-    const input = document.getElementById("password");
-    const icon = document.getElementById("togglePasswordIcon");
-
-    const isPassword = input.type === "password";
-    input.type = isPassword ? "text" : "password";
-
-    // Cambia el ícono
-    icon.classList.toggle("bi-eye-slash");
-    icon.classList.toggle("bi-eye");
-}
-</script>
-

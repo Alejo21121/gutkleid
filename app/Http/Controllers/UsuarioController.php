@@ -31,12 +31,30 @@ class UsuarioController extends Controller
         $usuario = session('usuario');
 
         $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'telefono' => 'nullable|string|max:20',
+            'nombres' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
+            'telefono' => ['required', 'digits:10', 'regex:/^[0-9]{10}$/'],
             'correo' => 'required|email|max:255|unique:personas,correo,' . $usuario['id_persona'] . ',id_persona',
-            'contraseña' => 'nullable|string|min:6',
+            'contraseña' => [
+                'required',
+                'string',
+                'min:6',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'
+            ],
             'imagen' => 'nullable|image|max:2048', // Validar imagen
+        ], [
+
+            // Mensajes personalizados
+            'correo.unique' => 'El correo ya está registrado',
+            'contraseña.min' => 'La contraseña debe tener al menos 8 caracteres',
+            'contraseña.regex' => 'La contraseña debe tener al menos una mayúscula, un número y un carácter especial',
+            'required' => 'El campo :attribute es obligatorio.',
+            'email' => 'El campo :attribute debe ser un correo válido.',
+            'nombres.regex' => 'El campo nombres solo puede contener letras',
+            'apellidos.regex' => 'El campo apellidos solo puede contener letras ',
+            'telefono.digits' => 'El número de teléfono debe tener 10 numeros exactamente',
+            'telefono.numeric'  => 'El teléfono solo debe tener números.'
+
         ]);
 
         $dataToUpdate = [
@@ -113,15 +131,31 @@ class UsuarioController extends Controller
         $request->validate([
             'documento' => 'required|string|max:20|unique:personas,documento',
             'id_tipo_documento' => 'required',
-            'nombres' => 'required|string|max:50',
-            'apellidos' => 'required|string|max:50',
-            'telefono' => 'nullable|string|max:15',
+            'nombres' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
+            'telefono' => ['required', 'digits:10', 'regex:/^[0-9]{10}$/'],
             'correo' => 'required|email|max:50|unique:personas,correo',
-            'contraseña' => 'required|string|min:6',
+            'contraseña' => [
+                'required',
+                'string',
+                'min:6',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'
+            ],
             'direccion' => 'required|string|max:100', // Mantenido
-            // ELIMINADO: 'id_rol' => 'required|integer',
-        ]);
+        ], [
 
+            // Mensajes personalizados
+            'correo.unique' => 'El correo ya está registrado',
+            'contraseña.min' => 'La contraseña debe tener al menos 8 caracteres',
+            'contraseña.regex' => 'La contraseña debe tener al menos una mayúscula, un número y un carácter especial',
+            'required' => 'El campo :attribute es obligatorio.',
+            'email' => 'El campo :attribute debe ser un correo válido.',
+            'nombres.regex' => 'El campo nombres solo puede contener letras',
+            'apellidos.regex' => 'El campo apellidos solo puede contener letras ',
+            'telefono.digits' => 'El número de teléfono debe tener 10 numeros exactamente',
+            'telefono.numeric'  => 'El teléfono solo debe tener números.'
+
+        ]);
 
         Usuario::create([
             'documento' => $request->documento,
@@ -151,12 +185,30 @@ class UsuarioController extends Controller
         $request->validate([
             'documento' => 'required|string|max:20|unique:personas,documento,' . $usuario->id_persona . ',id_persona',
             'id_tipo_documento' => 'required',
-            'nombres' => 'required|string|max:50',
-            'apellidos' => 'required|string|max:50',
+            'nombres' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:50', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/'],
             'direccion' => 'nullable|string|max:100',
-            'telefono' => 'nullable|string|max:15',
+            'telefono' => ['required', 'digits:10', 'regex:/^[0-9]{10}$/'],
             'correo' => 'required|email|max:50|unique:personas,correo,' . $usuario->id_persona . ',id_persona',
-            'contraseña' => 'nullable|string|min:6',
+            'contraseña' => [
+                'required',
+                'string',
+                'min:6',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'
+            ],
+        ],  [
+
+            // Mensajes personalizados
+            'correo.unique' => 'El correo ya está registrado',
+            'contraseña.min' => 'La contraseña debe tener al menos 8 caracteres',
+            'contraseña.regex' => 'La contraseña debe tener al menos una mayúscula, un número y un carácter especial',
+            'required' => 'El campo :attribute es obligatorio.',
+            'email' => 'El campo :attribute debe ser un correo válido.',
+            'nombres.regex' => 'El campo nombres solo puede contener letras',
+            'apellidos.regex' => 'El campo apellidos solo puede contener letras ',
+            'telefono.digits' => 'El número de teléfono debe tener 10 numeros exactamente',
+            'telefono.numeric'  => 'El teléfono solo debe tener números.'
+
         ]);
 
         $dataToUpdate = [
@@ -276,8 +328,6 @@ class UsuarioController extends Controller
                     'd.cantidad'
                 )
                 ->get();
-
-       
         }
 
         return view('historial', compact('facturas'));

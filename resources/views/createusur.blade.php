@@ -75,16 +75,12 @@
     @error('contraseña') 
         <div class="alert alert-danger">{{ $message }}</div> 
     @enderror
-
-
     
     <label for="direccion">Dirección:</label>
     <input type="text" name="direccion" id="direccion" required value="{{ old('direccion') }}">
     @error('direccion')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
-
-    {{-- ELIMINADO: Campo 'id_rol' --}}
 
     <center><button type="submit">Agregar Usuario</button></center>
 

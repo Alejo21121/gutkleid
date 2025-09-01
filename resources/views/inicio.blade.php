@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 
@@ -48,13 +51,15 @@
                         <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre']) }}">Todo</a>
                         @foreach($categoriasHombre as $categoria)
                         <div class="submenu">
-                            <a class="dropdown-item-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
+                            <a class="dropdown-item-custom"
+                                href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria]) }}">
                                 {{ $categoria->nombre }}
                             </a>
                             @if($categoria->subcategorias->count() > 0)
                             <div class="submenu-items">
                                 @foreach($categoria->subcategorias as $sub)
-                                <a class="dropdown-subitem-custom" href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
+                                <a class="dropdown-subitem-custom"
+                                    href="{{ route('inicio', ['sexo' => 'Hombre', 'categoria' => $categoria->id_categoria, 'subcategoria' => $sub->id_subcategoria]) }}">
                                     {{ $sub->nombre }}
                                 </a>
                                 @endforeach
@@ -86,8 +91,7 @@
                     @if (session('usuario'))
                     <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
                     <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                            alt="Perfil"
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil"
                             class="perfil-icono">
                     </a>
                     <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
@@ -119,10 +123,9 @@
         <hr>
 
         <!-- Botón de filtro -->
-        <button class="btn btn-dark" type="button" id="btnToggleSidebar">
-            <i class="bi bi-funnel"></i> Filtrar
+        <button class="filter-btn" type="button" id="btnToggleSidebar">
+            FILTRAR
         </button>
-
         <!-- Sidebar de filtros -->
         <div id="sidebar" class="filter-sidebar">
             <form method="GET" action="{{ route('inicio') }}">
@@ -157,6 +160,24 @@
                     </select>
                 </div>
 
+                <!-- Filtro de Precio -->
+                <div class="mb-3">
+                    <label><strong>PRECIO</strong></label>
+                    <div id="price-slider" class="mb-3"></div>
+
+                    <div class="d-flex align-items-center">
+                        <span class="me-1">$</span>
+                        <input type="number" id="precio_min_input" name="precio_min"
+                            class="form-control me-2" style="max-width: 120px;"
+                            value="{{ $precio_min ?? 0 }}">
+                        <span class="me-1">a $</span>
+                        <input type="number" id="precio_max_input" name="precio_max"
+                            class="form-control" style="max-width: 120px;"
+                            value="{{ $precio_max ?? 300000 }}">
+                    </div>
+                </div>
+
+
                 <button type="submit" class="btn btn-dark w-100">Aplicar filtros</button>
                 <button type="button" id="btnCerrarSidebar" class="btn btn-secondary w-100 mt-2">Cerrar</button>
             </form>
@@ -173,11 +194,13 @@
                 $precioConIVA = round($producto->valor * (1 + $producto->iva));
                 @endphp
                 <div class="productos">
-                    <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"
+                        style="text-decoration: none; color: inherit;">
                         <div class="mini-carousel" onclick="event.stopPropagation();">
                             <div class="mini-carousel-images">
                                 @foreach ($producto->imagenes->take(2) as $imagen)
-                                <img src="{{ asset($imagen->ruta) }}" class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                                <img src="{{ asset($imagen->ruta) }}"
+                                    class="mini-slide {{ $loop->first ? 'active' : '' }}">
                                 @endforeach
                             </div>
                             <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
@@ -198,12 +221,14 @@
 
         <!-- Toast de éxito -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
-            <div id="toastAgregado" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+            <div id="toastAgregado" class="toast align-items-center text-white bg-success border-0" role="alert"
+                aria-live="polite" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         ✅ Producto agregado al carrito con éxito.
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Cerrar"></button>
                 </div>
             </div>
         </div>
@@ -316,8 +341,57 @@
             });
 
             btnClose.addEventListener('click', () => {
-                sidebar.style.right = '-300px';
+                sidebar.style.right = '-360px';
             });
+        </script>
+
+        <script>
+            var slider = document.getElementById('price-slider');
+
+            noUiSlider.create(slider, {
+                start: [{
+                    {
+                        $precio_min ?? 0
+                    }
+                }, {
+                    {
+                        $precio_max ?? 300000
+                    }
+                }], // valores iniciales
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 300000 // 👈 Máximo global (ajústalo a lo que tengas en DB)
+                },
+                step: 500, // de $500 en $500
+                tooltips: true,
+                format: {
+                    to: value => Math.round(value),
+                    from: value => Number(value)
+                }
+            });
+
+            var minInput = document.getElementById('precio_min_input');
+            var maxInput = document.getElementById('precio_max_input');
+
+            // 🔹 Actualiza inputs cuando mueves el slider
+            slider.noUiSlider.on('update', function(values, handle) {
+                if (handle === 0) {
+                    minInput.value = values[0];
+                } else {
+                    maxInput.value = values[1];
+                }
+            });
+
+            // 🔹 Actualiza el slider si escribes en los inputs
+            minInput.addEventListener('change', function() {
+                slider.noUiSlider.set([this.value || 0, null]);
+            });
+            maxInput.addEventListener('change', function() {
+                slider.noUiSlider.set([null, this.value || 600000]);
+            });
+
+            
         </script>
 
 
