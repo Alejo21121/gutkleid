@@ -34,8 +34,6 @@
         </div>
     </nav>
     <hr>
-</header>
-
   <!-- MAIN con imagen de fondo -->
   <main class="main">
     <!-- Caja de login -->
@@ -56,9 +54,10 @@
 
         <div class="password-container" style="display:flex; align-items:center; justify-content:center; gap:10px;">
           <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña" class="fontinput">
-          <button type="button" onclick="togglePassword()" class="botons">
-            <i id="togglePasswordIcon" class="bi bi-eye-slash"></i>
-          </button>
+                <button type="button" onclick="togglePassword('contraseña_confirmation', 'iconoConfirmacion')" 
+                    style="position: absolute; right: 50px; top: 162px; background: none; border: none;">
+                    <i id="iconoConfirmacion" class="bi bi-eye-slash"></i>
+                </button>
         </div>
 
         <button type="submit" class="botoningre">Ingresar</button>
@@ -85,14 +84,17 @@
       }
   </script>
 
-  <!-- FOOTER igual que términos -->
-<footer class="pie">
-    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
-    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
-    <a href="{{ route('redes') }}" class="abaj">Redes</a>
-    <br>
-    <br>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
+
+</body>
+
 </html>

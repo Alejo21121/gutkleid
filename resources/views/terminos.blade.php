@@ -53,8 +53,9 @@
     </nav>
     <hr>
     <main class="main">
-    <main class="container">
-        <h1>Términos y Condiciones</h1>
+    <!-- Caja de login -->
+    <div class="container-login">
+        <h2>Términos y Condiciones</h2>
         <br>
         <p>
             Bienvenido a nuestra tienda en línea de ropa. Al utilizar nuestro sitio web, aceptas cumplir con los siguientes términos y condiciones:
@@ -90,13 +91,17 @@ document.addEventListener('keydown', (e)=>{
     }
 });
 </script>
-<footer class="pie">
-    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
-    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
-    <a href="{{ route('redes') }}" class="abaj">Redes</a>
-    <br>
-    <br>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
+
+</body>
+
 </html>

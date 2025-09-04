@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Gut Kleid</title>
-        <link rel="stylesheet" href="CSS/PREGUNTAS FRECUENTES.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-        <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gut Kleid</title>
+    <link rel="stylesheet" href="CSS/PREGUNTAS FRECUENTES.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
 </head>
 <body>
 <header class="cabeza">
@@ -52,53 +52,31 @@
         </div>
     </nav>
     <hr>
-<center>
-        <div class="container">
-            <h2>Pregunta Frecuentes</h2>
-            <div class="mincontainers">
-                <p>Pregunta 1</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 2</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 3</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 4</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 5</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 6</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 7</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 1</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 2</p>
-            </div>
-            <div class="mincontainers">
-                <p>Pregunta 3</p>
-            </div>
-            <div class="mincontainers">
-            <p>Pregunta 2</p>
-            </div>
-            <div class="mincontainers">
-               <p>Pregunta 3</p>
-        </div>
-        </div>
-</body>
+</header>
+
+<main class="main">
+    <div class="container">
+        <h2>Pregunta Frecuentes</h2>
+        <div class="mincontainers"><p>Pregunta 1</p></div>
+        <div class="mincontainers"><p>Pregunta 2</p></div>
+        <div class="mincontainers"><p>Pregunta 3</p></div>
+        <div class="mincontainers"><p>Pregunta 4</p></div>
+        <div class="mincontainers"><p>Pregunta 5</p></div>
+        <div class="mincontainers"><p>Pregunta 6</p></div>
+        <div class="mincontainers"><p>Pregunta 7</p></div>
+        <div class="mincontainers"><p>Pregunta 8</p></div>
+        <div class="mincontainers"><p>Pregunta 9</p></div>
+        <div class="mincontainers"><p>Pregunta 10</p></div>
+        <div class="mincontainers"><p>Pregunta 11</p></div>
+    </div>
+</main>
+
 <script>
 const btn   = document.getElementById('toggleSearch');
 const panel = document.getElementById('search-panel');
-let input   = panel.querySelector('input[type="text"]');
+let input   = panel?.querySelector('input[type="text"]');
 
-btn.addEventListener('click', () => {
+btn?.addEventListener('click', () => {
     if(panel.style.display === "block"){
         panel.style.display = "none";
     } else {
@@ -113,13 +91,15 @@ document.addEventListener('keydown', (e)=>{
     }
 });
 </script>
+
 <footer class="pie">
-    <a href="{{ route('terminos') }}" class="abaj">Terminos y Condiciones</a>
+    <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
     <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
     <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
     <a href="{{ route('redes') }}" class="abaj">Redes</a>
-    <br>
-    <br>
+    <br><br>
     <p>&copy; 2024 - GUT KLEID.</p>
 </footer>
+</body>
 </html>

@@ -9,11 +9,11 @@
 .main {
   position: relative;
   width: 100%;
-  height: 880px;
+  min-height: 720px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("../IMG/fondo_paginas.png") no-repeat center center/cover;
+  background: url("../IMG/fondo_inicio.png") no-repeat center center/cover;
 }
 
 /* === HEADER === */
@@ -108,8 +108,7 @@ background-color: rgb(231, 231, 231);
 }
 
 .recuper:hover, .register:hover {
-  text-decoration: solid;
-  color: #000;
+  text-decoration: underline;
 }
 .pie {
     color: black;
