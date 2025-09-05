@@ -66,7 +66,7 @@ class RecuperarController extends Controller
             ->first();
 
         if (!$record) {
-            return back()->with('error', 'Código inválido o expirado.');
+            return back()->with('error', 'Código inválido');
         }
 
         // Cambiar contraseña

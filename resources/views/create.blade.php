@@ -71,7 +71,7 @@
                 <!-- Botón modal subcategoría -->
                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalSubcategoria">
-                     Editar Subcategoría
+                    Editar Subcategoría
                 </button>
             </div>
             <select name="id_subcategoria" id="id_subcategoria" class="form-control mt-2"></select>
@@ -156,70 +156,116 @@
     </div>
 
 
-   <!-- Modal Crear/Eliminar Subcategoría -->
-<div class="modal fade" id="modalSubcategoria" tabindex="-1" aria-labelledby="modalSubcategoriaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <!-- Modal Crear/Eliminar Subcategoría -->
+    <div class="modal fade" id="modalSubcategoria" tabindex="-1" aria-labelledby="modalSubcategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalSubcategoriaLabel">Administrar Subcategorías</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSubcategoriaLabel">Administrar Subcategorías</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-            <div class="modal-body">
-                <!-- Formulario crear subcategoría -->
-                <form action="{{ route('subcategorias.store') }}" method="POST" class="mb-3">
-                    @csrf
-                    <label for="id_categoria_modal">Categoría:</label>
-                    <select name="id_categoria" id="id_categoria_modal" class="form-control mb-2" required>
-                        @foreach ($categorias as $categoria)
-                        <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre }}</option>
-                        @endforeach
-                    </select>
+                <div class="modal-body">
+                    <!-- Formulario crear subcategoría -->
+                    <form action="{{ route('subcategorias.store') }}" method="POST" class="mb-3">
+                        @csrf
+                        <label for="id_categoria_modal">Categoría:</label>
+                        <select name="id_categoria" id="id_categoria_modal" class="form-control mb-2" required>
+                            @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre }}</option>
+                            @endforeach
+                        </select>
 
-                    <label for="nombre_subcategoria">Nombre de subcategoría:</label>
-                    <input type="text" name="nombre" id="nombre_subcategoria" class="form-control mb-3" required>
+                        <label for="nombre_subcategoria">Nombre de subcategoría:</label>
+                        <input type="text" name="nombre" id="nombre_subcategoria" class="form-control mb-3" required>
 
-                    <button type="submit" class="btn btn-success w-100">✅ Crear Subcategoría</button>
-                </form>
+                        <button type="submit" class="btn btn-success w-100">✅ Crear Subcategoría</button>
+                    </form>
 
-                <hr>
+                    <hr>
 
-                <!-- Formulario eliminar subcategoría -->
-                <form id="formEliminarSubcategoria" method="POST">
-                    @csrf
-                    @method('DELETE')
+                    <!-- Formulario eliminar subcategoría -->
+                    <form id="formEliminarSubcategoria" method="POST">
+                        @csrf
+                        @method('DELETE')
 
-                    <label for="subcategoria_eliminar">Eliminar subcategoría:</label>
-                    <select id="subcategoria_eliminar" class="form-control mb-2" name="id_subcategoria" required>
-                        <option value="">Seleccione una subcategoría</option>
-                        @foreach ($subcategorias as $sub)
-                        <option value="{{ $sub->id_subcategoria }}">{{ $sub->nombre }}</option>
-                        @endforeach
-                    </select>
+                        <!-- Select de categoría -->
+                        <label for="categoria_eliminar">Categoría:</label>
+                        <select id="categoria_eliminar" class="form-control mb-2" required onchange="cargarSubcategoriasEliminar()">
+                            <option value="">Seleccione una categoría</option>
+                            @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id_categoria }}"
+                                data-subcategorias='@json($categoria->subcategorias)'>
+                                {{ $categoria->nombre }}
+                            </option>
+                            @endforeach
+                        </select>
 
-                    <button type="submit" class="btn btn-danger w-100">❌ Eliminar Subcategoría</button>
-                </form>
-            </div>
+                        <!-- Select de subcategorías dependientes -->
+                        <label for="subcategoria_eliminar">Subcategoría:</label>
+                        <select id="subcategoria_eliminar" class="form-control mb-2" name="id_subcategoria" required>
+                            <option value="">Seleccione una subcategoría</option>
+                        </select>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-danger w-100">❌ Eliminar Subcategoría</button>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    // Captura el form de eliminar y actualiza la acción dinámicamente
-    document.getElementById('formEliminarSubcategoria').addEventListener('submit', function (e) {
-        e.preventDefault();
-        let subId = document.getElementById('subcategoria_eliminar').value;
-        if (subId) {
-            this.action = '/subcategorias/' + subId;
-            this.submit();
+    <script>
+        // Llenar dinámicamente las subcategorías según la categoría seleccionada
+        function cargarSubcategoriasEliminar() {
+            let categoriaSelect = document.getElementById("categoria_eliminar");
+            let subcategoriaSelect = document.getElementById("subcategoria_eliminar");
+
+            // Resetear el select de subcategorías
+            subcategoriaSelect.innerHTML = "<option value=''>Seleccione una subcategoría</option>";
+
+            // Obtener subcategorías de la categoría seleccionada
+            let option = categoriaSelect.options[categoriaSelect.selectedIndex];
+            let subcategorias = option.getAttribute("data-subcategorias");
+
+            if (subcategorias) {
+                subcategorias = JSON.parse(subcategorias);
+                subcategorias.forEach(sub => {
+                    let opt = document.createElement("option");
+                    opt.value = sub.id_subcategoria;
+                    opt.textContent = sub.nombre;
+                    subcategoriaSelect.appendChild(opt);
+                });
+            }
         }
-    });
-</script>
+
+        // Captura el form de eliminar y actualiza la acción dinámicamente
+        document.getElementById('formEliminarSubcategoria').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let subId = document.getElementById('subcategoria_eliminar').value;
+            if (subId) {
+                this.action = '/subcategorias/' + subId;
+                this.submit();
+            }
+        });
+    </script>
+
+
+    <script>
+        // Captura el form de eliminar y actualiza la acción dinámicamente
+        document.getElementById('formEliminarSubcategoria').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let subId = document.getElementById('subcategoria_eliminar').value;
+            if (subId) {
+                this.action = '/subcategorias/' + subId;
+                this.submit();
+            }
+        });
+    </script>
 
 
     <script>
