@@ -63,7 +63,7 @@
           <tr class="pedido-row" data-pedido="pedido{{ $factura->id_factura_venta }}">
             <td>PED-{{ str_pad($factura->id_factura_venta, 5, '0', STR_PAD_LEFT) }}</td>
             <td>{{ \Carbon\Carbon::parse($factura->fecha_venta)->format('d/m/Y') }}</td>
-            <td>${{ number_format($factura->total, 0, ',', '.') }}</td>
+            <td>${{ number_format(round($factura->total, -3), 0, ',', '.') }}</td>
             <td>{{ $factura->metodo_pago }}</td>
             <td class="text-primary fw-bold">{{ strtoupper($factura->entrega) }}</td>
             <td><span class="icono-toggle">▼</span></td>
@@ -128,7 +128,7 @@
                           Talla: {{ $detalle->talla ?? 'N/A' }}
                         </small>
                       </td>
-                      <td>${{ number_format(($detalle->subtotal + $detalle->iva) / $detalle->cantidad, 0, ',', '.') }}</td>
+                      <td>${{ number_format(round((($detalle->subtotal + $detalle->iva) / $detalle->cantidad), -3), 0, ',', '.') }}</td>
                       <td>{{ (int) $detalle->cantidad }}</td>
                     </tr>
                     @endforeach
@@ -138,12 +138,12 @@
                 <!-- Totales -->
 
                 <div class="text-end">
-                  <p><strong>Subtotal</strong> ${{ number_format(($factura->total - $factura->envio) / 1.19, 0, ',', '.') }}</p>
+                  <p><strong>Subtotal</strong> ${{ number_format(round((($factura->total - $factura->envio) / 1.19), -3), 0, ',', '.') }}</p>
                   <p><strong>IVA Total:</strong>
-                    ${{ number_format($factura->detalles->sum('iva'), 0, ',', '.') }}
+                    ${{ number_format(round($factura->detalles->sum('iva'), -3), 0, ',', '.') }}
                   </p>
                   <p><strong>Envío:</strong> ${{ number_format($factura->envio, 0, ',', '.') }}</p>
-                  <h5><strong>Total:</strong> ${{ number_format($factura->total, 0, ',', '.') }}</h5>
+                  <h5><strong>Total:</strong> ${{ number_format(round($factura->total, -3), 0, ',', '.') }}</h5>
                 </div>
 
               </div>

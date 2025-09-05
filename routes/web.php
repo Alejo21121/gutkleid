@@ -52,9 +52,7 @@ Route::view('/mi-cuenta', 'user')->name('cuenta');
 Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
-// Eliminamos el duplicado de analisis e inicio_view para evitar conflictos
-// Route::view('/analisis', 'analisis')->name('analisis');
-// Route::view('/inicio', 'inicio')->name('inicio_view');
+
 
 // --- Usuarios ---
 Route::resource('usuarios', UsuarioController::class);

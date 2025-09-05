@@ -274,13 +274,13 @@ class ProductoController extends Controller
             });
         }
 
-        // 🔹 Filtro de rango de precios
+        // 🔹 Filtro de rango de precios (incluyendo IVA y redondeado a miles)
         if (!empty($precio_min) && !empty($precio_max)) {
-            $query->whereBetween('valor', [$precio_min, $precio_max]);
+            $query->whereRaw('ROUND(valor * (1 + iva), -3) BETWEEN ? AND ?', [$precio_min, $precio_max]);
         } elseif (!empty($precio_min)) {
-            $query->where('valor', '>=', $precio_min);
+            $query->whereRaw('ROUND(valor * (1 + iva), -3) >= ?', [$precio_min]);
         } elseif (!empty($precio_max)) {
-            $query->where('valor', '<=', $precio_max);
+            $query->whereRaw('ROUND(valor * (1 + iva), -3) <= ?', [$precio_max]);
         }
 
         $productos = $query->get();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Factura #{{ $factura->id_factura_venta }}</title>
@@ -35,7 +36,8 @@
             margin-top: 10px;
         }
 
-        .tabla-datos th, .tabla-datos td {
+        .tabla-datos th,
+        .tabla-datos td {
             border: 1px solid #ccc;
             padding: 6px;
             text-align: center;
@@ -76,6 +78,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Encabezado con Logo (izquierda) y datos (derecha) -->
@@ -127,29 +130,38 @@
         </thead>
         <tbody>
             @php
-                $subtotalGeneral = 0;
-                $ivaGeneral = 0;
+            $subtotalGeneral = 0;
+            $ivaGeneral = 0;
             @endphp
 
             @foreach ($factura->detalles as $detalle)
-                @php
-                    $cantidad = $detalle->cantidad;
-                    $valorUnitario = $detalle->producto->valor;
-                    $subtotal = $valorUnitario * $cantidad;
-                    $iva = $detalle->iva;
-                    $total = $subtotal + $iva;
-                    $subtotalGeneral += $subtotal;
-                    $ivaGeneral += $iva;
-                @endphp
-                <tr>
-                    <td>{{ $detalle->producto->nombre }}</td>
-                    <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
-                    <td>{{ number_format($cantidad, 0) }}</td>
-                    <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
-                    <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
-                    <td>${{ number_format($iva, 0, ',', '.') }}</td>
-                    <td>${{ number_format($total, 0, ',', '.') }}</td>
-                </tr>
+            @php
+            $cantidad = $detalle->cantidad;
+
+            // Valor sin IVA (precio base del producto)
+            $valorUnitario = $detalle->producto->valor;
+
+            // Subtotal sin IVA
+            $subtotal = $valorUnitario * $cantidad;
+            // IVA (19% del subtotal) -> redondeado a múltiplos de 1000 si quieres
+            $iva = round($subtotal * 0.19, -3);
+
+            // Total con IVA
+            $total = $subtotal + $iva;
+
+            // Acumulados generales
+            $subtotalGeneral += $subtotal;
+            $ivaGeneral += $iva;
+            @endphp
+            <tr>
+                <td>{{ $detalle->producto->nombre }}</td>
+                <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
+                <td>{{ number_format($cantidad, 0) }}</td>
+                <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
+                <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
+                <td>${{ number_format($iva, 0, ',', '.') }}</td>
+                <td>${{ number_format($total, 0, ',', '.') }}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>
@@ -160,7 +172,11 @@
         <p><strong>Subtotal:</strong> ${{ number_format($subtotalGeneral, 0, ',', '.') }}</p>
         <p><strong>IVA Total:</strong> ${{ number_format($ivaGeneral, 0, ',', '.') }}</p>
         <p><strong>Gastos de envío:</strong> ${{ number_format($factura->envio, 0, ',', '.') }}</p>
-        <p><strong>Total a pagar:</strong> <strong style="color:#6F4E37;">${{ number_format($factura->total, 0, ',', '.') }}</strong></p>
+        <p><strong>Total a pagar:</strong>
+            <strong style="color:#6F4E37;">
+                ${{ number_format($subtotalGeneral + $ivaGeneral + $factura->envio, 0, ',', '.') }}
+            </strong>
+        </p>
     </div>
 
 
@@ -171,4 +187,5 @@
     </div>
 
 </body>
+
 </html>

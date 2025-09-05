@@ -191,7 +191,7 @@
             <div class="productosbar">
                 @foreach ($productos as $producto)
                 @php
-                $precioConIVA = round($producto->valor * (1 + $producto->iva));
+                $precioConIVA = round($producto->valor * (1 + $producto->iva), -3);
                 @endphp
                 <div class="productos">
                     <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"

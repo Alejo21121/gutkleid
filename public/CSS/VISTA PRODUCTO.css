@@ -389,6 +389,16 @@ body {
     border-color: rgb(109, 28, 28);
 }
 
+.color-circle {
+    display: inline-block;
+    width: 28px;      /* tamaño del círculo */
+    height: 28px;
+    border-radius: 50%;  /* círculo perfecto */
+    border: 2px solid rgb(109, 28, 28); /* borde como antes */
+    vertical-align: middle;
+}
+
+
 .color-btn:hover{
         border-color: orange;
 }

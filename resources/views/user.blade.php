@@ -65,7 +65,7 @@
                 src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
                 alt="Perfil"
                 class="img-perfil-usuario">
-              INFORMATION
+              INFORMACION 
             </a>
           </li>
 
@@ -88,22 +88,6 @@
               <i class="bi bi-receipt-cutoff" aria-hidden="true"></i>
               Historial de pedidos
             </a>
-          </li>
-
-          <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
-            <a href="https://ld-prestashop.template-help.com/prestashop_15325_demo1/index.php?fc=module&amp;module=jxheaderaccount&amp;controller=facebooklink&amp;id_lang=1" title="Facebook Login Manager">
-              <i class="bi bi-arrow-repeat" aria-hidden="true"></i>
-              Devoluciones </a>
-          </li>
-          <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
-            <a href="https://ld-prestashop.template-help.com/prestashop_15325_demo1/index.php?fc=module&amp;module=jxheaderaccount&amp;controller=googlelogin&amp;id_lang=1" title="Google Login Manager">
-              <i class="fa fa-google-plus" aria-hidden="true"></i>
-              Connect With Google </a>
-          </li>
-          <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
-            <a href="https://ld-prestashop.template-help.com/prestashop_15325_demo1/index.php?fc=module&amp;module=jxheaderaccount&amp;controller=vklogin&amp;id_lang=1" title="VK Login Manager">
-              <i class="bi bi-heart" aria-hidden="true"></i>
-              Favoritos </a>
           </li>
 
           <li class="ma-link-item col-lg-2 col-md-3 col-sm-4 col-6">
