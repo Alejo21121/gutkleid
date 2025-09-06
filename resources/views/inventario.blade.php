@@ -19,6 +19,7 @@
                     <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
                     <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
                     <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
+                    <a href="{{ route('ventas') }}"><button class="filter-bcc">Ventas</button></a>
                 </div>
                 <div class="logo">
                     <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>

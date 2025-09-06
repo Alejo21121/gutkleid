@@ -108,3 +108,5 @@ Route::post('/subcategorias', [ProductoController::class, 'storeSubcategoria'])-
 
 Route::delete('/categorias/{id}', [ProductoController::class, 'destroyCat'])->name('categorias.destroy');
 Route::delete('/subcategorias/{id}', [ProductoController::class, 'destroySub'])->name('subcategorias.destroy');
+
+Route::get('/ventas', [UsuarioController::class, 'ventas'])->name('ventas');

@@ -332,4 +332,28 @@ class UsuarioController extends Controller
 
         return view('historial', compact('facturas'));
     }
+
+    public function ventas(Request $request)
+    {
+        $buscar = $request->input('buscar');
+
+        $ventas = DB::table('factura_ventas as f')
+            ->join('personas as p', 'p.id_persona', '=', 'f.id_persona')
+            ->select(
+                'f.id_factura_venta',
+                'f.fecha_venta',
+                'f.total',
+                'p.nombres',
+                'p.apellidos',
+                'f.factura_pdf',
+                'p.documento'
+            )
+            ->when($buscar, function ($query, $buscar) {
+                return $query->where('f.id_factura_venta', $buscar);
+            })
+            ->orderByDesc('f.fecha_venta')
+            ->paginate(10);
+
+        return view('ventas', compact('ventas', 'buscar'));
+    }
 }

@@ -122,6 +122,10 @@ class CarritoController extends Controller
             $rutaArchivo = public_path('facturas/' . $nombreArchivo);
             $pdf->save($rutaArchivo);
 
+            // 🔹 Guardar la ruta del PDF en la BD
+            $factura->factura_pdf = 'facturas/' . $nombreArchivo; // relativo a public/
+            $factura->save();
+
             return redirect()->route('carrito.index')
                 ->with('success', '¡Compra realizada con éxito! Puedes descargar tu factura abajo.')
                 ->with('factura_pdf', asset('facturas/' . $nombreArchivo));
@@ -138,7 +142,7 @@ class CarritoController extends Controller
         $nombre = $request->input('nombre');
         $valor = $request->input('precio');
         $talla = strtoupper(trim($request->input('talla')));
-        $color = $request->input('color') ?? 'N/A'; 
+        $color = $request->input('color') ?? 'N/A';
         $cantidad = max((int) $request->input('cantidad', 1), 1);
 
         if (empty($talla)) {

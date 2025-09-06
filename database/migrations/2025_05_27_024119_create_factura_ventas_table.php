@@ -24,6 +24,8 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_metodo_pago');
+
+             $table->string('factura_pdf')->nullable();
             
             $table->foreign('id_persona')->references('id_persona')->on('personas');
             $table->foreign('id_metodo_pago')->references('id_metodo_pago')->on('metodo_pagos');
