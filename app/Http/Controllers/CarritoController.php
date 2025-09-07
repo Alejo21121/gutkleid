@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Imagen;
 use App\Models\Talla;
 use App\Models\Persona;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacturaMail;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CarritoController extends Controller
@@ -78,15 +80,13 @@ class CarritoController extends Controller
                 $detalle = new DetalleFacturaV();
                 $detalle->id_factura_venta = $factura->id_factura_venta;
                 $detalle->id_producto = $producto->id_producto;
-                $detalle->id_talla = $tallaProducto->id; // ← Aquí guardas la talla correcta
+                $detalle->id_talla = $tallaProducto->id;
                 $detalle->cantidad = $cantidad;
                 $detalle->subtotal = $subtotal;
                 $detalle->iva = $iva;
                 $detalle->save();
 
-                // Guarda la talla en el objeto temporal (para mostrarla)
-                $detalle->talla = $tallaBuscada;
-
+                // Restar stock
                 $tallaProducto->cantidad -= $cantidad;
                 $tallaProducto->save();
 
@@ -100,40 +100,54 @@ class CarritoController extends Controller
             $factura->save();
 
             DB::commit();
-            session()->forget('carrito');
 
-            // Cargar relaciones
+            // Cargar relaciones para la vista del PDF
             $factura->load(['detalles.producto', 'cliente', 'detalles.talla']);
 
-
-            // Logo base64
+            // Generar logo en base64
             $logoPath = public_path('IMG/LOGO3.png');
             $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
             $logoData = file_get_contents($logoPath);
             $base64Logo = 'data:image/' . $logoType . ';base64,' . base64_encode($logoData);
 
             // Generar PDF
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('factura_pdf', [
+            $pdf = Pdf::loadView('factura_pdf', [
                 'factura' => $factura,
                 'logo' => $base64Logo
             ]);
 
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
             $rutaArchivo = public_path('facturas/' . $nombreArchivo);
+
+            // Crear carpeta si no existe
+            if (!file_exists(public_path('facturas'))) {
+                mkdir(public_path('facturas'), 0777, true);
+            }
+
+            // Guardar PDF
             $pdf->save($rutaArchivo);
 
-            // 🔹 Guardar la ruta del PDF en la BD
-            $factura->factura_pdf = 'facturas/' . $nombreArchivo; // relativo a public/
+            // Guardar ruta en la BD
+            $factura->factura_pdf = 'facturas/' . $nombreArchivo;
             $factura->save();
 
+            // Enviar correo al cliente con la factura adjunta
+            $cliente = $factura->cliente;
+            if ($cliente && $cliente->correo) {
+                Mail::to($cliente->correo)->send(new FacturaMail($factura, $rutaArchivo));
+            }
+
+            // Vaciar carrito
+            session()->forget('carrito');
+
             return redirect()->route('carrito.index')
-                ->with('success', '¡Compra realizada con éxito! Puedes descargar tu factura abajo.')
-                ->with('factura_pdf', asset('facturas/' . $nombreArchivo));
+                ->with('success', '¡Compra realizada con éxito! La factura ha sido enviada a tu correo.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('carrito.index')->with('error', 'Error al finalizar la compra: ' . $e->getMessage());
         }
     }
+
 
 
     public function agregar(Request $request)
