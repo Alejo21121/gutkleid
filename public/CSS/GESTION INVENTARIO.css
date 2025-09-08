@@ -49,8 +49,7 @@ body {
 }
 
 .user-name {
-    color: #fff;
-    background-color: #198754;
+    color: #000000;
     padding: 6px 12px;
     border-radius: 20px;
     font-weight: bold;
@@ -63,19 +62,18 @@ body {
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid white;
     transition: 0.3s;
 }
 
 /* === MAIN === */
 .main {
     flex: 1;
-    width: 87%;
-    justify-content: center;
+    max-width: 1200px;     /* 🔹 límite ancho para que no se deforme */
+    width: 100%;           /* 🔹 ocupa todo el espacio disponible */
     background-color: rgb(241, 241, 241);
     padding: 20px;
     text-align: left;
-    margin: 50px auto;
+    margin: 50px auto;     /* 🔹 centrado automático */
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
@@ -103,22 +101,82 @@ body {
 .bottexc {
     background: #408640;
     color: white;
+    border: none;
+    padding: 8px 10px 7px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    margin: 3px;
+    border-radius: 10px;
 }
-.bottexc:hover {
-    background: #2e612e;
-}
+
 .bottpdf {
     background: #e21313;
     color: white;
+    border: none;
+    padding: 8px 10px 7px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    margin: 3px;
+    border-radius: 10px;
 }
-.bottpdf:hover {
-    background-color: #680202;
-}
+
 .bottbusca,
 .bottagrega {
     background: #0044ff;
     color: white;
     border: none;
+    padding: 8px 10px 7px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    margin: 3px;
+    border-radius: 10px;
+}
+
+.bottpagi {
+    background: #0f4d07;
+    color: white;
+    border: none;
+    padding: 8px 10px 7px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    margin: 3px;
+    border-radius: 10px;
+}
+
+.bottpagi:hover {
+    background: #0b3605;
+    color: white;
+    transform: scale(1.1);
+}
+
+.bottpdf:hover {
+    background-color: #680202;
+    color: white;
+    transform: scale(1.1);
+}
+
+.bottexc:hover {
+    background: #2e612e;
+    color: white;
+    transform: scale(1.1);
+}
+
+.bottagrega:hover {
+    background: #002383;
+    color: white;
+    transform: scale(1.1);
 }
 
 /* === TABLA === */
@@ -153,8 +211,10 @@ tr:hover {
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    width: 1110px;
+    max-width: 1110px;   /* ✅ cambio */
+    width: 100%;         /* ✅ cambio */
     text-align: center;
+    margin: 0 auto;      /* ✅ centrado */
 }
 
 /* === ALERT === */
@@ -181,6 +241,69 @@ tr:hover {
     z-index: 2;
 }
 
+.botonmenu {
+    background-color: rgb(231, 231, 231);
+    font-family: Arial, sans-serif;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgb(39, 39, 39);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    border: none;
+}
+
+.botonmenu:hover {
+    transform: scale(1.1); /* Zoom */
+}
+
+.inis {
+    text-decoration: none;
+    color: black;
+    margin-top: 16px;
+}
+
+.bottedit {
+    background-color: rgb(120, 255, 116);
+    font-family: Arial, sans-serif;
+    padding: 6px 8px 6px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgb(39, 39, 39);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+}
+
+.bottbor {
+    background-color: rgb(255, 108, 108);
+    font-family: Arial, sans-serif;
+    padding: 6px 8px 6px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgb(39, 39, 39);
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+}
+
+.bottbor:hover {
+    background-color: rgb(151, 64, 64);
+    transform: scale(1.1); /* Zoom */
+    color: white;
+}
+
+.bottedit:hover {
+    background-color: rgb(73, 155, 71);
+    transform: scale(1.1); /* Zoom */
+    color: white;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
     .barras {
@@ -194,5 +317,12 @@ tr:hover {
         justify-content: center;
         width: 100%;
         margin: 5px 0;
+    }
+    table {
+        font-size: 12px;
+    }
+    .bottbusca, .bottagrega, .bottexc, .bottpdf, .bottpagi {
+        font-size: 12px;
+        padding: 5px 8px;
     }
 }

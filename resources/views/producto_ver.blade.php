@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -15,40 +16,49 @@
 </head>
 
 <body>
-    <header class="cabeza">
-        <nav class="barras">
-            <div class="barra1">
-                <a href="{{ url()->previous() }}"><button class="filter-btn"><i class="bi bi-arrow-left"></i> Volver</button></a>
-                <a href="{{ route('reseñas') }}"><button class="filter-btn">Acerca de</button></a>
-            </div>
+<header class="cabeza">
+    <nav class="barras">
+        <!-- IZQUIERDA -->
+        <div class="nav-left">
+            @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+            @endif
+        </div>
+            <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
             <div class="logo">
-                <a href="{{ route('inicio') }}"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
-            </div>
-            <div class="barra2">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div></a>
+        </div>
+
+            <!-- DERECHA -->
+            <div class="nav-right">
                 <div class="usuario-info">
                     @if (session('usuario'))
                     <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
-                    @if (session('usuario'))
                     <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
-                            alt="Perfil"
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil"
                             class="perfil-icono">
                     </a>
-                    @endif
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
                     @else
-                    <a href="{{ route('login') }}"><button class="filter-btn">Inicia sesión</button></a>
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
                     @endif
-                    <div class="iconos">
-                        <a href="{{ route('carrito.index') }}"><button class="filter-btn"><i class="bi bi-cart3"></i></button></a>
+
+                    <!-- Carrito -->
+                    <a href="{{ route('carrito.index') }}" class="fontcarr">
+                        <i class="bi bi-cart3"></i>
+                    </a>
                     </div>
                 </div>
             </div>
         </nav>
-    </header>
-
+        <hr>
     <main class="main">
-        <div class="product-container">
+        <div class="container-login">
             <div class="producto-galeria">
                 <!-- Imagen grande -->
                 <div class="imagen-principal">
@@ -133,8 +143,8 @@
                     </div>
 
                     <br>
-                    <button type="submit" class="filter-bcc">Agregar al carrito</button>
-                    <a class="filter-bcc" href="{{ route('inicio') }}">Seguir Mirando</a>
+                    <a class="bottonspro" href="{{ route('inicio') }}"><button type="submit" class="productt">Agregar al carrito</button></a>
+                    <a class="bottonspro" href="{{ route('inicio') }}"><button type="submit" class="productt">Seguir Mirando</button></a>
                 </form>
 
 
@@ -240,35 +250,19 @@
     <script src="{{ asset('JS/script2.js') }}"></script>
     <script src="{{ asset('JS/navbar.js') }}"></script>
 
-    <footer class="pie">
-        <div class="foot">
-            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-        </div>
-        <p>&copy; 2024 - GUT KLEID.</p>
-    </footer>
-
-    <!-- Bootstrap Bundle (para que funcione bootstrap.Toast) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function cambiarImagen(ruta) {
             document.getElementById('imagenGrande').src = ruta;
         }
         </script>
-
-
-        <footer class="pie">
-            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
-            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
-            <a href="{{ route('redes') }}" class="abaj">Redes</a>
-            <br>
-            <br>
-            <p>&copy; 2024 - GUT KLEID.</p>
-        </footer>
-
+    <footer class="pie">
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+        <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+        <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+        <a href="{{ route('redes') }}" class="abaj">Redes</a>
+        <br><br>
+        <p>&copy; 2024 - GUT KLEID.</p>
+    </footer>
 </body>
-
 </html>

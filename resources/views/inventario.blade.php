@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gut Kleid</title>
     <link rel="stylesheet" href="{{ asset('CSS/GESTION INVENTARIO.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
@@ -18,11 +18,11 @@
     <header class="cabeza">
         <nav class="barras">
             <div class="barra1">
-                <a href="{{ route('producto.index') }}"><button class="filter-bccselect">Inventario</button></a>
-                <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
-                <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
-                <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
-                <a href="{{ route('ventas') }}"><button class="filter-bcc">Ventas</button></a>
+                <a href="{{ route('producto.index') }}" class="inis"><button type="button" class="botonmenu">Inventario</button></a>
+                <a href="{{ route('analisis') }}" class="inis"><button type="button" class="botonmenu">Análisis</button></a>
+                <a href="{{ route('usuarios.index') }}" class="inis"><button type="button" class="botonmenu">Usuarios</button></a>
+                <a href="{{ route('compras.index') }}" class="inis"><button type="button" class="botonmenu">Compras</button></a>
+                <a href="{{ route('ventas') }}" class="inis"><button type="button" class="botonmenu">Ventas</button></a>
             </div>
             <div class="logo">
                 <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
@@ -36,7 +36,7 @@
                              alt="Perfil"
                              class="perfil-icono">
                     </a>
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                    <a href="{{ route('logout') }}" class="inis"><button class="botonmenu"><i class="bi bi-door-open"></i></button></a>
                     @else
                     <a href="{{ route('login') }}">
                         <p class="filter-btna">Inicia sesión</p>
@@ -113,7 +113,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('producto.edit', $producto->id_producto) }}" class="bottedit"><i class="bi bi-pencil"></i></a>
+                                    <a href="{{ route('producto.edit', $producto->id_producto) }}"><button class="bottedit"><i class="bi bi-pencil"></i></button></a>
                                     <form action="{{ route('producto.destroy', $producto->id_producto) }}?page={{ request('page') }}&buscar={{ request('buscar') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este producto?');">
                                         @csrf
                                         @method('DELETE')
@@ -125,20 +125,20 @@
                         </tbody>
                     </table>
                 </div>
-
+                <br>
                 <div class="pagination-container">
                     @if ($productos->onFirstPage())
-                    <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
+                    <span class="bottpagi disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
                     @else
-                    <a href="{{ $productos->previousPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Anterior</a>
+                    <a href="{{ $productos->previousPageUrl() }}&buscar={{ request('buscar') }}" class="bottpagi">Anterior</a>
                     @endif
 
                     <span class="pagina-info">Página {{ $paginaActual }} de {{ $totalPaginas }}</span>
 
                     @if ($productos->hasMorePages())
-                    <a href="{{ $productos->nextPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Siguiente</a>
+                    <a href="{{ $productos->nextPageUrl() }}&buscar={{ request('buscar') }}" class="bottpagi">Siguiente</a>
                     @else
-                    <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Siguiente</span>
+                    <span class="bottpagi disabled" style="pointer-events: none; opacity: 0.5;">Siguiente</span>
                     @endif
                 </div>
 

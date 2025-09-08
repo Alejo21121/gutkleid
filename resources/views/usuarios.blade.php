@@ -13,122 +13,120 @@
     <header class="cabeza">
         <nav class="barras">
             <div class="barra1">
-                <a href="{{ route('producto.index') }}"><button class="filter-bcc">Inventario</button></a>
-                <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
-                <a href="{{ route('usuarios.index') }}"><button class="filter-bccselect">Usuarios</button></a>
-                <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
-                <a href="{{ route('ventas') }}"><button class="filter-bcc">Ventas</button></a>
+                <a href="{{ route('producto.index') }}" class="inis"><button type="button" class="botonmenu">Inventario</button></a>
+                <a href="{{ route('analisis') }}" class="inis"><button type="button" class="botonmenu">Análisis</button></a>
+                <a href="{{ route('usuarios.index') }}" class="inis"><button type="button" class="botonmenu">Usuarios</button></a>
+                <a href="{{ route('compras.index') }}" class="inis"><button type="button" class="botonmenu">Compras</button></a>
+                <a href="{{ route('ventas') }}" class="inis"><button type="button" class="botonmenu">Ventas</button></a>
             </div>
             <div class="logo">
                 <a href="{{ route('inicio') }}">
-                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo" class="logo">
+                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
                 </a>
             </div>
-                <div class="barra2">
-                    <div class="usuario-info">
-                        @if (session('usuario'))
-                            <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
-                            <a href="{{ route('cuenta') }}">
+            <div class="barra2">
+                <div class="usuario-info">
+                    @if (session('usuario'))
+                        <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
+                        <a href="{{ route('cuenta') }}">
                             <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
                                 alt="Perfil"
                                 class="perfil-icono">
-                            </a>
-                            <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a> 
-                        @else
-                            <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
-                        @endif
-                    </div>
+                        </a>
+                        <a href="{{ route('logout') }}" class="inis"><button class="botonmenu"><i class="bi bi-door-open"></i></button></a>
+                    @else
+                        <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
+                    @endif
                 </div>
+            </div>
         </nav>
-    </header>
-
-    <main>
-        <section class="container">
+        <hr>
+    <main class="main">
+        <div class="container-login">
             <h2><center>Gestión de Usuarios</center></h2>
             <center>
-                <div class="d-flex justify-content-between align-items-center mb-3" style="width: 100%;">
-                    <form action="{{ route('usuarios.index') }}" method="GET" class="d-flex flex-grow-1 me-2">
-                        <input type="text" name="buscar" class="form-control" placeholder="Buscar por ID" value="{{ request('buscar') }}">
-                        <button type="submit" class="bottbusca"><i class="bi bi-search"></i></button>
-                    </form>
+                <form action="{{ route('usuarios.index') }}" method="GET" class="d-flex mb-3 justify-content-center">
+                    <input type="text" name="buscar" class="form-control" placeholder="Buscar por ID" value="{{ request('buscar') }}">
+                    <button type="submit" class="bottbusca"><i class="bi bi-search"></i></button>
+                    <a href="{{ route('usuarios.create') }}" class="bottagrega"><i class="bi bi-plus-circle"></i></a>
+                    <a href="{{ route('usuarios.exportarExcel') }}" class="bottexc"><i class="bi bi-file-earmark-excel"></i></a>
+                    <a href="{{ route('usuarios.exportarPDF') }}" class="bottpdf"><i class="bi bi-file-pdf"></i></a>
+                </form>
 
-                    <div>
-                        <a href="{{ route('usuarios.create') }}" class="bottagrega"><i class="bi bi-plus-circle"></i></a>
-                        <a href="{{ route('usuarios.exportarExcel') }}" class="bottexc"><i class="bi bi-file-earmark-excel"></i></a>
-                        <a href="{{ route('usuarios.exportarPDF') }}" class="bottpdf"><i class="bi bi-file-pdf"></i></a>
-                    </div>
+                <div class="tabla-scroll">
+                    <table class="table mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID Persona</th>
+                                <th>Documento</th>
+                                <th>Tipo Doc</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($usuarios as $usuario)
+                                <tr>
+                                    <td>{{ $usuario->id_persona }}</td>
+                                    <td>{{ $usuario->documento }}</td>
+                                    <td>{{ $usuario->tipoDocumento->nombre ?? 'Sin tipo' }}</td>
+                                    <td>{{ $usuario->nombres }}</td>
+                                    <td>{{ $usuario->apellidos }}</td>
+                                    <td>{{ $usuario->telefono }}</td>
+                                    <td>{{ $usuario->correo }}</td>
+                                    <td>{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
+                                    <td>
+                                        <a href="{{ route('usuarios.edit', $usuario->id_persona) }}"><button class="bottedit"><i class="bi bi-pencil"></i></button></a>
+                                        <form action="{{ route('usuarios.destroy', $usuario->id_persona) }}?page={{ request('page') }}&buscar={{ request('buscar') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bottbor"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
-                <table class="table mt-3">
-                    <thead>
-                        <tr>
-                            <th>ID Persona</th>
-                            <th>Documento</th>
-                            <th>Tipo Doc</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Teléfono</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($usuarios as $usuario)
-                            <tr>
-                                <td>{{ $usuario->id_persona }}</td>
-                                <td>{{ $usuario->documento }}</td>
-                                <td>{{ $usuario->tipoDocumento->nombre ?? 'Sin tipo' }}</td>
-                                <td>{{ $usuario->nombres }}</td>
-                                <td>{{ $usuario->apellidos }}</td>
-                                <td>{{ $usuario->telefono }}</td>
-                                <td>{{ $usuario->correo }}</td>
-                                <td>{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
-                                <td>
-                                    <a href="{{ route('usuarios.edit', $usuario->id_persona) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
-                                    <form action="{{ route('usuarios.destroy', $usuario->id_persona) }}?page={{ request('page') }}&buscar={{ request('buscar') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                <br>
                 <div class="pagination-container">
                     @if ($usuarios->onFirstPage())
-                        <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
+                        <span class="bottpagi disabled" style="pointer-events: none; opacity: 0.5;">Anterior</span>
                     @else
-                        <a href="{{ $usuarios->previousPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Anterior</a>
+                        <a href="{{ $usuarios->previousPageUrl() }}&buscar={{ request('buscar') }}" class="bottpagi">Anterior</a>
                     @endif
 
                     <span class="pagina-info">Página {{ $paginaActual }} de {{ $totalPaginas }}</span>
 
                     @if ($usuarios->hasMorePages())
-                        <a href="{{ $usuarios->nextPageUrl() }}&buscar={{ request('buscar') }}" class="botsig">Siguiente</a>
+                        <a href="{{ $usuarios->nextPageUrl() }}&buscar={{ request('buscar') }}" class="bottpagi">Siguiente</a>
                     @else
-                        <span class="botsig disabled" style="pointer-events: none; opacity: 0.5;">Siguiente</span>
+                        <span class="bottpagi disabled" style="pointer-events: none; opacity: 0.5;">Siguiente</span>
                     @endif
                 </div>
 
                 <br>
                 @if(request('buscar'))
-                
-                    <div style="text-align: center;">
+                    <div>
                         <a href="{{ route('usuarios.index') }}" class="limpi"><i class="bi bi-arrow-counterclockwise"></i></a>
                     </div>
                 @endif
             </center>
-        </section>
+        </div>
     </main>
 
     <footer class="pie">
-        <div class="foot">
-            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-        </div>
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+        <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+        <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+        <a href="{{ route('redes') }}" class="abaj">Redes</a>
+        <br><br>
         <p>&copy; 2024 - GUT KLEID.</p>
     </footer>
 

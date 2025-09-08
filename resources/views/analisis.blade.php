@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análisis de GutKleid</title>
-    <link rel="stylesheet" href="{{ asset('css/analisis.css') }}">
+    <title>Gut Kleid</title>
+    <link rel="stylesheet" href="{{ asset('CSS/GESTION INVENTARIO.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
-<body>
 
-<header class="cabeza">
-    <nav class="barras">
-        <div class="barra1">
-            <a href="{{ route('producto.index') }}"><button class="filter-bcc">Inventario</button></a>
-            <a href="{{ route('analisis') }}"><button class="filter-bccselect">Análisis</button></a>
-            <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
-            <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
-            <a href="{{ route('ventas') }}"><button class="filter-bcc">Ventas</button></a>
-        </div>
-        <div class="logo">
-            <a href="{{ route('inicio') }}">
-                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo" class="logo">
-            </a>
-        </div>
-        <div class="barra2">
-            <div class="usuario-info">
-                @if (session('usuario'))
+<body>
+    <header class="cabeza">
+        <nav class="barras">
+            <div class="barra1">
+                <a href="{{ route('producto.index') }}" class="inis"><button type="button" class="botonmenu">Inventario</button></a>
+                <a href="{{ route('analisis') }}" class="inis"><button type="button" class="botonmenu">Análisis</button></a>
+                <a href="{{ route('usuarios.index') }}" class="inis"><button type="button" class="botonmenu">Usuarios</button></a>
+                <a href="{{ route('compras.index') }}" class="inis"><button type="button" class="botonmenu">Compras</button></a>
+                <a href="{{ route('ventas') }}" class="inis"><button type="button" class="botonmenu">Ventas</button></a>
+            </div>
+            <div class="logo">
+                <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
+            </div>
+            <div class="barra2">
+                <div class="usuario-info">
+                    @if (session('usuario'))
                     <p class="user-name">Hola {{ session('usuario')['nombres'] }}</p>
                     <a href="{{ route('cuenta') }}">
-                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil"
+                             class="perfil-icono">
                     </a>
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
-                @else
-                    <a href="{{ route('login') }}"><p class="filter-btna">Inicia sesión</p></a>
-                @endif
+                    <a href="{{ route('logout') }}" class="inis"><button class="botonmenu"><i class="bi bi-door-open"></i></button></a>
+                    @else
+                    <a href="{{ route('login') }}">
+                        <p class="filter-btna">Inicia sesión</p>
+                    </a>
+                    @endif
+                </div>
             </div>
-        </div>
-    </nav>
-</header>
-<main class="main-analisis container-fluid py-4">
+        </nav>
+        <hr>
+    <main class="main">
+        <div class="container-login">
     <h2 class="text-center mb-5 fw-bold">Análisis General</h2>
 
     <!-- Métricas rápidas -->
@@ -85,17 +92,16 @@
         </div>
     </div>
 </main>
-
-<footer class="pie mt-5 text-center">
-    <div class="foot mb-2">
-        <a href="{{ route('terminos') }}" class="abaj me-3">Términos y Condiciones</a>
+    <footer class="pie">
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
         <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    </div>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
-
-<!-- Scripts -->
-<script>
+        <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+        <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+        <a href="{{ route('redes') }}" class="abaj">Redes</a>
+        <br><br>
+        <p>&copy; 2024 - GUT KLEID.</p>
+    </footer>
+    <script>
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawCharts);
 
@@ -184,6 +190,5 @@
         });
     }
 </script>
-
 </body>
 </html>

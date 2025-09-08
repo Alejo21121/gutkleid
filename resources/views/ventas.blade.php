@@ -15,12 +15,11 @@
     <header class="cabeza">
         <nav class="barras">
             <div class="barra1">
-                <a href="{{ route('producto.index') }}"><button class="filter-bcc">Inventario</button></a>
-                <a href="{{ route('analisis') }}"><button class="filter-bcc">Análisis</button></a>
-                <a href="{{ route('usuarios.index') }}"><button class="filter-bcc">Usuarios</button></a>
-                <a href="{{ route('compras.index') }}"><button class="filter-bcc">Compras</button></a>
-                <a href="{{ route('ventas') }}"><button class="filter-bccselect">Ventas</button></a>
-
+                <a href="{{ route('producto.index') }}" class="inis"><button type="button" class="botonmenu">Inventario</button></a>
+                <a href="{{ route('analisis') }}" class="inis"><button type="button" class="botonmenu">Análisis</button></a>
+                <a href="{{ route('usuarios.index') }}" class="inis"><button type="button" class="botonmenu">Usuarios</button></a>
+                <a href="{{ route('compras.index') }}" class="inis"><button type="button" class="botonmenu">Compras</button></a>
+                <a href="{{ route('ventas') }}" class="inis"><button type="button" class="botonmenu">Ventas</button></a>
             </div>
             <div class="logo">
                 <a href="/"><img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo"></a>
@@ -32,7 +31,7 @@
                     <a href="{{ route('cuenta') }}">
                         <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
                     </a>
-                    <a href="{{ route('logout') }}"><button class="filter-btn"><i class="bi bi-door-open"></i></button></a>
+                    <a href="{{ route('logout') }}" class="inis"><button class="botonmenu"><i class="bi bi-door-open"></i></button></a>
                     @else
                     <a href="{{ route('login') }}">
                         <p class="filter-btna">Inicia sesión</p>
@@ -41,13 +40,10 @@
                 </div>
             </div>
         </nav>
-    </header>
-
-    <main>
-        <section class="contenedor">
-            <h2>
-                <center>Ventas Registradas</center>
-            </h2>
+        <hr>
+    <main class="main">
+        <div class="container-login">
+            <h2><center>Ventas Registradas</center></h2>
             <center>
                 <form method="GET" action="{{ route('ventas') }}" class="d-flex mb-3 justify-content-center">
                     <input type="text" name="buscar" class="form-control" placeholder="Buscar por ID" value="{{ request('buscar') }}">
@@ -57,60 +53,64 @@
                     <a href="" class="bottpdf"><i class="bi bi-file-pdf"></i></a>
                 </form>
 
-                <table class="table mt-3">
-                    <thead>
-                        <tr>
-                            <th># Factura</th>
-                            <th>Fecha</th>
-                            <th>Cliente</th>
-                            <th>Valor</th>
-                            <th>Estado</th>
-                            <th>Factura PDF</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($ventas as $venta)
-                        <tr>
-                            <td>{{ $venta->id_factura_venta }}</td>
-                            <td>{{ $venta->fecha_venta }}</td>
-                            <td>{{ $venta->nombres }} - {{ $venta->documento }}</td>
-                            <td>${{ number_format($venta->total, 0, ',', '.') }}</td>
-                            <td>vendido</td>
-                            <td>
-                                @if($venta->factura_pdf)
-                                <a href="{{ asset($venta->factura_pdf) }}" target="_blank" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-file-pdf"></i> Ver
-                                </a>
-                                @else
-                                <span class="text-muted">No generado</span>
-                                @endif
-                            </td>
+                <div class="tabla-scroll">
+                    <table class="table mt-3">
+                        <thead>
+                            <tr>
+                                <th># Factura</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Valor</th>
+                                <th>Estado</th>
+                                <th>Factura PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($ventas as $venta)
+                            <tr>
+                                <td>{{ $venta->id_factura_venta }}</td>
+                                <td>{{ $venta->fecha_venta }}</td>
+                                <td>{{ $venta->nombres }} - {{ $venta->documento }}</td>
+                                <td>${{ number_format($venta->total, 0, ',', '.') }}</td>
+                                <td>Vendido</td>
+                                <td>
+                                    @if($venta->factura_pdf)
+                                    <a href="{{ asset($venta->factura_pdf) }}" target="_blank" class="bottpdf">
+                                        <i class="bi bi-file-pdf"></i>
+                                    </a>
+                                    @else
+                                    <span class="text-muted">No generado</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+                <br>
                 <div class="pagination-container">
                     {{ $ventas->links() }}
                 </div>
 
+                <br>
                 @if(request('buscar'))
                 <div>
-                    <a href="{{ route('ventas.index') }}" class="limpi"><i class="bi bi-arrow-counterclockwise"></i></a>
+                    <a href="{{ route('ventas') }}" class="limpi"><i class="bi bi-arrow-counterclockwise"></i></a>
                 </div>
                 @endif
             </center>
-        </section>
+        </div>
     </main>
 
     <footer class="pie">
-        <div class="foot">
-            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-        </div>
+        <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+        <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+        <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+        <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+        <a href="{{ route('redes') }}" class="abaj">Redes</a>
+        <br><br>
         <p>&copy; 2024 - GUT KLEID.</p>
     </footer>
 </body>
-
 </html>
