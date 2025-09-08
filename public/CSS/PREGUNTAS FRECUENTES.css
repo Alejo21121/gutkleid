@@ -123,6 +123,14 @@ background-color: rgb(231, 231, 231);
     background-color: rgb(185, 185, 185);
 }
 
+.perfil-icono {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: 0.3s;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
     .barras {

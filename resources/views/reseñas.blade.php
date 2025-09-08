@@ -52,7 +52,6 @@
         </div>
     </nav>
     <hr>
-</head>
         <div class="main">
           <div class="reviews">
             <h1>Reseñas</h1>
