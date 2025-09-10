@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - Gut Kleid</title>
-    <link rel="stylesheet" href="{{ asset('CSS/PAGINA PRINCIPAL.css') }}">
+    <link rel="stylesheet" href="{{ asset('CSS/CARRO.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
@@ -51,21 +51,9 @@
                     <a href="{{ route('carrito.index') }}" class="fontcarr">
                         <i class="bi bi-cart3"></i>
                     </a>
-
-                    <!-- Buscador -->
-                    <button id="toggleSearch" style="border:none; background:none; cursor:pointer;" class="busqueda">
-                        <i class="bi bi-search" style="font-size:1.5rem;"></i>
-                    </button>
                 </div>
             </div>
         </nav>
-        <!-- Panel de búsqueda -->
-        <div id="search-panel" class="search-panel">
-            <form method="GET" class="d-flex container" role="search">
-                <input type="text" name="q" class="form-control me-2" placeholder="Buscar..." />
-                <button type="submit" class="btn btn-dark">Buscar</button>
-            </form>
-        </div>
         <hr>
 
         <main class="main">
@@ -169,7 +157,6 @@
                             <tr class="table-light">
                                 <td colspan="6" class="text-end">
                                     <strong>Total</strong><br>
-                                    <span style="font-size: 0.85rem; color: gray;"><em>IVA incluido</em></span>
                                 </td>
                                 <td><strong>${{ number_format($total + $envio, 0, ',', '.') }}</strong></td>
                             </tr>
@@ -183,18 +170,16 @@
                         <i class="bi bi-x-circle"></i> Vaciar carrito
                     </a>
 
-                    @if(session('usuario'))
-                    <form action="{{ route('carrito.finalizar') }}" method="POST" class="d-inline-block">
-                        @csrf
-                        <button type="submit" class="bottonfina">
-                            <i class="bi bi-cash-coin"></i> Finalizar Compra
-                        </button>
-                    </form>
-                    @else
-                    <a href="{{ route('login') }}" class="bottonfina">
-                        <i class="bi bi-cash-coin"></i> Inicia sesión para comprar
-                    </a>
-                    @endif
+@if(session('usuario'))
+    <a href="{{ route('envio.index') }}" class="bottonfina">Finalizar compra</a>
+        <i class="bi bi-cash-coin"></i>
+    </a>
+@else
+    <a href="{{ route('login') }}" class="bottonfina">
+        <i class="bi bi-cash-coin"></i> Inicia sesión para comprar
+    </a>
+@endif
+
                 </div>
                 @else
                 <div class="text-center mt-4">
@@ -204,18 +189,15 @@
                 @endif
             </div>
         </main>
-
         <footer class="pie">
-            <div class="foot">
-                <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-                <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-            </div>
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
-
-        <script src="{{ asset('JS/script.js') }}"></script>
-        <script src="{{ asset('JS/script2.js') }}"></script>
-        <script src="{{ asset('JS/navbar.js') }}"></script>
 </body>
-
 </html>

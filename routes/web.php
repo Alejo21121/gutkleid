@@ -10,6 +10,7 @@ use App\Http\Controllers\RecuperarController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Controllers\EnvioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,3 +111,8 @@ Route::delete('/categorias/{id}', [ProductoController::class, 'destroyCat'])->na
 Route::delete('/subcategorias/{id}', [ProductoController::class, 'destroySub'])->name('subcategorias.destroy');
 
 Route::get('/ventas', [UsuarioController::class, 'ventas'])->name('ventas');
+
+// --- Envio ---
+Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
+Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
+Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');

@@ -18,9 +18,10 @@
 
 /* === HEADER === */
 .cabeza {
-background-color: rgb(231, 231, 231);
-    padding: 15px;
-    width: 100%;
+  background-color: rgb(231, 231, 231);
+  padding: 15px;
+  width: 100%;
+  max-height: auto;
 }
 
 .barras {
@@ -96,6 +97,14 @@ background-color: rgb(231, 231, 231);
   padding: 0 5px;
   font-size: 18px;
   color: #333;
+}
+
+.perfil-icono {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: 0.3s;
 }
 
 /* Links debajo */
