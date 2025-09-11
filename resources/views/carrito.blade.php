@@ -167,11 +167,11 @@
 
                 <div class="text-center mt-3">
                     <a href="{{ route('carrito.vaciar') }}" class="bottonvaci">
-                        <i class="bi bi-x-circle"></i> Vaciar carrito
+                         Vaciar carrito
                     </a>
 
 @if(session('usuario'))
-    <a href="{{ route('envio.index') }}" class="bottonfina">Finalizar compra</a>
+    <a href="{{ route('envio.index') }}" class="bottonfina">Siguiente</a>
         <i class="bi bi-cash-coin"></i>
     </a>
 @else
@@ -184,7 +184,7 @@
                 @else
                 <div class="text-center mt-4">
                     <p>Tu carrito está vacío.</p>
-                    <a href="{{ route('inicio') }}" class="bottonvolve"><i class="bi bi-arrow-left"></i> Volver a comprar</a>
+                    <a href="{{ route('inicio') }}" class="bottonvolve"> Volver a comprar</a>
                 </div>
                 @endif
             </div>

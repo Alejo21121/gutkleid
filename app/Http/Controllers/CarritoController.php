@@ -14,6 +14,7 @@ use App\Models\Persona;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FacturaMail;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Config;
 
 class CarritoController extends Controller
 {
@@ -49,14 +50,12 @@ class CarritoController extends Controller
 
             foreach ($carrito as $item) {
                 $producto = Producto::find($item['id_producto']);
-
                 if (!$producto) {
                     DB::rollBack();
                     return redirect()->route('carrito.index')->with('error', 'Producto no encontrado.');
                 }
 
                 $tallaBuscada = strtoupper(trim($item['talla'] ?? ''));
-
                 if (empty($tallaBuscada)) {
                     DB::rollBack();
                     return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para ' . $producto->nombre);
@@ -72,25 +71,23 @@ class CarritoController extends Controller
                 }
 
                 $cantidad = $item['cantidad'];
-                $valorUnitario = $item['valor'];
-                $subtotal = $valorUnitario * $cantidad;
-                $iva = $subtotal * 0.19;
-                $total = $subtotal + $iva;
+                $valorUnitario = $item['valor'] ?? 0; // <-- prevenir undefined key
+                $totalItem = $valorUnitario * $cantidad;
 
                 $detalle = new DetalleFacturaV();
                 $detalle->id_factura_venta = $factura->id_factura_venta;
                 $detalle->id_producto = $producto->id_producto;
                 $detalle->id_talla = $tallaProducto->id;
                 $detalle->cantidad = $cantidad;
-                $detalle->subtotal = $subtotal;
-                $detalle->iva = $iva;
+                $detalle->subtotal = $totalItem;
+                $detalle->iva = $totalItem * 0.19;
                 $detalle->save();
 
                 // Restar stock
                 $tallaProducto->cantidad -= $cantidad;
                 $tallaProducto->save();
 
-                $totalFactura += $total;
+                $totalFactura += $totalItem * 1.19; // ya incluye IVA
             }
 
             // Envío
@@ -104,13 +101,12 @@ class CarritoController extends Controller
             // Cargar relaciones para la vista del PDF
             $factura->load(['detalles.producto', 'cliente', 'detalles.talla']);
 
-            // Generar logo en base64
+            // Generar PDF
             $logoPath = public_path('IMG/LOGO3.png');
             $logoType = pathinfo($logoPath, PATHINFO_EXTENSION);
             $logoData = file_get_contents($logoPath);
             $base64Logo = 'data:image/' . $logoType . ';base64,' . base64_encode($logoData);
 
-            // Generar PDF
             $pdf = Pdf::loadView('factura_pdf', [
                 'factura' => $factura,
                 'logo' => $base64Logo
@@ -118,26 +114,19 @@ class CarritoController extends Controller
 
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
             $rutaArchivo = public_path('facturas/' . $nombreArchivo);
-
-            // Crear carpeta si no existe
             if (!file_exists(public_path('facturas'))) {
                 mkdir(public_path('facturas'), 0777, true);
             }
-
-            // Guardar PDF
             $pdf->save($rutaArchivo);
-
-            // Guardar ruta en la BD
             $factura->factura_pdf = 'facturas/' . $nombreArchivo;
             $factura->save();
 
-            // Enviar correo al cliente con la factura adjunta
+            // Enviar correo
             $cliente = $factura->cliente;
             if ($cliente && $cliente->correo) {
                 Mail::to($cliente->correo)->send(new FacturaMail($factura, $rutaArchivo));
             }
 
-            // Vaciar carrito
             session()->forget('carrito');
 
             return redirect()->route('carrito.index')
@@ -147,8 +136,6 @@ class CarritoController extends Controller
             return redirect()->route('carrito.index')->with('error', 'Error al finalizar la compra: ' . $e->getMessage());
         }
     }
-
-
 
     public function agregar(Request $request)
     {
@@ -168,8 +155,6 @@ class CarritoController extends Controller
         $rutaCompleta = 'IMG/imagenes_demo/' . basename($rutaImagen);
 
         $carrito = session()->get('carrito', []);
-
-        // 🔹 ahora la clave incluye talla y color
         $clave = $id_producto . '-' . $talla . '-' . $color;
 
         if (isset($carrito[$clave])) {
@@ -180,7 +165,7 @@ class CarritoController extends Controller
                 "nombre" => $nombre,
                 "valor" => $valor,
                 "talla" => $talla,
-                "color"       => $color,
+                "color" => $color,
                 "cantidad" => $cantidad,
                 "imagen" => $rutaCompleta
             ];
@@ -194,19 +179,12 @@ class CarritoController extends Controller
     public function actualizarCantidad(Request $request, $clave)
     {
         $carrito = session()->get('carrito', []);
-
         if (isset($carrito[$clave])) {
             $tipo = $request->input('tipo');
-
-            if ($tipo === 'sumar') {
-                $carrito[$clave]['cantidad'] += 1;
-            } elseif ($tipo === 'restar' && $carrito[$clave]['cantidad'] > 1) {
-                $carrito[$clave]['cantidad'] -= 1;
-            }
-
+            if ($tipo === 'sumar') $carrito[$clave]['cantidad'] += 1;
+            elseif ($tipo === 'restar' && $carrito[$clave]['cantidad'] > 1) $carrito[$clave]['cantidad'] -= 1;
             session()->put('carrito', $carrito);
         }
-
         return redirect()->route('carrito.index');
     }
 
@@ -220,10 +198,28 @@ class CarritoController extends Controller
         return redirect()->back()->with('success', 'Producto eliminado del carrito.');
     }
 
-
     public function vaciar()
     {
         session()->forget('carrito');
         return redirect()->back()->with('success', 'Carrito vaciado.');
     }
+public function checkout()
+{
+    $orderId = uniqid(); // O tu ID de factura
+    $total = \Cart::getTotal(); // O como tengas tu total del carrito
+
+    $apiSecret = config('services.bold.api_secret');
+    $amount = $total;
+    $currency = 'COP';
+
+    // Generar la firma HMAC
+    $integritySignature = hash_hmac('sha256', $orderId . $amount . $currency, $apiSecret);
+
+    return view('carrito', [
+        'orderId' => $orderId,
+        'totalCarrito' => $total,
+        'integritySignature' => $integritySignature
+    ]);
+}
+
 }

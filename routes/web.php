@@ -11,6 +11,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\PagoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,3 +117,5 @@ Route::get('/ventas', [UsuarioController::class, 'ventas'])->name('ventas');
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
 Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
 Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
+// routes/web.php
+Route::get('/compra/confirmacion', [CompraController::class, 'confirmacion'])->name('compra.confirmacion');
