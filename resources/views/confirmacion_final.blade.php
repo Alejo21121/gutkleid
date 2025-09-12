@@ -54,7 +54,7 @@
         <main class="containercar">
     <div class="container-confirmacion text-center">
         <i class="bi bi-check-circle-fill icon-success mb-3"></i>
-        <h2 class="mb-3">¡Gracias por tu compra, {{ $factura->cliente->nombres }}!</h2>
+        <h2 class="mb-3">¡Gracias por tu compra!</h2>
         <p class="lead">Tu pedido ha sido procesado exitosamente. Recibirás un correo electrónico con la confirmación y los detalles de tu compra.</p>
         <p><strong>Número de Factura:</strong> #{{ $factura->id_factura_venta }}</p>
 
