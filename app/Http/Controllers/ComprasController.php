@@ -10,6 +10,8 @@ use App\Models\Proveedor;
 use App\Models\Inventario;
 use App\Models\Talla;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacturaMail; // Tu mailable para enviar facturas
 
 use Barryvdh\DomPDF\Facade\Pdf;
 

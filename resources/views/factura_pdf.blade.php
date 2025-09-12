@@ -96,71 +96,71 @@
     </div>
 
     <!-- Sección Cliente -->
-<div class="seccion-titulo">Datos del Cliente</div>
-<table class="table-info">
-    <tr>
-        <th>Cliente:</th>
-        <td>{{ $factura->cliente->nombres }} {{ $factura->cliente->apellidos }}</td>
-    </tr>
-    <tr>
-        <th>Documento:</th>
-        <td>{{ $factura->cliente->documento }}</td>
-    </tr>
-    <tr>
-        <th>Teléfono:</th>
-        <td>{{ $factura->cliente->telefono }}</td>
-    </tr>
-    @if ($factura->info_adicional)
-    <tr>
-        <th>Información Adicional:</th>
-        <td>{{ $factura->info_adicional }}</td>
-    </tr>
-    @endif
+    <div class="seccion-titulo">Datos del Cliente</div>
+    <table class="table-info">
+        <tr>
+            <th>Cliente:</th>
+            <td>{{ $factura->cliente->nombres }} {{ $factura->cliente->apellidos }}</td>
+        </tr>
+        <tr>
+            <th>Documento:</th>
+            <td>{{ $factura->cliente->documento }}</td>
+        </tr>
+        <tr>
+            <th>Teléfono:</th>
+            <td>{{ $factura->cliente->telefono }}</td>
+        </tr>
+        @if ($factura->info_adicional)
+        <tr>
+            <th>Información Adicional:</th>
+            <td>{{ $factura->info_adicional }}</td>
+        </tr>
+        @endif
     </table>
 
-<div class="seccion-titulo">Detalle de Productos</div>
-<table class="tabla-datos">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Talla</th>
-            <th>Color</th>
-            <th>Cantidad</th>
-            <th>Valor Unitario</th>
-            <th>Subtotal</th>
-            <th>IVA</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @php
-        $subtotalGeneral = 0;
-        $ivaGeneral = 0;
-        @endphp
+    <div class="seccion-titulo">Detalle de Productos</div>
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Talla</th>
+                <th>Color</th>
+                <th>Cantidad</th>
+                <th>Valor Unitario</th>
+                <th>Subtotal</th>
+                <th>IVA</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+            $subtotalGeneral = 0;
+            $ivaGeneral = 0;
+            @endphp
 
-        @foreach ($factura->detalles as $detalle)
-        @php
-        $cantidad = $detalle->cantidad;
-        $valorUnitario = $detalle->producto->valor;
-        $subtotal = $valorUnitario * $cantidad;
-        $iva = round($subtotal * 0.19, 0); // Redondeo sin decimales
-        $total = $subtotal + $iva;
+            @foreach ($factura->detalles as $detalle)
+            @php
+            $cantidad = $detalle->cantidad;
+            $valorUnitario = $detalle->producto->valor;
+            $subtotal = $valorUnitario * $cantidad;
+            $iva = round($subtotal * 0.19, 0); // Redondeo sin decimales
+            $total = $subtotal + $iva;
 
-        $subtotalGeneral += $subtotal;
-        $ivaGeneral += $iva;
-        @endphp
-        <tr>
-            <td>{{ $detalle->producto->nombre }}</td>
-            <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
-            <td>{{ $detalle->talla->color ?? 'N/A' }}</td> <td>{{ number_format($cantidad, 0) }}</td>
-            <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
-            <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
-            <td>${{ number_format($iva, 0, ',', '.') }}</td>
-            <td>${{ number_format($total, 0, ',', '.') }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+            $subtotalGeneral += $subtotal;
+            $ivaGeneral += $iva;
+            @endphp
+            <tr>
+                <td>{{ $detalle->producto->nombre }}</td>
+                <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
+                <td>{{ $detalle->color ?? 'N/A' }}</td>
+                <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
+                <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
+                <td>${{ number_format($iva, 0, ',', '.') }}</td>
+                <td>${{ number_format($total, 0, ',', '.') }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
     <!-- Totales -->
     <div class="seccion-titulo">Totales</div>

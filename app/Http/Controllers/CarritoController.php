@@ -94,6 +94,7 @@ class CarritoController extends Controller
         DB::beginTransaction();
 
         try {
+            // 1️⃣ Crear factura
             $factura = new FacturaVenta();
             $factura->fecha_venta = now();
             $factura->nit_tienda = '123456789';
@@ -108,6 +109,7 @@ class CarritoController extends Controller
 
             $totalFactura = 0;
 
+            // 2️⃣ Procesar cada producto en el carrito
             foreach ($carrito as $item) {
                 $producto = Producto::find($item['id_producto']);
                 if (!$producto) {
@@ -135,6 +137,7 @@ class CarritoController extends Controller
                 $totalItem = $valorUnitario * $cantidad;
                 $ivaItem = $totalItem * 0.19;
 
+                // Guardar detalle de factura
                 $detalle = new DetalleFacturaV();
                 $detalle->id_factura_venta = $factura->id_factura_venta;
                 $detalle->id_producto = $producto->id_producto;
@@ -142,30 +145,31 @@ class CarritoController extends Controller
                 $detalle->cantidad = $cantidad;
                 $detalle->subtotal = $totalItem;
                 $detalle->iva = $ivaItem;
+                $detalle->color = $item['color'] ?? 'N/A';
                 $detalle->save();
 
+                // Reducir stock
                 $tallaProducto->cantidad -= $cantidad;
                 $tallaProducto->save();
 
                 $totalFactura += $totalItem;
             }
 
-            if ($tipoEntrega === 'tienda') {
-                $costoEnvio = 0;
-            } else {
-                $costoEnvio = $totalFactura >= 150000 ? 0 : 15000;
-            }
+            // 3️⃣ Calcular envío
+            $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($totalFactura >= 150000) ? 0 : 15000);
 
+            // 4️⃣ Guardar total y envío en la factura
             $factura->envio = $costoEnvio;
             $factura->total = $totalFactura + $costoEnvio + ($totalFactura * 0.19);
             $factura->save();
 
             DB::commit();
 
+            // 5️⃣ Cargar relaciones para PDF
             $factura->load(['detalles.producto', 'cliente', 'detalles.talla']);
 
+            // 6️⃣ Generar PDF
             $pdf = Pdf::loadView('factura_pdf', ['factura' => $factura]);
-
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
             $rutaArchivo = 'facturas/' . $nombreArchivo;
             $rutaCompleta = public_path($rutaArchivo);
@@ -179,6 +183,12 @@ class CarritoController extends Controller
             $factura->factura_pdf = $rutaArchivo;
             $factura->save();
 
+            // 7️⃣ Enviar correo al cliente
+            if (!empty($usuario['correo'])) {
+                Mail::to($usuario['correo'])->send(new FacturaMail($factura, $rutaCompleta));
+            }
+
+            // 8️⃣ Limpiar carrito
             Session::forget('carrito');
 
             return redirect()->route('confirmacion.final', ['id_factura' => $factura->id_factura_venta]);
@@ -187,6 +197,7 @@ class CarritoController extends Controller
             return redirect()->route('carrito.index')->with('error', 'Error al finalizar la compra: ' . $e->getMessage());
         }
     }
+
 
     public function mostrarConfirmacionFinal($id_factura)
     {
@@ -278,7 +289,7 @@ class CarritoController extends Controller
 
         $subtotal = 0;
         foreach ($carrito as $item) {
-            $subtotal += $item['total'];
+            $subtotal += $item['valor'] * $item['cantidad']; // multiplicar por cantidad
         }
 
         $ivaTotal = round($subtotal * $tasaIVA, 0);
@@ -289,6 +300,7 @@ class CarritoController extends Controller
         }
 
         $totalFinal = $subtotal + $ivaTotal + $costoEnvio;
+
 
         if ($envio['tipo_entrega'] === 'tienda') {
             $direccionMostrada = 'Tv 79 #68 Sur 98a';
@@ -325,7 +337,6 @@ class CarritoController extends Controller
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
 
             return $pdf->stream($nombreArchivo);
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al generar el PDF: ' . $e->getMessage());
         }

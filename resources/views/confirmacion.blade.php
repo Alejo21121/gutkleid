@@ -52,13 +52,13 @@
             <h2 class="text-center">Confirmación de Entrega</h2>
             <form id="envio-form" action="{{ route('carrito.finalizar') }}" method="POST">
                 @csrf
-                
+
                 @php
-                    $direccionFormulario = data_get($envio ?? [], 'direccion') ?? '';
-                    $infoAdicionalFormulario = data_get($envio ?? [], 'info_adicional') ?? '';
-                    $tipoEntregaFormulario = data_get($envio ?? [], 'tipo_entrega') ?? 'domicilio';
+                $direccionFormulario = data_get($envio ?? [], 'direccion') ?? '';
+                $infoAdicionalFormulario = data_get($envio ?? [], 'info_adicional') ?? '';
+                $tipoEntregaFormulario = data_get($envio ?? [], 'tipo_entrega') ?? 'domicilio';
                 @endphp
-            
+
                 <input type="hidden" name="tipo_entrega" value="{{ $tipoEntregaFormulario }}">
                 <input type="hidden" name="direccion" value="{{ $direccionFormulario }}">
                 <input type="hidden" name="info_adicional" value="{{ $infoAdicionalFormulario }}">
@@ -117,7 +117,8 @@
                             <td>{{ $item['talla'] }}</td>
                             <td>{{ $item['color'] }}</td>
                             <td>{{ $item['cantidad'] }}</td>
-                            <td>$ {{ number_format(round($item['total'] * 1.19), 0, ",", ".") }}</td>
+                            <td>$ {{ number_format(round($item['valor'] * $item['cantidad'] * 1.19), 0, ",", ".") }}</td>
+
                         </tr>
                         @endforeach
                         <tr>
@@ -126,7 +127,7 @@
                         </tr>
                         <tr>
                             <th colspan="4" class="text-end">Gastos de envío</th>
-                            <td>$ {{ number_format(round($costoEnvio, -3), 0, ",", ".") }}</td>
+                            <td>$ {{ number_format($costoEnvio, 0, ",", ".") }}</td>
                         </tr>
                         <tr>
                             <th colspan="4" class="text-end">Valor a pagar</th>
@@ -155,4 +156,5 @@
         <p>&copy; 2024 - GUT KLEID.</p>
     </footer>
 </body>
+
 </html>

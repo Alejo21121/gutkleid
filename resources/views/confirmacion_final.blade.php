@@ -95,7 +95,6 @@
 </div>
 
         <div class="mt-4">
-            <a href="{{ route('venta.descargarFactura', $factura->id_factura_venta) }}" class="bottoncancela">Factura</a>
             <a href="{{ route('inicio') }}" class="bottonpaga">Volver al inicio</a>
         </div>
     </div>
