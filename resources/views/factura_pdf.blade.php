@@ -153,6 +153,7 @@
                 <td>{{ $detalle->producto->nombre }}</td>
                 <td>{{ $detalle->talla->talla ?? 'N/A' }}</td>
                 <td>{{ $detalle->color ?? 'N/A' }}</td>
+                <td>{{ $cantidad }}</td>
                 <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
                 <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
                 <td>${{ number_format($iva, 0, ',', '.') }}</td>
