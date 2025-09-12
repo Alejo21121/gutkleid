@@ -4,46 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compra Exitosa - Gut Kleid</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <title>Carrito - Gut Kleid</title>
+    <link rel="stylesheet" href="{{ asset('CSS/ENVIO.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container-confirmacion {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .icon-success {
-            font-size: 5rem;
-            color: #28a745;
-        }
-
-        .btn-descargar {
-            background-color: #6F4E37;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-descargar:hover {
-            background-color: #5a412f;
-        }
-    </style>
 </head>
-
 <body>
+    <header class="cabeza">
+        <nav class="barras">
+            <!-- IZQUIERDA -->
+            <div class="nav-left">
+                @if (session('usuario') && session('usuario')['id_rol'] == 1)
+                <a class="filter-btn" href="{{ route('producto.index') }}">Panel</a>
+                @endif
+            </div>
+
+            <!-- CENTRO -->
+            <div class="nav-center">
+                <a href="/">
+                    <div class="logo">
+                        <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+                    </div>
+                </a>
+            </div>
+
+            <!-- DERECHA -->
+            <div class="nav-right">
+                <div class="usuario-info">
+                    @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                            alt="Perfil"
+                            class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                    @else
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </nav>
+        <hr>
+    <!-- Header -->
+    <main class="main">
+        <main class="containercar">
     <div class="container-confirmacion text-center">
         <i class="bi bi-check-circle-fill icon-success mb-3"></i>
         <h2 class="mb-3">¡Gracias por tu compra, {{ $factura->cliente->nombres }}!</h2>
@@ -87,10 +95,22 @@
 </div>
 
         <div class="mt-4">
-            <a href="{{ route('venta.descargarFactura', $factura->id_factura_venta) }}" class="btn-descargar"><i class="bi bi-file-earmark-arrow-down-fill"></i> Descargar Factura</a>
-            <a href="{{ route('inicio') }}" class="btn btn-secondary ms-3">Volver al inicio</a>
+            <a href="{{ route('venta.descargarFactura', $factura->id_factura_venta) }}" class="bottoncancela">Factura</a>
+            <a href="{{ route('inicio') }}" class="bottonpaga">Volver al inicio</a>
         </div>
     </div>
+    </main>
+        </main>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
 </body>
 
 </html>

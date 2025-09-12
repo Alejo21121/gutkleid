@@ -11,6 +11,8 @@ use App\Models\Inventario;
 use App\Models\Talla;
 use Illuminate\Support\Facades\DB;
 
+use Shuchkin\SimpleXLSXGen;
+
 class ComprasController extends Controller
 {
     public function index(Request $request)
@@ -33,6 +35,40 @@ class ComprasController extends Controller
         $productos = Producto::with('tallas')->get(); // Para obtener las tallas disponibles
         $proveedores = Proveedor::all();
         return view('createcompras', compact('productos', 'proveedores'));
+    }
+
+    public function exportarExcel()
+    {
+        // Traemos todos los registros de compras con su relación de proveedor
+        $compras = FacturaCompra::with('proveedor')->get();
+
+        // Encabezados de la tabla, exactamente como aparecen en tu vista
+        $header = [
+            '# Factura',
+            'Fecha',
+            'Proveedor',
+            'Valor',
+            'Estado',
+        ];
+
+        // Preparamos los datos para la exportación
+        $data = [];
+        foreach ($compras as $compra) {
+            $data[] = [
+                $compra->id_factura_compras,
+                $compra->fecha_compra,
+                $compra->proveedor->nombre ?? 'N/A', // Muestra el nombre del proveedor
+                $compra->valor,
+                $compra->estado,
+            ];
+        }
+
+        // Unimos los encabezados con los datos
+        array_unshift($data, $header);
+
+        // Generamos el archivo de Excel y lo descargamos
+        $xlsx = SimpleXLSXGen::fromArray($data);
+        return response($xlsx->downloadAs('compras.xlsx'))->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
 
     public function store(Request $request)

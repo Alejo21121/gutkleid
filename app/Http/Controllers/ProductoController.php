@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 
-use App\Exports\ProductosExport;
-use Maatwebsite\Excel\Facades\Excel;
-
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 
@@ -17,6 +14,8 @@ use App\Models\Imagen;
 use App\Models\Talla;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+
+use Shuchkin\SimpleXLSXGen;
 
 class ProductoController extends Controller
 {
@@ -171,9 +170,54 @@ class ProductoController extends Controller
     }
 
     public function exportarExcel()
-    {
-        return Excel::download(new ProductosExport, 'productos.xlsx');
+{
+    // Traemos todos los productos con sus relaciones de tallas, categoria y subcategoria
+    $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
+
+    // Encabezados de la tabla
+    $header = [
+        'Referencia',
+        'Nombre',
+        'Valor U',
+        'IVA(19%)',
+        'Marca',
+        'Sexo',
+        'Talla (Cant.)',
+        'Color',
+        'Categoria',
+        'Cantidad Total',
+    ];
+
+    // Preparamos los datos para la exportación
+    $data = [];
+    foreach ($productos as $producto) {
+        $tallasString = $producto->tallas->map(function ($talla) {
+            return "{$talla->talla} ({$talla->cantidad})";
+        })->implode(', ');
+
+        $iva = $producto->valor * 0.19;
+
+        $data[] = [
+            $producto->id_producto,
+            $producto->nombre,
+            $producto->valor,
+            $iva,
+            $producto->marca,
+            $producto->sexo,
+            $tallasString,
+            $producto->color,
+            $producto->categoria->nombre . ' -> ' . ($producto->subcategoria->nombre ?? 'N/A'),
+            $producto->tallas->sum('cantidad'),
+        ];
     }
+
+    // Unimos los encabezados con los datos
+    array_unshift($data, $header);
+
+    // Generamos el archivo de Excel y lo descargamos
+    $xlsx = SimpleXLSXGen::fromArray($data);
+    return response($xlsx->downloadAs('inventario.xlsx'))->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
 
     public function exportarPDF()
     {

@@ -7,8 +7,8 @@ use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Exports\UsuariosExport;
-use Maatwebsite\Excel\Facades\Excel;
+
+use Shuchkin\SimpleXLSXGen;
 
 class UsuarioController extends Controller
 {
@@ -241,10 +241,47 @@ class UsuarioController extends Controller
     }
 
     // Métodos para exportación
-    public function exportarExcel()
-    {
-        return "Funcionalidad de exportar a Excel para usuarios no implementada aún.";
+public function exportarExcel()
+{
+    // Cargar los usuarios con sus relaciones tipoDocumento y rol
+    $usuarios = Usuario::with(['tipoDocumento', 'rol'])->get();
+
+    // Encabezados de la tabla, exactamente como aparecen en tu vista
+    $header = [
+        'ID Persona',
+        'Documento',
+        'Tipo Doc',
+        'Nombres',
+        'Apellidos',
+        'Telefono',
+        'Correo',
+        'Rol',
+    ];
+
+    // Preparamos los datos para la exportación
+    $data = [];
+    foreach ($usuarios as $usuario) {
+        $data[] = [
+            $usuario->id_persona,
+            $usuario->documento,
+            // Acceder a la propiedad 'nombre' de la relación 'tipoDocumento'
+            $usuario->tipoDocumento->nombre ?? 'N/A', 
+            $usuario->nombres,
+            $usuario->apellidos,
+            $usuario->telefono,
+            $usuario->correo,
+            // Acceder a la propiedad 'nombre' de la relación 'rol'
+            $usuario->rol->nombre ?? 'N/A', 
+        ];
     }
+
+    // Unimos los encabezados con los datos
+    array_unshift($data, $header);
+
+    // Generamos el archivo de Excel y lo descargamos
+    $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+    return response($xlsx->downloadAs('usuarios.xlsx'))->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+}
 
     public function exportarPDF()
     {

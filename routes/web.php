@@ -11,7 +11,6 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\EnvioController;
-use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +19,6 @@ use App\Http\Controllers\VentaController;
 */
 
 // --- Ruta principal (Inicio) ---
-// Ahora llama a paginaInicio en ProductoController
 Route::get('/', [ProductoController::class, 'paginaInicio'])->name('inicio');
 
 // --- Rutas de Autenticación (Login y Registro) ---
@@ -32,15 +30,12 @@ Route::get('/registro', [RegistroController::class, 'mostrarFormulario'])->name(
 Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.enviar');
 
 // --- Rutas de Productos ---
-Route::get('/producto/{producto}/edit', [ProductoController::class, 'edit'])->name('producto.edit');
-Route::put('/producto/{producto}', [ProductoController::class, 'update'])->name('producto.update');
-
-// Exportaciones
-Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExcel'])->name('producto.exportarExcel');
+// Exportaciones de productos
 Route::get('/producto/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('producto.exportarPDF');
-
+Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExcel'])->name('producto.exportarExcel');
 // CRUD completo de productos
 Route::resource('producto', ProductoController::class);
+
 
 // --- Rutas para Vistas Estáticas ---
 Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
@@ -50,16 +45,18 @@ Route::view('/terminos', 'terminos')->name('terminos');
 Route::view('/preguntas', 'preguntas')->name('preguntas');
 Route::view('/mi-cuenta-cli', 'cuenta_cli')->name('cuenta_cli');
 Route::view('/mi-cuenta', 'user')->name('cuenta');
-
 Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
 
 
-// --- Usuarios ---
-Route::resource('usuarios', UsuarioController::class);
-Route::get('usuarios/exportarExcel', [UsuarioController::class, 'exportarExcel'])->name('usuarios.exportarExcel');
+// --- Usuarios --- 
+// Rutas de exportación de usuarios (Mover estas rutas antes del resource)
+Route::get('/usuarios/exportar-excel', [UsuarioController::class, 'exportarExcel'])->name('usuarios.exportarExcel');
 Route::get('usuarios/exportarPDF', [UsuarioController::class, 'exportarPDF'])->name('usuarios.exportarPDF');
+
+// CRUD de usuarios
+Route::resource('usuarios', UsuarioController::class);
 
 Route::get('/perfil/editar', [UsuarioController::class, 'editar'])->name('perfil.editar');
 Route::post('/perfil/actualizar', [UsuarioController::class, 'actualizar'])->name('perfil.actualizar');
@@ -90,10 +87,11 @@ Route::post('/producto/{id}/imagenes', [ProductoController::class, 'subirImagen'
 Route::delete('/imagenes/{id}', [ProductoController::class, 'eliminarImagen'])->name('imagenes.eliminar');
 
 // --- Compras ---
-Route::resource('compras', ComprasController::class);
-Route::get('/compras/exportar-excel', [ComprasController::class, 'exportarExcel'])->name('compras.exportarExcel');
+// Exportaciones de compras
 Route::get('/compras/exportar-pdf', [ComprasController::class, 'exportarPDF'])->name('compras.exportarPDF');
-Route::post('/compras/store', [ComprasController::class, 'store'])->name('compra.store');
+Route::get('/compras/exportar-excel', [ComprasController::class, 'exportarExcel'])->name('compras.exportarExcel');
+// CRUD de compras
+Route::resource('compras', ComprasController::class);
 
 // --- Dirección ---
 Route::get('/direccion', function () {
@@ -111,16 +109,18 @@ Route::post('/subcategorias', [ProductoController::class, 'storeSubcategoria'])-
 Route::delete('/categorias/{id}', [ProductoController::class, 'destroyCat'])->name('categorias.destroy');
 Route::delete('/subcategorias/{id}', [ProductoController::class, 'destroySub'])->name('subcategorias.destroy');
 
+// --- Ventas ---
 Route::get('/ventas', [UsuarioController::class, 'ventas'])->name('ventas');
+// Exportaciones de ventas
+Route::get('/ventas/exportar-excel', [CarritoController::class, 'exportarExcel'])->name('ventas.exportarExcel');
 
 // --- Envio ---
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
 Route::post('/guardar-envio', [CarritoController::class, 'guardarEnvio'])->name('envio.guardar');
 Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
-// routes/web.php
 Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
 
 // --- Rutas de Proceso de Venta y Facturación ---
-Route::post('/venta/procesar', [VentaController::class, 'procesarVenta'])->name('venta.procesar');
-Route::get('/confirmacion/final/{id_factura}', [VentaController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
+Route::post('/venta/procesar', [CarritoController::class, 'procesarVenta'])->name('venta.procesar');
+Route::get('/confirmacion/final/{id_factura}', [CarritoController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
 Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'generarFacturaPDF'])->name('venta.descargarFactura');

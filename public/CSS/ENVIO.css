@@ -273,6 +273,11 @@ body {
 }
 .perfil-icono:hover { transform: scale(1.05); }
 
+.icon-success {
+    font-size: 5rem;
+    color: #28a745;
+}
+
 /* === CARRITO === */
 .containercar {
     text-align: center;
@@ -339,11 +344,13 @@ body {
     border: none;
     padding: 10px;
     position: relative;
+    text-decoration: none;
 }
 
 .bottonpaga:hover {
     background-color: rgb(179, 116, 44);
     color: white;
+    text-decoration: none;
 }
 
 .bottonvolver {
