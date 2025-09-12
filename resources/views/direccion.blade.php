@@ -45,7 +45,6 @@
         </div>
       </div>
     </nav>
-  </header>
 </head>
 
 <body>
@@ -90,14 +89,17 @@
 
     </div>
   </div>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
 
 </body>
-<footer class="pie">
-  <div class="foot">
-    <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
-    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-  </div>
-  <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
 
 </html>
