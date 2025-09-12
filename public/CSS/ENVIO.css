@@ -326,6 +326,44 @@ body {
     background: #3c7930;
     color: white;
 }
+
+.bottonpaga{
+    margin-left: 1px;
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(245, 159, 61);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    position: relative;
+}
+
+.bottonpaga:hover {
+    background-color: rgb(179, 116, 44);
+    color: white;
+}
+
+.bottonvolver {
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: #7e7e7e;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    position: relative;
+}
+.bottonvolver:hover {
+    background: #5a5a5a;
+    color: #fff;
+}
+
 .bottoncancela {
     background: #a82e2e;
     color: white;

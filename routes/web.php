@@ -11,7 +11,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\EnvioController;
-use App\Http\Controllers\PagoController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,7 +115,12 @@ Route::get('/ventas', [UsuarioController::class, 'ventas'])->name('ventas');
 
 // --- Envio ---
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
-Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
+Route::post('/guardar-envio', [CarritoController::class, 'guardarEnvio'])->name('envio.guardar');
 Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
 // routes/web.php
 Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
+
+// --- Rutas de Proceso de Venta y Facturación ---
+Route::post('/venta/procesar', [VentaController::class, 'procesarVenta'])->name('venta.procesar');
+Route::get('/confirmacion/final/{id_factura}', [VentaController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
+Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'generarFacturaPDF'])->name('venta.descargarFactura');

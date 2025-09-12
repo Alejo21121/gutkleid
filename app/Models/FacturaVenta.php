@@ -15,17 +15,19 @@ class FacturaVenta extends Model
         'nit_tienda',
         'dire_tienda',
         'telef_tienda',
-        'fecha_venta', // ESTA es la correcta
+        'fecha_venta',
         'total',
-        'id_persona',
+        'id_persona', // Relación con el cliente
         'id_metodo_pago'
     ];
+
     public function detalles()
-{
-    return $this->hasMany(\App\Models\DetalleFacturaV::class, 'id_factura_venta');
-}
-public function cliente()
-{
-    return $this->belongsTo(\App\Models\Persona::class, 'id_persona');
-}
+    {
+        return $this->hasMany(\App\Models\DetalleFacturaV::class, 'id_factura_venta');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(\App\Models\Persona::class, 'id_persona');
+    }
 }

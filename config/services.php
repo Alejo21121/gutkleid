@@ -30,11 +30,4 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
-// config/services.php
-    // ...
-    'bold' => [
-        'api_key' => env('BOLD_PUBLIC_KEY'),
-        'private_key' => env('BOLD_PRIVATE_KEY'), // Asegúrate de que esta línea esté presente
-    ],
 ];

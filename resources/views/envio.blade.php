@@ -59,7 +59,7 @@
         <div class="containercar">
             <h2 class="text-center">Opciones de Entrega</h2>
 
-            <form action="{{ route('envio.guardar') }}" method="POST" class="mt-4">
+            <<form action="{{ route('envio.guardar') }}" method="POST" class="mt-4">
                 @csrf
 
                 <div class="form-check text-start mb-3">
@@ -82,13 +82,8 @@
                 </div>
 
 <div class="d-flex justify-content-center gap-3">
-    <button type="submit" class="bottonfina">
-        <i class="bi bi-check-circle"></i> Confirmar
-    </button>
-
-    <a href="{{ route('carrito.index') }}" class="bottoncancela">
-        <i class="bi bi-x-circle"></i> Cancelar
-    </a>
+    <button type="submit" class="bottonfina">Confirmar</button>
+    <a href="{{ route('carrito.index') }}" class="bottoncancela">Cancelar</a>
 </div>
             </form>
         </div>
