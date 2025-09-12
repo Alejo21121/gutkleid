@@ -36,7 +36,7 @@ class UsuarioController extends Controller
             'telefono' => ['required', 'digits:10', 'regex:/^[0-9]{10}$/'],
             'correo' => 'required|email|max:255|unique:personas,correo,' . $usuario['id_persona'] . ',id_persona',
             'contraseña' => [
-                'required',
+                'nullable', // 👈 ahora no es obligatoria
                 'string',
                 'min:6',
                 'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'

@@ -118,4 +118,4 @@ Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
 Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
 Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
 // routes/web.php
-Route::get('/compra/confirmacion', [CompraController::class, 'confirmacion'])->name('compra.confirmacion');
+Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
