@@ -15,6 +15,8 @@ use App\Models\Talla;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Shuchkin\SimpleXLSXGen;
 
 class ProductoController extends Controller
@@ -220,9 +222,21 @@ class ProductoController extends Controller
 }
 
     public function exportarPDF()
-    {
-        return "Exportando productos a PDF...";
-    }
+{
+    // Obtener todos los productos con sus relaciones de tallas y categorías
+    $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
+
+    // Pasar los datos a una vista específica para el PDF
+    $data = [
+        'productos' => $productos
+    ];
+
+    // Cargar la vista y generar el PDF
+    $pdf = Pdf::loadView('inventario_pdf', $data);
+
+    // Permitir que el PDF se abra en una nueva pestaña del navegador
+    return $pdf->stream('inventario.pdf');
+}
 
     public function verProducto($id)
     {

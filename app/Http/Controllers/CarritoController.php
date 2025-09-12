@@ -30,6 +30,18 @@ class CarritoController extends Controller
         return view('carrito', compact('carrito', 'totalFinal'));
     }
 
+    public function exportarPDF()
+    {
+        // Obtén los datos de todas las ventas con su cliente asociado
+        $ventas = FacturaVenta::with('cliente')->get();
+
+        // Carga la vista 'pdf.ventas_pdf' y le pasa los datos de las ventas
+        $pdf = Pdf::loadView('ventas_pdf', compact('ventas'));
+
+        // Muestra el PDF en el navegador para su descarga
+        return $pdf->stream('reporte_ventas.pdf');
+    }
+
     public function exportarExcel()
     {
         // Traemos todos los registros de ventas con su relación de cliente (Persona)
@@ -85,7 +97,7 @@ class CarritoController extends Controller
             $factura = new FacturaVenta();
             $factura->fecha_venta = now();
             $factura->nit_tienda = '123456789';
-            $factura->dire_tienda = 'Calle Ficticia #123';
+            $factura->dire_tienda = 'Tv 79 #68 Sur-98a';
             $factura->telef_tienda = '3001234567';
             $factura->id_persona = $usuario['id_persona'];
             $factura->id_metodo_pago = MetodoPago::first()->id_metodo_pago ?? 1;

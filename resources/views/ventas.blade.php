@@ -50,7 +50,7 @@
                     <button type="submit" class="bottbusca"><i class="bi bi-search"></i></button>
                     <a href="" class="bottagrega"><i class="bi bi-plus-circle"></i></a>
                     <a href="{{ route('ventas.exportarExcel') }}" class="bottexc"><i class="bi bi-file-earmark-excel"></i></a>
-                    <a href="" class="bottpdf"><i class="bi bi-file-pdf"></i></a>
+                    <a href="{{ route('ventas.exportarPDF') }}" class="bottpdf"><i class="bi bi-file-pdf"></i></a>
                 </form>
 
                 <div class="tabla-scroll">

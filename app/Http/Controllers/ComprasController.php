@@ -11,6 +11,8 @@ use App\Models\Inventario;
 use App\Models\Talla;
 use Illuminate\Support\Facades\DB;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Shuchkin\SimpleXLSXGen;
 
 class ComprasController extends Controller
@@ -35,6 +37,18 @@ class ComprasController extends Controller
         $productos = Producto::with('tallas')->get(); // Para obtener las tallas disponibles
         $proveedores = Proveedor::all();
         return view('createcompras', compact('productos', 'proveedores'));
+    }
+
+    public function exportarPDF()
+    {
+        // Obtén las compras con los datos del proveedor
+        $compras = FacturaCompra::with('proveedor')->get();
+
+        // Carga la vista 'pdf.compras' y le pasa los datos de las compras
+        $pdf = Pdf::loadView('compras_pdf', compact('compras'));
+
+        // Muestra el PDF en el navegador
+        return $pdf->stream('reporte_compras.pdf');
     }
 
     public function exportarExcel()

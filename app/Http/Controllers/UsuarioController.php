@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Shuchkin\SimpleXLSXGen;
 
 class UsuarioController extends Controller
@@ -285,7 +287,12 @@ public function exportarExcel()
 
     public function exportarPDF()
     {
-        return "Funcionalidad de exportar a PDF para usuarios no implementada aún.";
+        $usuarios = Usuario::with(['tipoDocumento', 'rol'])->get();
+        
+        // Aquí es donde corregimos el nombre de la vista
+        $pdf = Pdf::loadView('usuarios_pdf', compact('usuarios'));
+        
+        return $pdf->stream('reporte_usuarios.pdf');
     }
 
     public function eliminarImagen()

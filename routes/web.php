@@ -124,3 +124,6 @@ Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->
 Route::post('/venta/procesar', [CarritoController::class, 'procesarVenta'])->name('venta.procesar');
 Route::get('/confirmacion/final/{id_factura}', [CarritoController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
 Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'generarFacturaPDF'])->name('venta.descargarFactura');
+
+Route::get('/inventario/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('inventario.exportarPDF');
+Route::get('/ventas/exportar-pdf', [CarritoController::class, 'exportarPDF'])->name('ventas.exportarPDF');
