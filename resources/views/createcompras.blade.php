@@ -22,7 +22,7 @@
             <div class="alert alert-danger w-75">{{ session('error') }}</div>
         @endif
 
-        <form action="{{ route('compra.store') }}" method="POST" class="w-75" id="form-compra">
+        <form action="{{ route('compras.store') }}" method="POST" class="w-75" id="form-compra">
             @csrf
 
             <div class="mb-3">

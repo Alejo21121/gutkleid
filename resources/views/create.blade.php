@@ -1,18 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gut Kleid</title>
-    <link rel="stylesheet" href="{{ asset('CSS/estiloagre.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gut Kleid</title>
+        <link rel="stylesheet" href="{{ asset('CSS/estiloagre.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+        <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
 </head>
-
 <body>
+<header class="cabeza">
+    <nav class="barras">
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
+            <div class="logo">
+                <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+            </div></a>
+        </div>
 
+        <!-- DERECHA -->
+        <div class="nav-right">
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
+                             alt="Perfil"
+                             class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                @else
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
+                @endif
+
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <main class="main">
     @if (session('mensaje'))
     <div class="mensaje éxito">
         {{ session('mensaje') }}
@@ -21,7 +54,7 @@
 
     <form action="{{ route('producto.store') }}" method="POST">
         @csrf
-        <h2>Agregar Producto</h2>
+        <h2 class="titulopag">Agregar Producto</h2>
 
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre" required>
@@ -48,9 +81,6 @@
             <div class="d-flex align-items-center justify-content-between gap-2">
                 <label for="id_categoria" class="form-label">Categoría:</label>
                 <!-- Botón modal categoría -->
-                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCategoria">
-                    Editar Categoría
-                </button>
             </div>
             <select name="id_categoria" id="id_categoria" class="form-control mt-2" required onchange="mostrarSubcategorias()">
                 <option value="">Seleccione una categoría</option>
@@ -61,6 +91,9 @@
                 </option>
                 @endforeach
             </select>
+                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCategoria">
+                    Editar Categoría
+                </button>
         </div>
 
 
@@ -89,18 +122,18 @@
                     <input type="number" name="tallas[0][cantidad]" class="form-control" placeholder="Cantidad" min="0" required>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)">❌</button>
+                    <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)"><i class="bi bi-x"></i></button>
                 </div>
             </div>
         </div>
         <br>
-        <button type="button" class="btn btn-outline-primary" onclick="agregarTalla()">➕ Agregar otra talla</button>
+        <button type="button" class="botoncategor" onclick="agregarTalla()"><i class="bi bi-arrow-down-circle"></i> Agregar otra talla</button>
 
-        <button type="submit" class="btn btn-success mt-3">Agregar Producto</button>
-        <center><a href="{{ url('producto') }}" class="btn-menu">Volver al Menú Principal</a></center>
+        <button type="submit" class="botoningre">Agregar Producto</button>
+        <center><a href="{{ url('producto') }}" class="volve">Volver al Menú Principal</a></center>
     </form>
     <br>
-
+</main>
     <!-- Modal Administrar Categoría -->
     <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -125,7 +158,7 @@
                         </select>
 
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-success w-100">➕ Crear Categoría</button>
+                            <button type="submit" class="btn btn-success w-100"><i class="bi bi-arrow-down-circle"></i> Crear Categoría</button>
                         </div>
                     </form>
 
@@ -146,7 +179,7 @@
                         </select>
 
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-danger w-100">❌ Eliminar Categoría</button>
+                            <button type="submit" class="btn btn-danger w-100"><i class="bi bi-x"></i> Eliminar Categoría</button>
                         </div>
                     </form>
 
@@ -208,7 +241,7 @@
                             <option value="">Seleccione una subcategoría</option>
                         </select>
 
-                        <button type="submit" class="btn btn-danger w-100">❌ Eliminar Subcategoría</button>
+                        <button type="submit" class="btn btn-danger w-100"><i class="bi bi-x"></i> Eliminar Subcategoría</button>
                     </form>
                 </div>
 
@@ -283,7 +316,7 @@
             <input type="number" name="tallas[${contadorTalla}][cantidad]" class="form-control" placeholder="Cantidad" min="0" required>
         </div>
         <div class="col-md-2">
-            <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)">❌</button>
+            <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)"><i class="bi bi-x"></i></button>
         </div>
     `;
             container.appendChild(div);
@@ -373,9 +406,17 @@
             }
         }
     </script>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <a href="{{ route('redes') }}" class="abaj">Redes</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
 
 </body>
 
