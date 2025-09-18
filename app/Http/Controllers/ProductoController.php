@@ -172,71 +172,71 @@ class ProductoController extends Controller
     }
 
     public function exportarExcel()
-{
-    // Traemos todos los productos con sus relaciones de tallas, categoria y subcategoria
-    $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
+    {
+        // Traemos todos los productos con sus relaciones de tallas, categoria y subcategoria
+        $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
 
-    // Encabezados de la tabla
-    $header = [
-        'Referencia',
-        'Nombre',
-        'Valor U',
-        'IVA(19%)',
-        'Marca',
-        'Sexo',
-        'Talla (Cant.)',
-        'Color',
-        'Categoria',
-        'Cantidad Total',
-    ];
-
-    // Preparamos los datos para la exportación
-    $data = [];
-    foreach ($productos as $producto) {
-        $tallasString = $producto->tallas->map(function ($talla) {
-            return "{$talla->talla} ({$talla->cantidad})";
-        })->implode(', ');
-
-        $iva = $producto->valor * 0.19;
-
-        $data[] = [
-            $producto->id_producto,
-            $producto->nombre,
-            $producto->valor,
-            $iva,
-            $producto->marca,
-            $producto->sexo,
-            $tallasString,
-            $producto->color,
-            $producto->categoria->nombre . ' -> ' . ($producto->subcategoria->nombre ?? 'N/A'),
-            $producto->tallas->sum('cantidad'),
+        // Encabezados de la tabla
+        $header = [
+            'Referencia',
+            'Nombre',
+            'Valor U',
+            'IVA(19%)',
+            'Marca',
+            'Sexo',
+            'Talla (Cant.)',
+            'Color',
+            'Categoria',
+            'Cantidad Total',
         ];
+
+        // Preparamos los datos para la exportación
+        $data = [];
+        foreach ($productos as $producto) {
+            $tallasString = $producto->tallas->map(function ($talla) {
+                return "{$talla->talla} ({$talla->cantidad})";
+            })->implode(', ');
+
+            $iva = $producto->valor * 0.19;
+
+            $data[] = [
+                $producto->id_producto,
+                $producto->nombre,
+                $producto->valor,
+                $iva,
+                $producto->marca,
+                $producto->sexo,
+                $tallasString,
+                $producto->color,
+                $producto->categoria->nombre . ' -> ' . ($producto->subcategoria->nombre ?? 'N/A'),
+                $producto->tallas->sum('cantidad'),
+            ];
+        }
+
+        // Unimos los encabezados con los datos
+        array_unshift($data, $header);
+
+        // Generamos el archivo de Excel y lo descargamos
+        $xlsx = SimpleXLSXGen::fromArray($data);
+        return response($xlsx->downloadAs('inventario.xlsx'))->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
 
-    // Unimos los encabezados con los datos
-    array_unshift($data, $header);
-
-    // Generamos el archivo de Excel y lo descargamos
-    $xlsx = SimpleXLSXGen::fromArray($data);
-    return response($xlsx->downloadAs('inventario.xlsx'))->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-}
-
     public function exportarPDF()
-{
-    // Obtener todos los productos con sus relaciones de tallas y categorías
-    $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
+    {
+        // Obtener todos los productos con sus relaciones de tallas y categorías
+        $productos = Producto::with(['tallas', 'categoria', 'subcategoria'])->get();
 
-    // Pasar los datos a una vista específica para el PDF
-    $data = [
-        'productos' => $productos
-    ];
+        // Pasar los datos a una vista específica para el PDF
+        $data = [
+            'productos' => $productos
+        ];
 
-    // Cargar la vista y generar el PDF
-    $pdf = Pdf::loadView('inventario_pdf', $data);
+        // Cargar la vista y generar el PDF
+        $pdf = Pdf::loadView('inventario_pdf', $data);
 
-    // Permitir que el PDF se abra en una nueva pestaña del navegador
-    return $pdf->stream('inventario.pdf');
-}
+        // Permitir que el PDF se abra en una nueva pestaña del navegador
+        return $pdf->stream('inventario.pdf');
+    }
 
     public function verProducto($id)
     {
@@ -307,9 +307,26 @@ class ProductoController extends Controller
         $talla = $request->query('talla');
         $precio_min = $request->query('precio_min');
         $precio_max = $request->query('precio_max');
+        $buscar = $request->query('q'); // 👈 Capturamos el texto del buscador
 
         // Consulta base con filtros por sexo
         $query = Producto::with(['imagenes', 'tallas']);
+
+        // 🔹 Búsqueda por palabra clave
+        if (!empty($buscar)) {
+            $query->where(function ($q) use ($buscar) {
+                $q->where('nombre', 'LIKE', "%{$buscar}%")
+                    ->orWhere('marca', 'LIKE', "%{$buscar}%")
+                    ->orWhere('color', 'LIKE', "%{$buscar}%")
+                    ->orWhereHas('categoria', function ($cat) use ($buscar) {
+                        $cat->where('nombre', 'LIKE', "%{$buscar}%");
+                    })
+                    ->orWhereHas('subcategoria', function ($sub) use ($buscar) {
+                        $sub->where('nombre', 'LIKE', "%{$buscar}%");
+                    });
+            });
+        }
+
         if ($sexo === 'Mujer') {
             $query->whereIn('sexo', ['Mujer', 'Unisex']);
         } elseif ($sexo === 'Hombre') {

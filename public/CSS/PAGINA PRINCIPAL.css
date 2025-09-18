@@ -5,12 +5,32 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100px;
+    min-height: 100vh; /* 👈 full pantalla */
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Mensaje envío gratis */
+    .alert-envio-gratis {
+      background: linear-gradient(90deg, #bb8b06, #dda90d);
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 12px 0;
+      text-align: center;
+      letter-spacing: 1.2px;
+      box-shadow: 0 4px 10px rgba(187, 139, 6, 0.6);
+    }
 
 .user-name {
     color: #fff;
@@ -293,7 +313,8 @@ body {
     display: flex;
     justify-content: center;
     background-color: rgb(241, 241, 241);
-    height: 900px;
+    flex: 1; /* 👈 ocupa el espacio libre */
+    height: auto; /* 👈 quita el fijo */
 }
 
 /* === MINI-CAROUSEL === */
@@ -349,7 +370,7 @@ body {
 .pie {
     color: black;
     text-align: center;
-    padding: 10px 0;
+    padding: 20px;
     margin-top: auto;
     background: linear-gradient(to bottom, rgb(231, 231, 231), rgb(229, 229, 229), rgb(210, 210, 210));
 }

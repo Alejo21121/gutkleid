@@ -15,8 +15,16 @@
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 
+
 <body>
+
+    <div class="alert-envio-gratis">
+        ¡Envío gratis en compras mayores a $150.000!
+    </div>
+
     <header class="cabeza">
+
+
         <nav class="barras">
             <div class="barra1">
                 <!-- Menú Mujer -->
@@ -115,17 +123,26 @@
         </nav>
         <!-- Panel de búsqueda -->
         <div id="search-panel" class="search-panel">
-            <form method="GET" class="d-flex container" role="search">
-                <input type="text" name="q" class="form-control me-2" placeholder="Buscar..." />
+            <form method="GET" action="{{ route('inicio') }}" class="d-flex container" role="search">
+                <input type="text" name="q" class="form-control me-2"
+                    placeholder="Buscar productos..."
+                    value="{{ request('q') }}" />
                 <button type="submit" class="btn btn-dark">Buscar</button>
             </form>
         </div>
+
+
         <hr>
 
+        <hr>
+
+        {{-- Mostrar botón y sidebar SOLO si hay productos (cuando ya se escogió Mujer u Hombre) --}}
+        @if(isset($sexo) || isset($categoriaId))
         <!-- Botón de filtro -->
         <button class="filter-btn" type="button" id="btnToggleSidebar">
             FILTRAR
         </button>
+
         <!-- Sidebar de filtros -->
         <div id="sidebar" class="filter-sidebar">
             <form method="GET" action="{{ route('inicio') }}">
@@ -155,7 +172,6 @@
                         <option value="{{ $t }}" {{ ($talla ?? '') == $t ? 'selected' : '' }}>
                             {{ $t }}
                         </option>
-
                         @endforeach
                     </select>
                 </div>
@@ -177,17 +193,69 @@
                     </div>
                 </div>
 
-
                 <button type="submit" class="btn btn-dark w-100">Aplicar filtros</button>
                 <button type="button" id="btnCerrarSidebar" class="btn btn-secondary w-100 mt-2">Cerrar</button>
             </form>
         </div>
+        @endif
+
 
         <br><br>
+
 
         <main class="main">
             <br>
 
+            {{-- Si no hay sexo ni categoría, mostrar landing con carrusel --}}
+            @if(!isset($sexo) && !isset($categoriaId))
+
+            <!-- Sección destacada -->
+            <section class="secciones-destacadas container text-center">
+                <h2 class="mb-4">Novedades</h2>
+                <p class="mb-5">Descubre las últimas tendencias de la temporada</p>
+
+                <!-- Carrusel de imágenes destacadas -->
+                <div id="mainCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ asset('IMG/inicio.png') }}" class="d-block w-100 rounded shadow" alt="Moda 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('IMG/inicio2.png') }}" class="d-block w-100 rounded shadow" alt="Moda 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset('IMG/inicio3.png') }}" class="d-block w-100 rounded shadow" alt="Moda 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+
+                <!-- Opciones Mujer y Hombre debajo -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <a href="{{ route('inicio', ['sexo' => 'Mujer']) }}">
+                            <img src="{{ asset('IMG/mujer.png') }}" class="img-fluid rounded shadow" alt="Moda Mujer">
+                            <h3 class="mt-3"></h3>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{{ route('inicio', ['sexo' => 'Hombre']) }}">
+                            <img src="{{ asset('IMG/hombre.png') }}" class="img-fluid rounded shadow" alt="Moda Hombre">
+                            <h3 class="mt-3"></h3>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            @else
+            <!-- Productos (se mantienen igual que en tu código) -->
             <div class="productosbar">
                 @foreach ($productos as $producto)
                 @php
@@ -204,7 +272,6 @@
                                 @endforeach
                             </div>
                             <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
-
                             <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
                         </div>
                     </a>
@@ -216,8 +283,8 @@
                 </div>
                 @endforeach
             </div>
+            @endif
         </main>
-
 
         <!-- Toast de éxito -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
@@ -390,10 +457,7 @@
             maxInput.addEventListener('change', function() {
                 slider.noUiSlider.set([null, this.value || 600000]);
             });
-
-            
         </script>
-
 
         <footer class="pie">
             <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
@@ -405,6 +469,7 @@
             <br>
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
+
 
 </body>
 
