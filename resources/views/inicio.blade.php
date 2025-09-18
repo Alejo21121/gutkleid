@@ -124,9 +124,9 @@
         <!-- Panel de búsqueda -->
         <div id="search-panel" class="search-panel">
             <form method="GET" action="{{ route('inicio') }}" class="d-flex container" role="search">
-                <input type="text" name="q" class="form-control me-2"
+                <input type="text" name="buscar" class="form-control me-2"
                     placeholder="Buscar productos..."
-                    value="{{ request('q') }}" />
+                    value="{{ request('buscar') }}" />
                 <button type="submit" class="btn btn-dark">Buscar</button>
             </form>
         </div>
@@ -202,19 +202,52 @@
 
         <br><br>
 
-
         <main class="main">
             <br>
 
-            {{-- Si no hay sexo ni categoría, mostrar landing con carrusel --}}
-            @if(!isset($sexo) && !isset($categoriaId))
+            {{-- Caso 1: Si hay búsqueda --}}
+            @if(request('buscar'))
 
-            <!-- Sección destacada -->
+            @if($productos->count() > 0)
+            <div class="productosbar">
+                @foreach ($productos as $producto)
+                @php
+                $precioConIVA = round($producto->valor * (1 + $producto->iva), -3);
+                @endphp
+                <div class="productos">
+                    <a href="{{ route('producto.ver', $producto->id_producto) }}" class="producto-link"
+                        style="text-decoration: none; color: inherit;">
+                        <div class="mini-carousel" onclick="event.stopPropagation();">
+                            <div class="mini-carousel-images">
+                                @foreach ($producto->imagenes->take(2) as $imagen)
+                                <img src="{{ asset($imagen->ruta) }}"
+                                    class="mini-slide {{ $loop->first ? 'active' : '' }}">
+                                @endforeach
+                            </div>
+                            <button type="button" class="prev" onclick="moverSlide(event, -1)">&#10094;</button>
+                            <button type="button" class="next" onclick="moverSlide(event, 1)">&#10095;</button>
+                        </div>
+                    </a>
+                    <h5>{{ $producto->nombre }}</h5>
+                    <p><strong>${{ number_format($precioConIVA, 0, ',', '.') }} COP</strong></p>
+                    <a href="{{ route('producto.ver', $producto->id_producto) }}">
+                        <button type="button" class="bottonagreg">Ver más</button>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <p class="text-center mt-5">❌ No se encontraron productos con ese criterio.</p>
+            @endif
+
+            {{-- Caso 2: Landing sin filtros --}}
+            @elseif(!isset($sexo) && !isset($categoriaId))
+            <!-- Tu carrusel y secciones destacadas aquí (lo que ya tenías) -->
             <section class="secciones-destacadas container text-center">
                 <h2 class="mb-4">Novedades</h2>
                 <p class="mb-5">Descubre las últimas tendencias de la temporada</p>
 
-                <!-- Carrusel de imágenes destacadas -->
+                <!-- Carrusel -->
                 <div id="mainCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -235,27 +268,23 @@
                     </button>
                 </div>
 
-
-                <!-- Opciones Mujer y Hombre debajo -->
+                <!-- Opciones Mujer y Hombre -->
                 <div class="row g-4">
                     <div class="col-md-6">
                         <a href="{{ route('inicio', ['sexo' => 'Mujer']) }}">
                             <img src="{{ asset('IMG/mujer.png') }}" class="img-fluid rounded shadow" alt="Moda Mujer">
-                            <h3 class="mt-3"></h3>
                         </a>
                     </div>
                     <div class="col-md-6">
                         <a href="{{ route('inicio', ['sexo' => 'Hombre']) }}">
                             <img src="{{ asset('IMG/hombre.png') }}" class="img-fluid rounded shadow" alt="Moda Hombre">
-                            <h3 class="mt-3"></h3>
                         </a>
                     </div>
                 </div>
             </section>
 
-
+            {{-- Caso 3: Con filtros de sexo/categoría --}}
             @else
-            <!-- Productos (se mantienen igual que en tu código) -->
             <div class="productosbar">
                 @foreach ($productos as $producto)
                 @php
@@ -285,6 +314,7 @@
             </div>
             @endif
         </main>
+
 
         <!-- Toast de éxito -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">

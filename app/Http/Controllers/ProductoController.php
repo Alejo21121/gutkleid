@@ -300,6 +300,7 @@ class ProductoController extends Controller
 
     public function paginaInicio(Request $request)
     {
+        $buscar = $request->query('buscar'); // recibe ?buscar=camiseta
         $categoriaId = $request->query('categoria');
         $sexo = $request->query('sexo');
         $subcategoria = $request->query('subcategoria');
@@ -307,12 +308,11 @@ class ProductoController extends Controller
         $talla = $request->query('talla');
         $precio_min = $request->query('precio_min');
         $precio_max = $request->query('precio_max');
-        $buscar = $request->query('q'); // 👈 Capturamos el texto del buscador
 
-        // Consulta base con filtros por sexo
+        // Consulta base con relaciones
         $query = Producto::with(['imagenes', 'tallas']);
 
-        // 🔹 Búsqueda por palabra clave
+        // 🔹 Caso 1: Si hay búsqueda → ignoramos sexo/categoría y traemos todos los matches
         if (!empty($buscar)) {
             $query->where(function ($q) use ($buscar) {
                 $q->where('nombre', 'LIKE', "%{$buscar}%")
@@ -326,58 +326,61 @@ class ProductoController extends Controller
                     });
             });
         }
+        // 🔹 Caso 2: No hay búsqueda → aplicar filtros normales
+        else {
+            if ($sexo === 'Mujer') {
+                $query->whereIn('sexo', ['Mujer', 'Unisex']);
+            } elseif ($sexo === 'Hombre') {
+                $query->whereIn('sexo', ['Hombre', 'Unisex']);
+            }
 
-        if ($sexo === 'Mujer') {
-            $query->whereIn('sexo', ['Mujer', 'Unisex']);
-        } elseif ($sexo === 'Hombre') {
-            $query->whereIn('sexo', ['Hombre', 'Unisex']);
+            if (!empty($categoriaId)) {
+                $query->where('id_categoria', $categoriaId);
+            }
+            if (!empty($subcategoria)) {
+                $query->where('id_subcategoria', $subcategoria);
+            }
+            if (!empty($color)) {
+                $query->where('color', $color);
+            }
+            if (!empty($talla)) {
+                $query->whereHas('tallas', function ($q) use ($talla) {
+                    $q->where('talla', $talla)->where('cantidad', '>', 0);
+                });
+            }
+
+            // 🔹 Filtro de rango de precios (incluyendo IVA y redondeado a miles)
+            if (!empty($precio_min) && !empty($precio_max)) {
+                $query->whereRaw('ROUND(valor * (1 + iva), -3) BETWEEN ? AND ?', [$precio_min, $precio_max]);
+            } elseif (!empty($precio_min)) {
+                $query->whereRaw('ROUND(valor * (1 + iva), -3) >= ?', [$precio_min]);
+            } elseif (!empty($precio_max)) {
+                $query->whereRaw('ROUND(valor * (1 + iva), -3) <= ?', [$precio_max]);
+            }
         }
 
-        // Aplicar filtros
-        if (!empty($categoriaId)) {
-            $query->where('id_categoria', $categoriaId);
-        }
-        if (!empty($subcategoria)) {
-            $query->where('id_subcategoria', $subcategoria);
-        }
-        if (!empty($color)) {
-            $query->where('color', $color);
-        }
-        if (!empty($talla)) {
-            $query->whereHas('tallas', function ($q) use ($talla) {
-                $q->where('talla', $talla)->where('cantidad', '>', 0);
-            });
-        }
+        // 🔹 Paginación
+        $productos = $query->paginate(12)->appends($request->query());
 
-        // 🔹 Filtro de rango de precios (incluyendo IVA y redondeado a miles)
-        if (!empty($precio_min) && !empty($precio_max)) {
-            $query->whereRaw('ROUND(valor * (1 + iva), -3) BETWEEN ? AND ?', [$precio_min, $precio_max]);
-        } elseif (!empty($precio_min)) {
-            $query->whereRaw('ROUND(valor * (1 + iva), -3) >= ?', [$precio_min]);
-        } elseif (!empty($precio_max)) {
-            $query->whereRaw('ROUND(valor * (1 + iva), -3) <= ?', [$precio_max]);
-        }
-
-        $productos = $query->get();
-
-        // Para calcular colores y tallas disponibles solo del sexo seleccionado
+        // Para calcular colores y tallas disponibles solo del sexo seleccionado (cuando NO hay búsqueda)
         $productosSexo = Producto::with('tallas');
-        if ($sexo === 'Mujer') {
-            $productosSexo->whereIn('sexo', ['Mujer', 'Unisex']);
-        } elseif ($sexo === 'Hombre') {
-            $productosSexo->whereIn('sexo', ['Hombre', 'Unisex']);
-        }
-        if (!empty($categoriaId)) {
-            $productosSexo->where('id_categoria', $categoriaId);
+        if (empty($buscar)) {
+            if ($sexo === 'Mujer') {
+                $productosSexo->whereIn('sexo', ['Mujer', 'Unisex']);
+            } elseif ($sexo === 'Hombre') {
+                $productosSexo->whereIn('sexo', ['Hombre', 'Unisex']);
+            }
+            if (!empty($categoriaId)) {
+                $productosSexo->where('id_categoria', $categoriaId);
+            }
         }
         $productosSexo = $productosSexo->get();
 
         $coloresDisponibles = $productosSexo->pluck('color')->unique();
         $tallasDisponibles = $productosSexo
-            ->flatMap(fn($p) => $p->tallas->pluck('talla')) // coleccion de tallas
-            ->toArray();                                     // convertir a array simple
-        $tallasDisponibles = collect(array_unique($tallasDisponibles)) // eliminar duplicados
-            ->values();       // reindexar
+            ->flatMap(fn($p) => $p->tallas->pluck('talla'))
+            ->toArray();
+        $tallasDisponibles = collect(array_unique($tallasDisponibles))->values();
 
         // Categorías para menú
         $categoriasMujer = Categoria::whereIn('genero', ['Mujer', 'Unisex'])->with('subcategorias')->get();
@@ -395,7 +398,8 @@ class ProductoController extends Controller
             'color',
             'talla',
             'precio_min',
-            'precio_max'
+            'precio_max',
+            'buscar'
         ));
     }
 
