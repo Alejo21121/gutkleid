@@ -80,14 +80,14 @@
       </div>
   </div>
   </main>
+        <footer class="pie">
+            <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
+            <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
+            <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+            <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+            <br>
+            <br>
+            <p>&copy; 2024 - GUT KLEID.</p>
+        </footer>
 </body>
-<footer class="pie">
-    <a href="{{ route('terminos') }}" class="abaj">Terminos y Condiciones</a>
-    <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
-    <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
-    <br>
-    <br>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
 </html>

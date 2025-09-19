@@ -26,6 +26,7 @@
                 <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
             </div></a>
         </div>
+        
                 <!-- Carrito -->
                 <a href="{{ route('carrito.index') }}" class="fontcarr">
                     <i class="bi bi-cart3"></i>
@@ -96,5 +97,4 @@
         </footer>
 
 </body>
-
 </html>

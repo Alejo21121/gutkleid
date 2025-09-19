@@ -18,6 +18,7 @@ class ImagenSeeder extends Seeder
             5 => ['chaquetapff1.webp', 'chaquetapff2.webp'],
             6 => ['jeanbasic3.webp','jeanbasic4.webp'],
             7 => ['gorram2.webp'],
+            
         ];
 
         $carpeta = public_path('IMG/imagenes_demo');

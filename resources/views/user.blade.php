@@ -103,7 +103,7 @@
   </div>
 
   <!-- Botón flotante de WhatsApp -->
-  <a href="https://wa.me/573042255701"
+  <a href="https://wa.me/573054212468"
     class="btn-whatsapp" target="_blank">
     <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
   </a>
