@@ -15,6 +15,11 @@
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
 
+<!-- Botón flotante de WhatsApp -->
+<a href="https://wa.me/573042255701"
+    class="btn-whatsapp" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+</a>
 
 <body>
 
@@ -316,6 +321,7 @@
         </main>
 
 
+
         <!-- Toast de éxito -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
             <div id="toastAgregado" class="toast align-items-center text-white bg-success border-0" role="alert"
@@ -329,6 +335,7 @@
                 </div>
             </div>
         </div>
+
 
         <script>
             function agregado(event) {

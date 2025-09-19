@@ -10,27 +10,29 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 👈 full pantalla */
+    min-height: 100vh;
+    /* 👈 full pantalla */
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
 }
 
-    /* Mensaje envío gratis */
-    .alert-envio-gratis {
-      background: linear-gradient(90deg, #bb8b06, #dda90d);
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-      padding: 12px 0;
-      text-align: center;
-      letter-spacing: 1.2px;
-      box-shadow: 0 4px 10px rgba(187, 139, 6, 0.6);
-    }
+/* Mensaje envío gratis */
+.alert-envio-gratis {
+    background: linear-gradient(90deg, #bb8b06, #dda90d);
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 12px 0;
+    text-align: center;
+    letter-spacing: 1.2px;
+    box-shadow: 0 4px 10px rgba(187, 139, 6, 0.6);
+}
 
 .user-name {
     color: #fff;
@@ -224,11 +226,12 @@ html, body {
 .filter-sidebar {
     position: fixed;
     top: 0;
-    right: -350px; /* 👈 un poco más que el width */
+    right: -350px;
+    /* 👈 un poco más que el width */
     width: 350px;
     height: 100%;
     background: #fff;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     padding: 20px;
     overflow-y: auto;
     transition: right 0.3s ease;
@@ -313,8 +316,10 @@ html, body {
     display: flex;
     justify-content: center;
     background-color: rgb(241, 241, 241);
-    flex: 1; /* 👈 ocupa el espacio libre */
-    height: auto; /* 👈 quita el fijo */
+    flex: 1;
+    /* 👈 ocupa el espacio libre */
+    height: auto;
+    /* 👈 quita el fijo */
 }
 
 /* === MINI-CAROUSEL === */
@@ -360,6 +365,33 @@ html, body {
 
 .prev {
     left: 5px;
+}
+
+.btn-whatsapp {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+    z-index: 9999;
+}
+
+.btn-whatsapp img {
+    width: 35px;
+    height: 35px;
+    pointer-events: none; /* 👈 evita que la imagen bloquee el click */
+}
+
+.btn-whatsapp:hover {
+    transform: scale(1.1);
 }
 
 .next {
@@ -644,7 +676,7 @@ html, body {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
     background-color: #f9f9f9;
     margin-left: 100px;
-    
+
 }
 
 .bottonagreg {

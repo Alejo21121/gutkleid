@@ -65,7 +65,7 @@
                 src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}"
                 alt="Perfil"
                 class="img-perfil-usuario">
-              INFORMACION 
+              INFORMACION
             </a>
           </li>
 
@@ -101,6 +101,12 @@
         </ul>
 
   </div>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://wa.me/573042255701"
+    class="btn-whatsapp" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  </a>
 
 
   <footer class="pie">

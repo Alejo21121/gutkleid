@@ -30,6 +30,12 @@
                 </a>
             </div>
 
+            <!-- Botón flotante de WhatsApp -->
+            <a href="https://wa.me/573042255701"
+                class="btn-whatsapp" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+            </a>
+
             <!-- DERECHA -->
             <div class="nav-right">
                 <div class="usuario-info">
@@ -167,18 +173,18 @@
 
                 <div class="text-center mt-3">
                     <a href="{{ route('carrito.vaciar') }}" class="bottonvaci">
-                         Vaciar carrito
+                        Vaciar carrito
                     </a>
 
-@if(session('usuario'))
-    <a href="{{ route('envio.index') }}" class="bottonfina">Siguiente</a>
-        <i class="bi bi-cash-coin"></i>
-    </a>
-@else
-    <a href="{{ route('login') }}" class="bottonfina">
-        <i class="bi bi-cash-coin"></i> Inicia sesión para comprar
-    </a>
-@endif
+                    @if(session('usuario'))
+                    <a href="{{ route('envio.index') }}" class="bottonfina">Siguiente</a>
+                    <i class="bi bi-cash-coin"></i>
+                    </a>
+                    @else
+                    <a href="{{ route('login') }}" class="bottonfina">
+                        <i class="bi bi-cash-coin"></i> Inicia sesión para comprar
+                    </a>
+                    @endif
 
                 </div>
                 @else
@@ -200,4 +206,5 @@
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
 </body>
+
 </html>
