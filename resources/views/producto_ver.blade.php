@@ -123,6 +123,8 @@
                         'Gris' => 'gray',
                         'Amarillo' => 'yellow',
                         'Verde' => 'Green',
+                        'Cafe' => 'Coffee',
+                        'Gris' => 'Grey',
                         'Beige' => 'beige'
                         // agrega más si los tienes
                         ];
