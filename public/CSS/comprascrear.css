@@ -199,19 +199,6 @@ button:hover,
   color: #bb8b06;
 }
 
-.botoningre {
-  background-color: #dda90d;
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  color: white;
-  width: 100%;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  margin-bottom: 20px;
-}
-
 .botoningre:hover {
   background-color: #ac7d08;
 }
@@ -314,4 +301,20 @@ button:hover,
   .contenedor-flex {
     flex-direction: column;
   }
+}
+.botoningre {
+  background-color: #dda90d;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.botoningre:hover {
+  background-color: #ac7d08;
 }

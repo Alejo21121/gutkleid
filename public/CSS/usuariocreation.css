@@ -1,0 +1,262 @@
+/* === RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === FONDO PRINCIPAL === */
+.main {
+  position: relative;
+  width: 100%;
+  min-height: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: url("../IMG/fondo_informacion.png") no-repeat center center/cover;
+}
+
+/* === HEADER === */
+.cabeza {
+  background-color: rgb(231, 231, 231);
+  padding: 15px;
+  width: 100%;
+}
+
+.barras {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.logo img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* === FOOTER === */
+.pie {
+  color: black;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: auto;
+  background: linear-gradient(
+    to bottom,
+    rgb(231, 231, 231),
+    rgb(229, 229, 229),
+    rgb(210, 210, 210)
+  );
+}
+
+.abaj {
+  color: black;
+  margin: 20px;
+  text-decoration: none;
+}
+
+.abaj:hover {
+  color: #bb8b06;
+}
+
+/* === USUARIO INFO === */
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inis {
+  text-decoration: none;
+  color: black;
+  margin-top: 16px;
+}
+
+.perfil-icono {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+/* === FORMULARIO === */
+form {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: auto;
+  max-width: 95%;
+  margin: 0 auto;
+  align-items: center !important;
+}
+
+form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+label {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+select {
+  appearance: none;
+}
+
+/* === GRUPO CONTRASEÑA === */
+.grupo-contraseña {
+  position: relative;
+  max-width: 350px;
+}
+
+.grupo-contraseña input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.boton-ojo {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}
+
+/* === BOTONES === */
+button,
+.btn-menu {
+  display: inline-block;
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.btn-menu:hover {
+  background-color: #218838;
+  color: #fff;
+}
+
+.btn-menu {
+  background-color: #808080;
+}
+
+.btn-menu:hover {
+  background-color: #494949;
+}
+
+/* === ICONOS Y BOTONES DEL NAV === */
+.filter-btn,
+.fontcarr {
+  font-family: Arial, sans-serif;
+  padding: 5px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.filter-btn {
+  color: rgb(39, 39, 39);
+}
+
+.filter-btn:hover {
+  color: #000;
+  transform: scale(1.05);
+}
+
+.fontcarr {
+  color: black;
+  border-radius: 50px;
+}
+
+.fontcarr:hover {
+  background-color: rgb(185, 185, 185);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .barras {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin: 10px 0;
+    position: static;
+    transform: none;
+  }
+
+  form {
+    width: 100%;
+    padding: 20px;
+  }
+}
+
+.botoningre {
+  background-color: #dda90d;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.botoningre:hover {
+  background-color: #ac7d08;
+}
+
+.volve {
+  background-color: #808080;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.volve:hover {
+  background-color: #494949;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}

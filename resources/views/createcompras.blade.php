@@ -2,21 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Compra - Gut Kleid</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('CSS/GESTION INVENTARIO.css') }}">
+    <title>Gut Kleid</title>
+    <link rel="stylesheet" href="{{ asset('CSS/estiloagre.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
+    <link rel="icon" href="IMG/icono2.ico" type="image/x-icon">
 </head>
 <body>
 <header class="cabeza">
-    <!-- Tu navbar aquí... -->
-</header>
+    <nav class="barras">
+        <!-- CENTRO -->
+        <div class="nav-center">
+            <a href="/">
+                <div class="logo">
+                    <img src="{{ asset('IMG/LOGO3.PNG') }}" alt="Logo">
+                </div>
+            </a>
+        </div>
 
-<main>
+        <!-- DERECHA -->
+        <div class="nav-right">
+            <div class="usuario-info">
+                @if (session('usuario'))
+                    <p class="sesionn">Hola {{ session('usuario')['nombres'] }}</p>
+                    <a href="{{ route('cuenta') }}">
+                        <img src="{{ asset(session('usuario')['imagen'] ?? 'IMG/default.jpeg') }}" alt="Perfil" class="perfil-icono">
+                    </a>
+                    <a href="{{ route('logout') }}" class="filter-btn"><i class="bi bi-door-open"></i></a>
+                @else
+                    <a href="{{ route('login') }}" class="inis">
+                        <p class="filter-btn">INICIAR SESION</p>
+                    </a>
+                @endif
+
+                <!-- Carrito -->
+                <a href="{{ route('carrito.index') }}" class="fontcarr">
+                    <i class="bi bi-cart3"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <hr>
+
+    <main class="main">
 <section class="contenedor">
-    <h2><center>Registrar Nueva Compra</center></h2>
     <center>
         @if(session('error'))
             <div class="alert alert-danger w-75">{{ session('error') }}</div>
@@ -24,7 +54,7 @@
 
         <form action="{{ route('compras.store') }}" method="POST" class="w-75" id="form-compra">
             @csrf
-
+            <h2><center>Registrar Nueva Compra</center></h2>
             <div class="mb-3">
                 <label for="id_proveedor" class="form-label">Proveedor</label>
                 <select name="id_proveedor" class="form-select" required>
@@ -61,29 +91,25 @@
                 </div>
             </div>
 
-            <button type="button" onclick="agregarProducto()" class="btn btn-secondary mt-2 mb-3">+ Agregar otro producto</button>
+            <button type="button" onclick="agregarProducto()" class="botoningre">+ Agregar otro producto</button>
 
             <input type="hidden" name="valor_total" id="valor_total">
-
-            <a href="{{ route('compras.index') }}" class="btn btn-outline-secondary mt-2 mb-3">
+            <br>
+            <a href="{{ route('compras.index') }}" class="volve">
                 <i class="bi bi-arrow-left"></i> Volver a Compras
             </a>
-
-            <div class="d-grid">
-                <button type="submit" class="btn btn-success">Registrar compra</button>
-            </div>
         </form>
-    </center>
-</section>
 </main>
-
-<footer class="pie">
-    <div class="foot">
+    <footer class="pie">
         <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
         <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
-    </div>
-    <p>&copy; 2024 - GUT KLEID.</p>
-</footer>
+        <a href="{{ route('reseñas') }}" class="abaj">Reseñas</a>
+        <a href="{{ route('tiendas') }}" class="abaj">Tiendas</a>
+        <a href="{{ route('redes') }}" class="abaj">Redes</a>
+        <br><br>
+        <p>&copy; 2024 - GUT KLEID.</p>
+    </footer>
+</header>
 
 <!-- JSON con productos y tallas -->
 <script>

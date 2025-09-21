@@ -1,0 +1,190 @@
+/* === RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === FONDO PRINCIPAL === */
+.main {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: url("../IMG/fondo_informacion.png") no-repeat center center/cover;
+  padding: 40px 15px;
+}
+
+/* === HEADER === */
+.cabeza {
+  background-color: rgb(231, 231, 231);
+  padding: 15px;
+  width: 100%;
+}
+
+.pie {
+  color: black;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: auto;
+  background: linear-gradient(to bottom, rgb(231, 231, 231), rgb(229, 229, 229), rgb(210, 210, 210));
+}
+
+.barras {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 🔹 FORMULARIO */
+form {
+  width: 100%;
+  max-width: 700px;  /* más compacto y responsivo */
+  margin: auto;
+}
+
+.formedit {
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+/* Asegura que los inputs ocupen todo su espacio */
+.formedit .form-control,
+.formedit .form-select {
+  width: 100%;
+}
+
+/* Evitar que los label se deformen */
+label {
+  font-weight: 500;
+}
+
+/* Botones */
+button,
+.btn-success {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  width: auto;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+button:hover,
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .barras {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin: 10px 0;
+  }
+
+  form {
+    max-width: 100%;
+  }
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inis {
+  text-decoration: none;
+  color: black;
+  margin-top: 16px;
+}
+
+.perfil-icono {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+/* BOTONES */
+.filter-btn {
+  font-family: Arial, sans-serif;
+  padding: 5px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgb(39, 39, 39);
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 1.8s ease;
+  text-decoration: none;
+  border: none;
+}
+
+.filter-btn:hover {
+  color: #000;
+  transform: scale(1.05);
+}
+
+.abaj {
+  color: black;
+  margin: 20px;
+  text-decoration: none;
+}
+
+.abaj:hover {
+  color: #bb8b06;
+}
+
+.botoningre {
+  background-color: #dda90d;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.botoningre:hover {
+  background-color: #ac7d08;
+}
+
+.volve {
+  background-color: #808080;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.volve:hover {
+  background-color: #494949;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}

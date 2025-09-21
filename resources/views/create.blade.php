@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Gut Kleid</title>
-        <link rel="stylesheet" href="{{ asset('CSS/estiloagre.css') }}">
+        <link rel="stylesheet" href="{{ asset('CSS/estilocreation.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
         <link rel="icon" href="IMG/icono2.ico" class="imagenl" type="image/x-icon" >
@@ -47,11 +47,10 @@
     <hr>
     <main class="main">
     @if (session('mensaje'))
-    <div class="mensaje éxito">
+    <div class="alerta-exito">
         {{ session('mensaje') }}
     </div>
     @endif
-
     <form action="{{ route('producto.store') }}" method="POST">
         @csrf
         <h2 class="titulopag">Agregar Producto</h2>
