@@ -1,0 +1,321 @@
+/* === RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === FONDO PRINCIPAL === */
+.main {
+  position: relative;
+  width: 100%;
+  height: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../IMG/fondo_informacion.png") no-repeat center center/cover;
+}
+
+/* === HEADER === */
+.cabeza {
+  background-color: rgb(231, 231, 231);
+  padding: 15px;
+  width: 100%;
+}
+
+.pie {
+  color: black;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: auto;
+  background: linear-gradient(to bottom, rgb(231, 231, 231), rgb(229, 229, 229), rgb(210, 210, 210));
+}
+
+.barras {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.titulopag {
+  text-align: center;
+}
+
+/* 🔹 FORMULARIO */
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 800px;
+  height: auto;
+  margin: 20px auto;
+  text-align: center !important;
+}
+
+.formedit {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  height: 650px;
+  text-align: left;
+}
+
+/* Alinear cada fila del formulario */
+.formedit .mb-3 {
+  display: flex;
+  align-items: center;
+  gap: 15px;            /* espacio entre label e input */
+}
+
+
+/* Inputs y selects se expanden */
+.formedit .mb-3 .form-control,
+.formedit .mb-3 select {
+  flex: 1;
+}
+
+label {
+  display: flex;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.form-label{
+  margin: 10px;
+  width: 70px;
+
+}
+
+input,
+select {
+  padding: 5px;
+  margin-top: 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  background-color: white;
+  display: inline-block;
+  width: auto;   /* deja que el input se ajuste al contenido */
+  max-width: 250px; /* opcional, para no crecer demasiado */
+  min-width: 5px;
+}
+
+select {
+  appearance: none;
+}
+
+/* Botones */
+button,
+.btn-success {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  width: auto;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+button:hover,
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .barras {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo {
+    margin: 10px 0;
+  }
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inis {
+  text-decoration: none;
+  color: black;
+  margin-top: 16px;
+}
+
+.perfil-icono {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+/* BOTONES */
+.filter-btn {
+  font-family: Arial, sans-serif;
+  padding: 5px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgb(39, 39, 39);
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 1.8s ease;
+  text-decoration: none;
+  border: none;
+}
+
+.filter-btn:hover {
+  color: #000;
+  transform: scale(1.05);
+}
+
+.abaj {
+  color: black;
+  margin: 20px;
+  text-decoration: none;
+  text-align: right;
+  position: relative;
+}
+
+.abaj:hover {
+  color: #bb8b06;
+}
+
+.botoningre {
+  background-color: #dda90d;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.botoningre:hover {
+  background-color: #ac7d08;
+}
+
+.botoncategor {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid;
+  color: rgb(38, 0, 255);
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-color: rgb(38, 0, 255);
+  margin-bottom: 10px;
+}
+
+.botoncategor:hover {
+  background-color: rgb(96, 83, 167);
+  border-color: rgb(24, 0, 158);
+  color: rgb(255, 255, 255);
+}
+
+.volve {
+  background-color: #808080;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.volve:hover {
+  background-color: #494949;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.fontcarr {
+  font-family: Arial, sans-serif;
+  padding: 5px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 1.8s ease;
+  text-decoration: none;
+  border: none;
+  border-radius: 50px;
+  size: 100px;
+}
+
+.fontcarr:hover {
+  background-color: rgb(185, 185, 185);
+}
+
+/* Contenedor padre: organiza en fila */
+.contenedor-flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Hacemos que cada bloque ocupe el 50% */
+.contenedor-producto {
+  flex: 1;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* 🔹 Ajustar el bloque de tallas */
+.contenedor-tallas {
+  padding: 10px 15px;   /* menos espacio interno */
+  margin: 0;            /* quita márgenes grandes */
+}
+
+.contenedor-tallas h4 {
+  margin-bottom: 10px;  /* menos espacio debajo del título */
+  font-size: 16px;      /* título un poco más compacto */
+}
+
+/* 🔹 Ajustar filas de tallas */
+.fila-talla {
+  gap: 8px;             /* poco espacio entre inputs y botón */
+}
+
+.fila-talla input {
+  max-width: 120px;     /* inputs más pequeños */
+  padding: 5px;
+  font-size: 14px;
+}
+
+/* Responsive: en móviles los apilamos */
+@media (max-width: 768px) {
+  .contenedor-flex {
+    flex-direction: column;
+  }
+}
+.producto .btn-danger {
+    padding: 4px 8px;
+    font-size: 14px;
+}

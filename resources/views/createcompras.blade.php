@@ -69,12 +69,16 @@
             <h5>Productos</h5>
             <div id="productos">
                 <div class="producto mb-3" data-index="0">
-                    <select name="productos[0][id]" class="form-select mb-2 producto-select" required onchange="cargarTallas(this)">
-                        <option value="">Seleccione un producto</option>
-                        @foreach($productos as $producto)
-                            <option value="{{ $producto->id_producto }}">{{ $producto->nombre }}</option>
-                        @endforeach
-                    </select>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <select name="productos[0][id]" class="form-select mb-2 producto-select w-75" required onchange="cargarTallas(this)">
+                            <option value="">Seleccione un producto</option>
+                            @foreach($productos as $producto)
+                                <option value="{{ $producto->id_producto }}">{{ $producto->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <!-- Botón eliminar producto -->
+                        <button type="button" onclick="eliminarProducto(this)" class="btn btn-danger btn-sm ms-2"><i class="bi bi-x"></i></button>
+                    </div>
 
                     <div class="tallas-container mb-2">
                         <div class="talla-row d-flex mb-1">
@@ -84,14 +88,19 @@
                             </select>
                             <input type="number" name="productos[0][tallas][0][cantidad]" class="form-control me-2" placeholder="Cantidad" min="1" required>
                             <input type="number" step="0.01" name="productos[0][tallas][0][precio]" class="form-control" placeholder="Precio" min="0" required>
-                            <button type="button" onclick="eliminarTalla(this)" class="btn btn-danger btn-sm ms-2">X</button>
+                            <button type="button" onclick="eliminarTalla(this)" class="btn btn-danger btn-sm ms-2"><i class="bi bi-x"></i></button>
                         </div>
                     </div>
                     <button type="button" onclick="agregarTalla(0)" class="btn btn-secondary btn-sm">+ Agregar talla</button>
                 </div>
             </div>
 
-            <button type="button" onclick="agregarProducto()" class="botoningre">+ Agregar otro producto</button>
+            <button type="button" onclick="agregarProducto()" class="botoncategor">+ Agregar otro producto</button>
+
+            <!-- Botón Registrar Compra -->
+            <button type="submit" class="botoningre">
+                <i class="bi bi-check2-circle"></i> Registrar Compra
+            </button>
 
             <input type="hidden" name="valor_total" id="valor_total">
             <br>
@@ -134,9 +143,12 @@
         @endforeach
 
         div.innerHTML = `
-            <select name="productos[${contador}][id]" class="form-select mb-2 producto-select" onchange="cargarTallas(this)" required>
-                ${opcionesProductos}
-            </select>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <select name="productos[${contador}][id]" class="form-select mb-2 producto-select w-75" onchange="cargarTallas(this)" required>
+                    ${opcionesProductos}
+                </select>
+                <button type="button" onclick="eliminarProducto(this)" class="btn btn-danger btn-sm ms-2">🗑</button>
+            </div>
 
             <div class="tallas-container mb-2"></div>
 
@@ -149,7 +161,7 @@
 
     function cargarTallas(select) {
         const productoId = select.value;
-        const productoDiv = select.parentElement;
+        const productoDiv = select.closest('.producto');
         const tallasContainer = productoDiv.querySelector('.tallas-container');
         const agregarTallaBtn = productoDiv.querySelector('button.btn-secondary');
 
@@ -208,6 +220,10 @@
         button.parentElement.remove();
     }
 
+    function eliminarProducto(button) {
+        button.closest('.producto').remove();
+    }
+
     // Calcular valor total antes de enviar
     document.getElementById('form-compra').addEventListener('submit', function (e) {
         let total = 0;
@@ -224,4 +240,3 @@
 </script>
 </body>
 </html>
-

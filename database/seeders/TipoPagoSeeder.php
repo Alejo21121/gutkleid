@@ -11,8 +11,7 @@ class TipoPagoSeeder extends Seeder
     {
         DB::table('metodo_pagos')->insert([
             ['nombre' => 'Efectivo'],
-            ['nombre' => 'Tarjeta de Credito o debito'],
-            ['nombre' => 'Nequi'],
+            ['nombre' => 'Transferencia'],
         ]);
     }
 }
