@@ -166,6 +166,7 @@
     <!-- Totales -->
     <div class="seccion-titulo">Totales</div>
     <div class="totales">
+        <p><strong>Método de pago:</strong> {{ $metodo_pago }} @if($sub_metodo) ({{ $sub_metodo }}) @endif</p>
         <p><strong>Subtotal:</strong> ${{ number_format($subtotalGeneral, 0, ',', '.') }}</p>
         <p><strong>IVA Total:</strong> ${{ number_format($ivaGeneral, 0, ',', '.') }}</p>
         <p><strong>Gastos de envío:</strong> ${{ number_format($factura->envio, 0, ',', '.') }}</p>

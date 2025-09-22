@@ -11,6 +11,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\MetodoPagoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,6 @@ Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExce
 // CRUD completo de productos
 Route::resource('producto', ProductoController::class);
 
-
 // --- Rutas para Vistas Estáticas ---
 Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
 Route::view('/contraseña', 'contraseña')->name('contraseña');
@@ -48,7 +48,6 @@ Route::view('/mi-cuenta', 'user')->name('cuenta');
 Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
-
 
 // --- Usuarios --- 
 // Rutas de exportación de usuarios (Mover estas rutas antes del resource)
@@ -116,7 +115,7 @@ Route::get('/ventas/exportar-excel', [CarritoController::class, 'exportarExcel']
 
 // --- Envio ---
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
-Route::post('/guardar-envio', [CarritoController::class, 'guardarEnvio'])->name('envio.guardar');
+Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
 Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
 Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
 
@@ -127,3 +126,8 @@ Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'genera
 
 Route::get('/inventario/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('inventario.exportarPDF');
 Route::get('/ventas/exportar-pdf', [CarritoController::class, 'exportarPDF'])->name('ventas.exportarPDF');
+
+Route::get('/metodo-pago', [MetodoPagoController::class, 'index'])->name('metodo_pago.index');
+Route::post('/metodo-pago/confirmar', [MetodoPagoController::class, 'store'])->name('metodo_pago.store');
+
+Route::get('/confirmacion', [MetodoPagoController::class, 'confirmacion'])->name('metodo_pago.confirmacion');

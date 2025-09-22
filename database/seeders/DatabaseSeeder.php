@@ -27,5 +27,10 @@ class DatabaseSeeder extends Seeder
         TallaSeeder::class,
         ProveedoresSeeder::class
     ]);
+    $this->call([
+    TipoPagoSeeder::class,
+    SubMetodoPagoSeeder::class,
+]);
+
 }
 }
