@@ -34,7 +34,7 @@ class RegistroController extends Controller
                 'string',
                 'min:8',
                 'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
-            ],
+            ],            
             'fecha_nacimiento' => ['required', 'date', function ($attribute, $value, $fail) {
                 $edad = \Carbon\Carbon::parse($value)->age;
                 if ($edad < 18) {

@@ -31,6 +31,8 @@ class RecuperarController extends Controller
 
 
         Mail::to($request->email)->send(new CodigoRecuperacion($token));
+
+        
         session(['correo_recuperacion' => $request->email]);
 
         return redirect()->route('codigo')->with('codigo', $token);
