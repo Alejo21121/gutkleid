@@ -8,7 +8,6 @@ class FacturaVenta extends Model
 {
     protected $table = 'factura_ventas';
     protected $primaryKey = 'id_factura_venta';
-    public $incrementing = true;
     public $timestamps = true;
 
     protected $fillable = [
@@ -17,17 +16,31 @@ class FacturaVenta extends Model
         'telef_tienda',
         'fecha_venta',
         'total',
-        'id_persona', // Relación con el cliente
-        'id_metodo_pago'
+        'id_persona',
+        'id_metodo_pago',
+        'id_sub_metodo',
+        'envio',
+        'info_adicional'
     ];
 
     public function detalles()
     {
-        return $this->hasMany(\App\Models\DetalleFacturaV::class, 'id_factura_venta');
+        return $this->hasMany(DetalleFacturaV::class, 'id_factura_venta');
     }
 
     public function cliente()
     {
-        return $this->belongsTo(\App\Models\Persona::class, 'id_persona');
+        return $this->belongsTo(Persona::class, 'id_persona');
+    }
+
+    public function metodoPago()
+    {
+        return $this->belongsTo(MetodoPago::class, 'id_metodo_pago');
+    }
+
+    public function subMetodoPago()
+    {
+        return $this->belongsTo(SubMetodoPago::class, 'id_sub_metodo');
     }
 }
+

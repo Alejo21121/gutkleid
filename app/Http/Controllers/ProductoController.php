@@ -67,42 +67,83 @@ class ProductoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'valor' => 'required|numeric|min:0',
-            'marca' => 'required|string|max:255',
-            'color' => 'required|string|max:100',
-            'sexo' => 'required|in:Hombre,Mujer,Unisex',
-            'id_categoria' => 'required|exists:categorias,id_categoria',
-            'id_subcategoria' => 'nullable|exists:subcategorias,id_subcategoria',
-            'tallas' => 'required|array',
-            'tallas.*.talla' => 'required|string|max:10',
-            'tallas.*.cantidad' => 'required|integer|min:0',
-        ]);
+{
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'valor' => 'required|numeric|min:0',
+        'marca' => 'required|string|max:255',
+        'color' => 'required|string|max:100',
+        'sexo' => 'required|in:Hombre,Mujer,Unisex',
+        'id_categoria' => 'required|exists:categorias,id_categoria',
+        'id_subcategoria' => 'nullable|exists:subcategorias,id_subcategoria',
+        'tallas' => 'required|array',
+        'tallas.*.talla' => 'required|string|max:10',
+        'tallas.*.cantidad' => 'required|integer|min:0',
+        'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // 👈 validación de imágenes
+    ]);
 
-        // Crear el producto
-        $producto = Producto::create([
-            'nombre' => $validated['nombre'],
-            'valor' => $validated['valor'],
-            'marca' => $validated['marca'],
-            'color' => $validated['color'],
-            'sexo' => $validated['sexo'],
-            'id_categoria' => $validated['id_categoria'],
-            'id_subcategoria' => $validated['id_subcategoria'] ?? null, // 👈 agregado
-        ]);
+    // Crear el producto
+    $producto = Producto::create([
+        'nombre' => $validated['nombre'],
+        'valor' => $validated['valor'],
+        'marca' => $validated['marca'],
+        'color' => $validated['color'],
+        'sexo' => $validated['sexo'],
+        'id_categoria' => $validated['id_categoria'],
+        'id_subcategoria' => $validated['id_subcategoria'] ?? null,
+    ]);
 
-        // Agregar las tallas asociadas
-        foreach ($validated['tallas'] as $talla) {
-            Talla::create([
+    // Agregar tallas asociadas
+    foreach ($validated['tallas'] as $talla) {
+        Talla::create([
+            'id_producto' => $producto->id_producto,
+            'talla' => strtoupper($talla['talla']),
+            'cantidad' => $talla['cantidad'],
+        ]);
+    }
+
+    // 👇 Guardar imágenes si se subieron
+    if ($request->hasFile('imagenes')) {
+        foreach ($request->file('imagenes') as $img) {
+            $nombreOriginal = $img->getClientOriginalName();
+            $rutaDestino = public_path("IMG/imagenes_demo/{$nombreOriginal}");
+
+            if (!File::exists($rutaDestino)) {
+                $img->move(public_path('IMG/imagenes_demo'), $nombreOriginal);
+            }
+
+            Imagen::create([
                 'id_producto' => $producto->id_producto,
-                'talla' => strtoupper($talla['talla']), // <-- aquí
-                'cantidad' => $talla['cantidad'],
+                'ruta' => 'IMG/imagenes_demo/' . $nombreOriginal
             ]);
         }
-
-        return redirect()->route('producto.index')->with('success', 'Producto creado con tallas.');
     }
+
+    return redirect()->route('producto.index')->with('success', 'Producto creado con tallas e imágenes.');
+}
+
+public function eliminarImagen($id_producto, $id_imagen)
+{
+    // Buscar la imagen
+    $imagen = ProductoImagen::where('id_imagen', $id_imagen)
+        ->where('id_producto', $id_producto)
+        ->first();
+
+    if ($imagen) {
+        // Eliminar archivo físico si existe
+        if (file_exists(public_path('storage/' . $imagen->ruta))) {
+            unlink(public_path('storage/' . $imagen->ruta));
+        }
+
+        // Eliminar registro en la base de datos
+        $imagen->delete();
+
+        return back()->with('success', 'Imagen eliminada correctamente.');
+    }
+
+    return back()->with('error', 'La imagen no existe o ya fue eliminada.');
+}
+
 
     public function show(Producto $producto)
     {
@@ -285,16 +326,6 @@ class ProductoController extends Controller
         }
 
         return redirect()->route('producto.imagenes', $id)->with('success', '✅ Imágenes agregadas.');
-    }
-
-    // Eliminar una imagen
-    public function eliminarImagen($id)
-    {
-        $imagen = Imagen::findOrFail($id);
-        Storage::disk('public')->delete($imagen->ruta);
-        $imagen->delete();
-
-        return back()->with('success', 'Imagen eliminada.');
     }
 
     public function paginaInicio(Request $request)

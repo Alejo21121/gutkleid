@@ -51,87 +51,88 @@
         {{ session('mensaje') }}
     </div>
     @endif
-    <form action="{{ route('producto.store') }}" method="POST">
-        @csrf
-        <h2 class="titulopag">Agregar Producto</h2>
+<form action="{{ route('producto.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <h2 class="titulopag">Agregar Producto</h2>
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre" required>
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" required>
 
-        <label for="valor">Valor:</label>
-        <input type="text" name="valor" id="valor" required oninput="formatearNumero(this)">
+    <label for="valor">Valor:</label>
+    <input type="text" name="valor" id="valor" required oninput="formatearNumero(this)">
 
-        <label for="marca">Marca:</label>
-        <input type="text" name="marca" id="marca" required>
+    <label for="marca">Marca:</label>
+    <input type="text" name="marca" id="marca" required>
 
-        <label for="sexo">Sexo:</label>
-        <select name="sexo" class="form-control" required>
-            <option value="">Seleccione el sexo</option>
-            <option value="Hombre" {{ old('sexo', $producto->sexo ?? '') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
-            <option value="Mujer" {{ old('sexo', $producto->sexo ?? '') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
-            <option value="Unisex" {{ old('sexo', $producto->sexo ?? '') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
+    <label for="sexo">Sexo:</label>
+    <select name="sexo" class="form-control" required>
+        <option value="">Seleccione el sexo</option>
+        <option value="Hombre" {{ old('sexo', $producto->sexo ?? '') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+        <option value="Mujer" {{ old('sexo', $producto->sexo ?? '') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+        <option value="Unisex" {{ old('sexo', $producto->sexo ?? '') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
+    </select>
+
+    <label for="color">Color:</label>
+    <input type="text" name="color" id="color" required>
+
+    <!-- Categoría -->
+    <div class="mb-3">
+        <div class="d-flex align-items-center justify-content-between gap-2">
+            <label for="id_categoria" class="form-label">Categoría:</label>
+        </div>
+        <select name="id_categoria" id="id_categoria" class="form-control mt-2" required onchange="mostrarSubcategorias()">
+            <option value="">Seleccione una categoría</option>
+            @foreach ($categorias as $categoria)
+            <option value="{{ $categoria->id_categoria }}"
+                data-subcategorias='@json($categoria->subcategorias)'>
+                {{ $categoria->nombre }}
+            </option>
+            @endforeach
         </select>
+        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCategoria">
+            Editar Categoría
+        </button>
+    </div>
 
-        <label for="color">Color:</label>
-        <input type="text" name="color" id="color" required>
-
-        <!-- Categoría -->
-        <div class="mb-3">
-            <div class="d-flex align-items-center justify-content-between gap-2">
-                <label for="id_categoria" class="form-label">Categoría:</label>
-                <!-- Botón modal categoría -->
-            </div>
-            <select name="id_categoria" id="id_categoria" class="form-control mt-2" required onchange="mostrarSubcategorias()">
-                <option value="">Seleccione una categoría</option>
-                @foreach ($categorias as $categoria)
-                <option value="{{ $categoria->id_categoria }}"
-                    data-subcategorias='@json($categoria->subcategorias)'>
-                    {{ $categoria->nombre }}
-                </option>
-                @endforeach
-            </select>
-                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalCategoria">
-                    Editar Categoría
-                </button>
+    <!-- Subcategoría -->
+    <div id="subcategoria-container" style="display:none;" class="mb-3">
+        <div class="d-flex align-items-center justify-content-between gap-2">
+            <label for="id_subcategoria" class="form-label">Subcategoría:</label>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#modalSubcategoria">
+                Editar Subcategoría
+            </button>
         </div>
+        <select name="id_subcategoria" id="id_subcategoria" class="form-control mt-2"></select>
+    </div>
 
+    <!-- 👇 Campo para imágenes -->
+    <div class="mb-3">
+    <label for="imagenes">Imágenes (puedes subir varias):</label>
+    <input type="file" name="imagenes[]" multiple>
+    </div>
 
-        <!-- Subcategoría -->
-        <div id="subcategoria-container" style="display:none;" class="mb-3">
-            <div class="d-flex align-items-center justify-content-between gap-2">
-                <label for="id_subcategoria" class="form-label">Subcategoría:</label>
-                <!-- Botón modal subcategoría -->
-                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#modalSubcategoria">
-                    Editar Subcategoría
-                </button>
+    <!-- Tallas y cantidades -->
+    <label class="form-label">Tallas y cantidades:</label>
+    <div id="tallas-container">
+        <div class="row g-2 align-items-center talla-item mb-2">
+            <div class="col-md-4">
+                <input type="text" name="tallas[0][talla]" class="form-control" placeholder="Talla" required>
             </div>
-            <select name="id_subcategoria" id="id_subcategoria" class="form-control mt-2"></select>
-        </div>
-
-
-        <!-- Tallas y cantidades -->
-        <label class="form-label">Tallas y cantidades:</label>
-        <div id="tallas-container">
-            <div class="row g-2 align-items-center talla-item mb-2">
-                <div class="col-md-4">
-                    <input type="text" name="tallas[0][talla]" class="form-control" placeholder="Talla" required>
-                </div>
-                <div class="col-md-4">
-                    <input type="number" name="tallas[0][cantidad]" class="form-control" placeholder="Cantidad" min="0" required>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)"><i class="bi bi-x"></i></button>
-                </div>
+            <div class="col-md-4">
+                <input type="number" name="tallas[0][cantidad]" class="form-control" placeholder="Cantidad" min="0" required>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger w-100" onclick="eliminarTalla(this)"><i class="bi bi-x"></i></button>
             </div>
         </div>
-        <br>
-        <button type="button" class="botoncategor" onclick="agregarTalla()"><i class="bi bi-arrow-down-circle"></i> Agregar otra talla</button>
+    </div>
 
-        <button type="submit" class="botoningre">Agregar Producto</button>
-        <center><a href="{{ url('producto') }}" class="volve">Volver al Menú Principal</a></center>
-    </form>
     <br>
+    <button type="button" class="botoncategor" onclick="agregarTalla()"><i class="bi bi-arrow-down-circle"></i> Agregar otra talla</button>
+        <button type="submit" class="botoningre">Agregar Producto</button>
+    <center><a href="{{ url('producto') }}" class="volve">Volver al Menú Principal</a></center>
+</form>
 </main>
     <!-- Modal Administrar Categoría -->
     <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">

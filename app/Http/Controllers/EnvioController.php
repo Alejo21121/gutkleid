@@ -40,17 +40,13 @@ class EnvioController extends Controller
             'info_adicional' => $request->info_adicional,
         ]]);
 
-        return redirect()->route('envio.confirmacion');
+        // 🔹 En vez de ir a confirmación, redirige a método de pago
+        return redirect()->route('metodo_pago.index');
     }
 
     // Confirmación de envío y preparación de pago Bold
-// EnvioController.php
-
-// ...
-
-    // Confirmación de envío y preparación de pago Bold
-public function confirmacion()
-{
+    public function confirmacion()
+    {
         $usuario = session('usuario');
         if (!$usuario) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión.');

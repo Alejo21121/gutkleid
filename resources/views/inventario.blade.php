@@ -72,7 +72,7 @@
                                 <th>Color</th>
                                 <th>Categoría</th>
                                 <th>Cantidad</th>
-                                <th>Imagen</th>
+                                <th>Imagen</th> <!-- 👈 YA ESTABA -->
                                 <th>Opciones</th>
                             </tr>
                         </thead>
@@ -104,11 +104,14 @@
                                 <td>
                                     @if ($producto->imagenes->isNotEmpty())
                                     <a href="{{ route('producto.imagenes', $producto->id_producto) }}">
-                                        <img src="{{ asset($producto->imagenes->first()->ruta) }}" alt="Imagen del producto" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                        <img src="{{ asset($producto->imagenes->first()->ruta) }}" 
+                                             alt="Imagen del producto" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
                                     </a>
                                     @else
+                                    <!-- 👇 botón para gestionar imágenes -->
                                     <a href="{{ route('producto.imagenes', $producto->id_producto) }}" class="bottimg">
-                                        <i class="bi bi-images"></i>
+                                        <i class="bi bi-images"></i> Subir Imagen
                                     </a>
                                     @endif
                                 </td>

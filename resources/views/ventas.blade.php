@@ -88,9 +88,6 @@
                 </div>
 
                 <br>
-                <div class="pagination-container">
-                    {{ $ventas->links() }}
-                </div>
 
                 <br>
                 @if(request('buscar'))
