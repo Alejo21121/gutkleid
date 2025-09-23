@@ -131,3 +131,5 @@ Route::get('/metodo-pago', [MetodoPagoController::class, 'index'])->name('metodo
 Route::post('/metodo-pago/confirmar', [MetodoPagoController::class, 'store'])->name('metodo_pago.store');
 
 Route::get('/confirmacion', [MetodoPagoController::class, 'confirmacion'])->name('metodo_pago.confirmacion');
+
+Route::delete('/producto/{id_producto}/imagen/{id_imagen}', [ProductoController::class, 'eliminarImagen'])->name('producto.imagen.eliminar');
