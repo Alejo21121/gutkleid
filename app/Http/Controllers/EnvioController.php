@@ -14,35 +14,6 @@ class EnvioController extends Controller
         return view('envio');
     }
 
-    // Guardar información de envío
-    public function guardar(Request $request)
-    {
-        $request->validate([
-            'tipo_entrega' => 'required|in:tienda,domicilio',
-            'direccion' => 'nullable|string|max:255',
-            'info_adicional' => 'nullable|string|max:500',
-        ]);
-
-        $usuario = session('usuario');
-        if (!$usuario) return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
-
-        $direccion = $request->tipo_entrega === 'domicilio' ? $request->direccion : 'Tv 79 #68 Sur 98a';
-
-        if ($request->tipo_entrega === 'domicilio') {
-            Usuario::where('id_persona', $usuario['id_persona'])->update(['direccion' => $direccion]);
-            $usuario['direccion'] = $direccion;
-            session(['usuario' => $usuario]);
-        }
-
-        session(['envio' => [
-            'tipo_entrega' => $request->tipo_entrega,
-            'direccion' => $direccion,
-            'info_adicional' => $request->info_adicional,
-        ]]);
-
-        // 🔹 En vez de ir a confirmación, redirige a método de pago
-        return redirect()->route('metodo_pago.index');
-    }
 
     // Confirmación de envío y preparación de pago Bold
     public function confirmacion()

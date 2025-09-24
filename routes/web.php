@@ -11,6 +11,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ComprasController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\EnvioController;
+use App\Http\Controllers\MetodoPagoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,8 +119,10 @@ Route::get('/productos', [ProductoController::class, 'paginaFiltrada'])->name('p
 // --- Envio ---
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
 Route::post('/guardar-envio', [CarritoController::class, 'guardarEnvio'])->name('envio.guardar');
-Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
-Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
+Route::get('/metodo-pago/confirmacion', [MetodoPagoController::class, 'confirmacion'])
+    ->name('metodo_pago.confirmacion');
+
+
 
 // --- Rutas de Proceso de Venta y Facturación ---
 Route::post('/venta/procesar', [CarritoController::class, 'procesarVenta'])->name('venta.procesar');
@@ -129,3 +132,8 @@ Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'genera
 Route::get('/perfil/editar', [UsuarioController::class, 'editar'])->name('perfil.editar');
 Route::post('/perfil/actualizar', [UsuarioController::class, 'actualizar'])->name('perfil.actualizar');
 Route::post('/perfil/eliminar-imagen', [UsuarioController::class, 'eliminarImagen'])->name('perfil.eliminarImagen');
+
+// --- Métodos de Pago ---
+Route::get('/metodo-pago', [MetodoPagoController::class, 'index'])->name('metodo_pago.index');
+Route::post('/metodo-pago', [MetodoPagoController::class, 'store'])->name('metodo_pago.store');
+

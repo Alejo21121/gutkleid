@@ -22,58 +22,80 @@ class MetodoPagoController extends Controller
             'metodo_pago' => 'required|string',
             'banco'       => 'nullable|string',
             'direccion'   => 'nullable|string',      // desde formulario de envío
-            'info_adicional' => 'nullable|string',  // desde formulario de envío
+            'info_adicional' => 'nullable|string',
+            'tipo_entrega' => 'nullable|string', // recoger en tienda o domicilio  // desde formulario de envío
         ]);
+
+        // Dirección depende del tipo de entrega
+        $direccion = $request->tipo_entrega === 'tienda'
+            ? 'Recoger en tienda - Gut Kleid'
+            : $request->direccion;
 
         // Guardar todo en sesión
         session([
-            'metodo_pago'     => $request->metodo_pago,
-            'banco'           => $request->banco,
-            'direccion'       => $request->direccion,
-            'info_adicional'  => $request->info_adicional,
+            'metodo_pago'    => $request->metodo_pago,
+            'banco'          => $request->banco,
+            'direccion'      => $direccion,
+            'info_adicional' => $request->info_adicional,
+            'tipo_entrega'   => $request->tipo_entrega,
         ]);
-
         // Redirigir a la vista de confirmación
         return redirect()->route('metodo_pago.confirmacion');
     }
+    public function confirmacion()
+    {
+        // 🟢 Persona y datos de envío
+        $persona = session('persona', []);
+        $envio   = session('envio', []);
 
-public function confirmacion(Request $request)
-{
-    // Datos del pago
-    $metodo_pago = session('metodo_pago', '—');
-    $banco = session('banco', '—');
+        // 🟢 Carrito y totales
+        $detallesCarrito = session('carrito', []);
+        $subtotal   = session('subtotal', 0);
+        $ivaTotal   = session('ivaTotal', 0);
+        $costoEnvio = session('costoEnvio', 0);
+        $totalFinal = session('totalFinal', 0);
 
-    // Datos del envío
-    $envio = session('envio', []);
-    $tipoEntrega = $envio['tipo_entrega'] ?? 'tienda';
-    $direccionMostrada = $envio['direccion'] ?? ($tipoEntrega === 'tienda' ? 'Tv 79 #68 Sur 98a' : '');
-    $infoAdicional = $envio['info_adicional'] ?? '';
+        // 🟢 Variables de transacción (si hay pasarela de pago)
+        $orderId            = session('orderId');
+        $integritySignature = session('integritySignature');
+        $amountInCents      = session('amountInCents');
+        $publicKey          = session('publicKey');
 
-    // Datos del usuario desde sesión
-    $persona = session('usuario'); // id, nombres, correo, telefono, etc.
+        // 🟢 Método de pago (se guardan al elegirlo en la vista de método de pago)
+        $idMetodo = session('metodo_pago');
+        $idBanco  = session('banco');
+        $direccion  = $envio['direccion'] ?? '';
+        $tipoEntrega = $envio['tipo_entrega'] ?? '—';
+        $infoAdicional = $envio['info_adicional'] ?? '';
 
-    // Carrito
-    $detallesCarrito = session('carrito', []);
-    $subtotal = array_sum(array_map(fn($item) => $item['valor'] * $item['cantidad'], $detallesCarrito));
-    $ivaTotal = $subtotal * 0.19;
-    $totalFinal = $subtotal + $ivaTotal;
 
-    // Costo de envío: gratis si subtotal >= 150k
-    $costoEnvio = $subtotal >= 150000 ? 0 : 15000;
-    $totalFinal += $costoEnvio;
+        // Si es numérico, buscar en BD; si no, usar el texto directamente
+        if (is_numeric($idMetodo)) {
+            $metodo_pago = MetodoPago::find($idMetodo)->nombre ?? $idMetodo;
+        } else {
+            $metodo_pago = $idMetodo; // Efectivo, Transferencia, etc.
+        }
 
-    return view('confirmacion', compact(
-        'metodo_pago',
-        'banco',
-        'persona',
-        'detallesCarrito',
-        'subtotal',
-        'ivaTotal',
-        'totalFinal',
-        'costoEnvio',
-        'direccionMostrada',
-        'infoAdicional',
-        'tipoEntrega'
-    ));
-}
+        $banco = $idBanco ?? '';
+
+        // 🟢 Retornar a la vista con TODA la información
+        return view('confirmacion', compact(
+            'persona',
+            'envio',
+            'detallesCarrito',
+            'subtotal',
+            'ivaTotal',
+            'costoEnvio',
+            'totalFinal',
+            'orderId',
+            'integritySignature',
+            'amountInCents',
+            'publicKey',
+            'metodo_pago',
+            'banco',
+            'direccion',
+            'infoAdicional',
+            'tipoEntrega'
+        ));
+    }
 }

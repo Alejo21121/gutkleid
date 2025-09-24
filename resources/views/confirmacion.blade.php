@@ -64,45 +64,54 @@
                 <input type="hidden" name="info_adicional" value="{{ $infoAdicionalFormulario }}">
 
                 <table class="table table-bordered mt-4">
-    <tr>
-        <th>Documento</th>
-        <td>{{ $persona['documento'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Fecha de nacimiento</th>
-        <td>{{ $persona['fecha_nacimiento'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Nombres</th>
-        <td>{{ $persona['nombres'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Apellidos</th>
-        <td>{{ $persona['apellidos'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Correo</th>
-        <td>{{ $persona['correo'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Teléfono</th>
-        <td>{{ $persona['telefono'] ?? '—' }}</td>
-    </tr>
-    <tr>
-        <th>Dirección</th>
-        <td>{{ $direccionMostrada }}</td>
-    </tr>
-    <tr>
-    <th>Método de pago</th>
-    <td>{{ $metodo_pago }} {{ $banco ? '('.$banco.')' : '' }}</td>
-</tr>
-<tr>
-    <th>Información adicional</th>
-    <td>
-        <textarea name="info_adicional" class="form-control" rows="3">{{ $infoAdicional }}</textarea>
-    </td>
-</tr>
-</table>
+                    <tr>
+                        <th>Documento</th>
+                        <td>{{ $persona['documento'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de nacimiento</th>
+                        <td>{{ $persona['fecha_nacimiento'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nombres</th>
+                        <td>{{ $persona['nombres'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Apellidos</th>
+                        <td>{{ $persona['apellidos'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Correo</th>
+                        <td>{{ $persona['correo'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono</th>
+                        <td>{{ $persona['telefono'] ?? '—' }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tipo de entrega:</strong></td>
+                        <td>{{ $tipoEntrega }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dirección:</strong></td>
+                        <td>{{ $direccion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Método de pago</th>
+                        <td>
+                            {{ $metodo_pago }}
+                            @if($banco && $metodo_pago !== 'Efectivo')
+                            {{ $banco }}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Información adicional</th>
+                        <td>
+                            <textarea name="info_adicional" class="form-control" rows="3">{{ $infoAdicional }}</textarea>
+                        </td>
+                    </tr>
+                </table>
 
                 <table class="table table-bordered mt-2">
                     <thead>
