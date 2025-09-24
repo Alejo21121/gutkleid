@@ -72,7 +72,10 @@ class CarritoController extends Controller
         $envio = session('envio', []);
         $tipoEntrega = $envio['tipo_entrega'] ?? 'domicilio';
         $direccion = $envio['direccion'] ?? ($tipoEntrega === 'tienda' ? 'Tv 79 #68 Sur-98a' : ($usuario['direccion'] ?? 'No registrada'));
-        $infoAdicional = $envio['info_adicional'] ?? '';
+
+        // Tomar información adicional del formulario o de la sesión
+        $infoAdicional = $request->info_adicional ?? $envio['info_adicional'] ?? '';
+        session(['info_adicional' => $infoAdicional]);
 
         DB::beginTransaction();
         try {
@@ -143,7 +146,8 @@ class CarritoController extends Controller
                 'metodo_pago' => MetodoPago::find($idMetodoPagoSeleccionado)->nombre ?? '—',
                 'sub_metodo' => session('sub_metodo_pago'),
                 'direccionCliente' => $direccion,
-                'tipoEntregaTexto' => ($tipoEntrega === 'tienda' ? 'Recoger en tienda' : 'Domicilio')
+                'tipoEntregaTexto' => ($tipoEntrega === 'tienda' ? 'Recoger en tienda' : 'Domicilio'),
+                'infoAdicional' => $infoAdicional
             ]);
 
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';

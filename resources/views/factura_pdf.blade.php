@@ -114,6 +114,12 @@
             <th>Dirección:</th>
             <td>{{ $direccionCliente }}</td>
         </tr>
+
+        <tr>
+            <th>Información adicional:</th>
+            <td>{{ $infoAdicional ?: '—' }}</td>
+        </tr>
+
         <tr>
             <th>Tipo de Entrega:</th>
             <td>{{ $tipoEntregaTexto }}</td>
