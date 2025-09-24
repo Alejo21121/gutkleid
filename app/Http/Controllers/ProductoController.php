@@ -66,7 +66,6 @@ class ProductoController extends Controller
         return view('create', compact('categorias', 'subcategorias'));
     }
 
-
     public function store(Request $request)
 {
     $validated = $request->validate([
