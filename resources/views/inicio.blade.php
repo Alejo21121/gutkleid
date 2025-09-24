@@ -256,7 +256,7 @@
                 <div id="mainCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="{{ asset('IMG/inicio.png') }}" class="d-block w-100 rounded shadow" alt="Moda 1">
+                            <img src="{{ asset('IMG/inicio.png') }}" class="d-block w-100 rounded shadow" alt="Moda 1"">
                         </div>
                         <div class="carousel-item">
                             <img src="{{ asset('IMG/inicio2.png') }}" class="d-block w-100 rounded shadow" alt="Moda 2">

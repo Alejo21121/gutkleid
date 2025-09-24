@@ -43,4 +43,3 @@ class FacturaVenta extends Model
         return $this->belongsTo(SubMetodoPago::class, 'id_sub_metodo');
     }
 }
-

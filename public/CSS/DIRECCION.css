@@ -10,7 +10,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    /* 👈 full pantalla */
 }
 
 html,
@@ -21,7 +20,7 @@ body {
     flex-direction: column;
 }
 
-/* Mensaje envío gratis */
+/* === MENSAJE ENVÍO GRATIS === */
 .alert-envio-gratis {
     background: linear-gradient(90deg, #bb8b06, #dda90d);
     color: white;
@@ -54,7 +53,6 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    /* Alinea todo verticalmente */
     justify-content: space-between;
 }
 
@@ -125,10 +123,8 @@ body {
 .submenu-items {
     display: none;
     position: absolute;
-    /* importante */
     top: 0;
     left: 100%;
-    /* se abre a la derecha del padre */
     background: white;
     border-radius: 10px;
     padding: 0.5rem 1rem;
@@ -136,8 +132,6 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     z-index: 1002;
 }
-
-
 
 .submenu:hover .submenu-items {
     display: block;
@@ -161,7 +155,6 @@ body {
 .logo img {
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
     top: 50%;
     transform: translate(-50%, -50%);
 }
@@ -173,11 +166,10 @@ body {
     flex-wrap: wrap;
 }
 
-
+/* === BOTONES Y FILTROS === */
 .filterbar {
     display: flex;
     margin-bottom: 10px;
-
 }
 
 .filter-btn,
@@ -196,6 +188,11 @@ body {
     background-color: rgb(231, 231, 231);
 }
 
+.filter-btn:hover {
+    color: #000;
+    transform: scale(1.05);
+}
+
 .fontcarr {
     font-family: Arial, sans-serif;
     padding: 5px 15px;
@@ -203,30 +200,19 @@ body {
     font-size: 14px;
     color: black;
     font-weight: bold;
-    transition: transform 0.3s ease, box-shadow 1.8s ease;
-    text-decoration: none;
     border: none;
     border-radius: 50px;
-    size: 100px;
 }
 
 .fontcarr:hover {
     background-color: rgb(185, 185, 185);
 }
 
-.filter-btn:hover {
-    color: #000;
-    transform: scale(1.05);
-
-}
-
 /* Sidebar de filtros */
-/* Sidebar oculto */
 .filter-sidebar {
     position: fixed;
     top: 0;
     right: -350px;
-    /* 👈 un poco más que el width */
     width: 350px;
     height: 100%;
     background: #fff;
@@ -237,8 +223,6 @@ body {
     z-index: 1050;
 }
 
-
-
 .gender-btn.active {
     background-color: #ddd;
     font-weight: bold;
@@ -247,7 +231,6 @@ body {
 .sesionn {
     color: rgb(0, 0, 0);
     margin: 0;
-    /* Antes tenías margin-top: 7px */
     display: flex;
     align-items: center;
 }
@@ -258,12 +241,10 @@ body {
     margin-top: 16px;
 }
 
-
 /* === PRODUCTOS === */
 .productosbar {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    /* Fuerza 6 columnas */
     gap: 25px;
     text-align: center;
     max-width: 1400px;
@@ -281,12 +262,10 @@ body {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease-in-out;
     height: 400px;
-    /* Ajustado para imagen grande + texto */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-
 
 .productos:hover {
     transform: scale(1.05);
@@ -298,7 +277,6 @@ body {
     display: block;
     margin: 0 auto;
 }
-
 
 .productos h5 {
     font-size: 18px;
@@ -316,9 +294,7 @@ body {
     justify-content: center;
     background-color: rgb(241, 241, 241);
     flex: 1;
-    /* 👈 ocupa el espacio libre */
-    height: auto;
-    /* 👈 quita el fijo */
+    height: 620px;
 }
 
 /* === MINI-CAROUSEL === */
@@ -362,10 +338,10 @@ body {
     font-size: 18px;
 }
 
-.prev {
-    left: 5px;
-}
+.prev { left: 5px; }
+.next { right: 5px; }
 
+/* Botón WhatsApp */
 .btn-whatsapp {
     position: fixed;
     width: 60px;
@@ -386,15 +362,11 @@ body {
 .btn-whatsapp img {
     width: 35px;
     height: 35px;
-    pointer-events: none; /* 👈 evita que la imagen bloquee el click */
+    pointer-events: none;
 }
 
 .btn-whatsapp:hover {
     transform: scale(1.1);
-}
-
-.next {
-    right: 5px;
 }
 
 /* === FOOTER === */
@@ -415,7 +387,7 @@ body {
 }
 
 .abaj:hover {
-    color: #bb8b06
+    color: #bb8b06;
 }
 
 /* === NAV === */
@@ -451,33 +423,11 @@ body {
     z-index: 1;
 }
 
-::placeholder {
-    color: gray;
-}
+::placeholder { color: gray; }
 
 .botonbusca {
     position: absolute;
     z-index: 2;
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    background-color: #734222;
-    color: white;
-    padding: 10px;
-    border: none;
-    margin-top: -5px;
-}
-
-
-::placeholder {
-    color: gray;
-}
-
-.botonbusca {
-    position: absolute;
-    /* <-- Esto es obligatorio si usas z-index */
-    z-index: 2;
-    /* Ya está bien */
     width: 50px;
     height: 50px;
     border-radius: 100px;
@@ -487,20 +437,6 @@ body {
     border: none;
     right: 10px;
     margin-top: -5px;
-    /* Ojo: tenías un espacio entre -5 y px, lo corregí */
-}
-
-
-.contenedor:hover input {
-    width: 250px;
-}
-
-.contenedor {
-    position: absolute;
-    right: 40px;
-    top: 100px;
-    transform: translate(-50% -50%);
-    padding: 10px;
 }
 
 .botonbusca:hover {
@@ -526,11 +462,8 @@ body {
     border-radius: 50%;
     object-fit: cover;
     display: block;
-    margin: 0 auto;
-    margin-top: 40px;
-    margin-bottom: 22px;
+    margin: 40px auto 22px auto;
 }
-
 
 /* === RESPONSIVE === */
 @media (max-width: 992px) {
@@ -544,9 +477,7 @@ body {
         padding: 10px;
     }
 
-    .barra2 {
-        justify-content: center;
-    }
+    .barra2 { justify-content: center; }
 }
 
 @media (max-width: 768px) {
@@ -580,29 +511,8 @@ body {
         gap: 10px;
     }
 
-
-    .barra1 {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .barra1 a {
-        text-decoration: none;
-    }
-
-    .barra1 .filter-btn,
-    .barra1 .filter-btna {
-        width: auto !important;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .barra2 {
-        justify-content: flex-end;
-        flex-wrap: wrap;
-    }
+    .barra1 { justify-content: flex-start; flex-wrap: wrap; }
+    .barra2 { justify-content: flex-end; flex-wrap: wrap; }
 
     .usuario-info,
     .iconos {
@@ -615,19 +525,12 @@ body {
         gap: 15px;
     }
 
-    .productos {
-        padding: 100px;
-    }
+    .productos { padding: 100px; }
 
     .cabeza,
-    .foot {
-        text-align: center;
-    }
+    .foot { text-align: center; }
 
-    .filterbar {
-        flex-direction: column;
-        gap: 10px;
-    }
+    .filterbar { flex-direction: column; gap: 10px; }
 
     .filter-btn,
     .filter-busc,
@@ -637,16 +540,11 @@ body {
         text-align: center;
     }
 
-    .search-input {
-        width: 100%;
-    }
+    .search-input { width: 100%; }
 }
 
-
 @media (max-width: 480px) {
-    .productosbar {
-        grid-template-columns: 1fr;
-    }
+    .productosbar { grid-template-columns: 1fr; }
 
     .prev,
     .next {
@@ -654,20 +552,17 @@ body {
         padding: 3px;
     }
 
-    input {
-        width: 100%;
-    }
+    input { width: 100%; }
 
     .user-name {
         font-size: 14px;
         padding: 4px 10px;
     }
 
-    .carousel {
-        width: 100%;
-    }
+    .carousel { width: 100%; }
 }
 
+/* === CARRITO === */
 .containercar {
     text-align: center;
     width: 750px;
@@ -675,22 +570,17 @@ body {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
     background-color: #f9f9f9;
     margin-left: 100px;
-
 }
 
 .bottonagreg {
     background-color: #dda90d;
     border-radius: 10px;
-    box-shadow: #000;
     color: white;
     padding: 10px;
     border: none;
 }
 
-.bottonagreg:hover {
-    color: white;
-    background-color: #bb8b06
-}
+.bottonagreg:hover { background-color: #bb8b06; }
 
 .bottonelim {
     background-color: rgb(197, 21, 21);
@@ -700,10 +590,7 @@ body {
     border: none;
 }
 
-.bottonelim:hover {
-    color: white;
-    background-color: rgb(128, 14, 14);
-}
+.bottonelim:hover { background-color: rgb(128, 14, 14); }
 
 .bottonvaci {
     background-color: rgb(211, 224, 26);
@@ -715,10 +602,7 @@ body {
     margin: 10px;
 }
 
-.bottonvaci:hover {
-    color: white;
-    background-color: rgb(170, 180, 22);
-}
+.bottonvaci:hover { background-color: rgb(170, 180, 22); }
 
 .bottonfina {
     background-color: rgb(80, 160, 64);
@@ -730,10 +614,7 @@ body {
     margin: 10px;
 }
 
-.bottonfina:hover {
-    color: white;
-    background-color: rgb(60, 121, 48);
-}
+.bottonfina:hover { background-color: rgb(60, 121, 48); }
 
 .bottonvolve {
     background-color: rgb(29, 100, 192);
@@ -745,17 +626,13 @@ body {
     margin: 15px;
 }
 
-.bottonvolve:hover {
-    color: white;
-    background-color: rgb(21, 72, 139);
-}
+.bottonvolve:hover { background-color: rgb(21, 72, 139); }
 
 .cantidad-control {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    /* espacio entre los botones y el número */
 }
 
 .bottoncantimen,
@@ -786,18 +663,7 @@ body {
     text-align: center;
 }
 
-.cantidad-control {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-tbody,
-td,
-tr {
-    text-align: center;
-}
+tbody, td, tr { text-align: center; }
 
 .search-panel {
     display: none;
@@ -809,27 +675,15 @@ tr {
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.busqueda {
-    padding: 5x;
-    margin-right: 10px;
-}
+.busqueda { margin-right: 10px; }
 
 hr {
     margin: 0;
-    /* Elimina el margen */
     border: 1px solid #ccc;
-    /* Color y grosor de la línea */
 }
 
 .filtropag {
@@ -837,6 +691,118 @@ hr {
     border: none;
     padding: 5px;
     cursor: pointer;
-    z-index: 1000;
     transition: background-color 0.3s ease;
+}
+
+
+/* === GENERAL === */
+body#my-account {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f1f1f1;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+main.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 15px;
+}
+
+/* Forzar 2x2 en la sección de Mi Cuenta */
+.my-account-links {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 40px auto;
+    max-width: 800px;
+}
+
+.my-account-links li {
+    width: 100% !important;
+    max-width: none !important;
+    flex: none !important;
+}
+
+.my-account-links a {
+    display: block;
+    background: #fff;
+    padding: 30px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.my-account-links a:hover {
+    background: #f7f7f7;
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.2);
+    color: #000;
+}
+
+.my-account-links a i {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: #bb8b06;
+}
+
+/* Responsive: en móviles solo 1 por fila */
+@media (max-width: 768px) {
+    .my-account-links {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+
+/* Contenedor principal */
+.contenedor {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 70%;  /* Más ancho en pantallas grandes */
+    min-width: 320px;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .contenedor {
+        max-width: 95%; /* Que use casi todo el ancho en móvil */
+        padding: 15px;
+    }
+}
+
+/* Centrar info de usuario */
+.contenedor .info {
+    text-align: center;
+}
+
+.botoningre {
+  background-color: #dda90d;
+  border-radius: 10px;
+  padding: 12px;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+.botoningre:hover {
+  background-color: #ac7d08;
 }
