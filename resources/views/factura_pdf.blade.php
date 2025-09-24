@@ -112,6 +112,10 @@
         </tr>
         @if ($factura->info_adicional)
         <tr>
+            <th>Direccion:</th>
+            <td>{{ $factura->cliente->direccion }}</td>
+        </tr>
+        <tr>
             <th>Información Adicional:</th>
             <td>{{ $factura->info_adicional }}</td>
         </tr>
