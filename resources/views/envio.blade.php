@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="{{ asset('IMG/icono2.ico') }}" type="image/x-icon">
 </head>
+
 <body>
     <header class="cabeza">
         <nav class="barras">
@@ -54,40 +55,41 @@
             </div>
         </nav>
         <hr>
-    <!-- Header -->
-    <main class="main">
-        <div class="containercar">
-            <h2 class="text-center">Opciones de Entrega</h2>
+        <!-- Header -->
+        <main class="main">
+            <div class="containercar">
+                <h2 class="text-center">Opciones de Entrega</h2>
 
-            <<form action="{{ route('envio.guardar') }}" method="POST" class="mt-4">
-                @csrf
+                <form action="{{ route('envio.guardar') }}" method="POST" class="mt-4">
+                    @csrf
 
-                <div class="form-check text-start mb-3">
-                    <input class="form-check-input" type="radio" name="tipo_entrega" id="recoger" value="tienda" checked>
-                    <label class="form-check-label" for="recoger">
-                        Recoger en tienda
-                    </label>
-                </div>
+                    <div class="form-check text-start mb-3">
+                        <input class="form-check-input" type="radio" name="tipo_entrega" id="recoger" value="tienda" checked>
+                        <label class="form-check-label" for="recoger">
+                            Recoger en tienda
+                        </label>
+                    </div>
 
-                <div class="form-check text-start mb-3">
-                    <input class="form-check-input" type="radio" name="tipo_entrega" id="domicilio" value="domicilio">
-                    <label class="form-check-label" for="domicilio">
-                        Enviar a domicilio
-                    </label>
-                </div>
+                    <div class="form-check text-start mb-3">
+                        <input class="form-check-input" type="radio" name="tipo_entrega" id="domicilio" value="domicilio">
+                        <label class="form-check-label" for="domicilio">
+                            Enviar a domicilio
+                        </label>
+                    </div>
 
-                <div id="direccionCampo" class="mb-3" style="display: none;">
-                    <label for="direccion" class="form-label">Dirección</label>
-                    <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ej: Calle 123 #45-67, Bogotá">
-                </div>
+                    <div id="direccionCampo" class="mb-3" style="display: none;">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ej: Calle 123 #45-67, Bogotá">
+                    </div>
 
-<div class="d-flex justify-content-center gap-3">
-    <button type="submit" class="bottonfina">Confirmar</button>
-    <a href="{{ route('carrito.index') }}" class="bottoncancela">Cancelar</a>
-</div>
-            </form>
-        </div>
-    </main>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="submit" class="bottonfina">Confirmar</button>
+                        <a href="{{ route('carrito.index') }}" class="bottoncancela">Cancelar</a>
+                    </div>
+                </form>
+
+            </div>
+        </main>
         <footer class="pie">
             <a href="{{ route('terminos') }}" class="abaj">Términos y Condiciones</a>
             <a href="{{ route('preguntas') }}" class="abaj">Preguntas Frecuentes</a>
@@ -99,27 +101,28 @@
             <p>&copy; 2024 - GUT KLEID.</p>
         </footer>
         <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const recoger = document.getElementById("recoger");
-    const domicilio = document.getElementById("domicilio");
-    const direccionCampo = document.getElementById("direccionCampo");
+            document.addEventListener("DOMContentLoaded", function() {
+                const recoger = document.getElementById("recoger");
+                const domicilio = document.getElementById("domicilio");
+                const direccionCampo = document.getElementById("direccionCampo");
 
-    function toggleDireccion() {
-        if (domicilio.checked) {
-            direccionCampo.style.display = "block";
-        } else {
-            direccionCampo.style.display = "none";
-        }
-    }
+                function toggleDireccion() {
+                    if (domicilio.checked) {
+                        direccionCampo.style.display = "block";
+                    } else {
+                        direccionCampo.style.display = "none";
+                    }
+                }
 
-    // Al cargar la página
-    toggleDireccion();
+                // Al cargar la página
+                toggleDireccion();
 
-    // Cuando cambian las opciones
-    recoger.addEventListener("change", toggleDireccion);
-    domicilio.addEventListener("change", toggleDireccion);
-});
-</script>
+                // Cuando cambian las opciones
+                recoger.addEventListener("change", toggleDireccion);
+                domicilio.addEventListener("change", toggleDireccion);
+            });
+        </script>
 
 </body>
+
 </html>

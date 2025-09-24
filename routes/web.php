@@ -30,13 +30,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/registro', [RegistroController::class, 'mostrarFormulario'])->name('registro.form');
 Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.enviar');
 
-// --- Rutas de Productos ---
-// Exportaciones de productos
-Route::get('/producto/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('producto.exportarPDF');
-Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExcel'])->name('producto.exportarExcel');
-// CRUD completo de productos
-Route::resource('producto', ProductoController::class);
-
 // --- Rutas para Vistas Estáticas ---
 Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
 Route::view('/contraseña', 'contraseña')->name('contraseña');
@@ -49,12 +42,9 @@ Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
 
+
 // --- Grupo solo para ADMIN (rol 1) ---
 Route::middleware(['role:1'])->group(function () {
-// --- Usuarios --- 
-// Rutas de exportación de usuarios (Mover estas rutas antes del resource)
-Route::get('/usuarios/exportar-excel', [UsuarioController::class, 'exportarExcel'])->name('usuarios.exportarExcel');
-Route::get('usuarios/exportarPDF', [UsuarioController::class, 'exportarPDF'])->name('usuarios.exportarPDF');
 
     // --- Rutas de Productos ---
     // Exportaciones de productos
@@ -69,10 +59,6 @@ Route::get('usuarios/exportarPDF', [UsuarioController::class, 'exportarPDF'])->n
 
     // CRUD de usuarios
     Route::resource('usuarios', UsuarioController::class);
-
-    Route::get('/perfil/editar', [UsuarioController::class, 'editar'])->name('perfil.editar');
-    Route::post('/perfil/actualizar', [UsuarioController::class, 'actualizar'])->name('perfil.actualizar');
-    Route::post('/perfil/eliminar-imagen', [UsuarioController::class, 'eliminarImagen'])->name('perfil.eliminarImagen');
 
     // --- Recuperar cuenta ---
     Route::post('/enviar-codigo', [RecuperarController::class, 'enviarCodigo'])->name('enviar.codigo');
@@ -132,22 +118,22 @@ Route::get('/productos', [ProductoController::class, 'paginaFiltrada'])->name('p
 
 // --- Envio ---
 Route::get('/envio', [EnvioController::class, 'index'])->name('envio.index');
-Route::post('/envio/guardar', [EnvioController::class, 'guardar'])->name('envio.guardar');
-Route::get('/envio/confirmacion', [EnvioController::class, 'confirmacion'])->name('envio.confirmacion');
-Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->name('compra.confirmacion');
+Route::post('/guardar-envio', [CarritoController::class, 'guardarEnvio'])->name('envio.guardar');
+Route::get('/metodo-pago/confirmacion', [MetodoPagoController::class, 'confirmacion'])
+    ->name('metodo_pago.confirmacion');
+
+
 
 // --- Rutas de Proceso de Venta y Facturación ---
 Route::post('/venta/procesar', [CarritoController::class, 'procesarVenta'])->name('venta.procesar');
 Route::get('/confirmacion/final/{id_factura}', [CarritoController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
 Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'generarFacturaPDF'])->name('venta.descargarFactura');
 
+Route::get('/perfil/editar', [UsuarioController::class, 'editar'])->name('perfil.editar');
+Route::post('/perfil/actualizar', [UsuarioController::class, 'actualizar'])->name('perfil.actualizar');
+Route::post('/perfil/eliminar-imagen', [UsuarioController::class, 'eliminarImagen'])->name('perfil.eliminarImagen');
 
-Route::get('/inventario/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('inventario.exportarPDF');
-Route::get('/ventas/exportar-pdf', [CarritoController::class, 'exportarPDF'])->name('ventas.exportarPDF');
-
+// --- Métodos de Pago ---
 Route::get('/metodo-pago', [MetodoPagoController::class, 'index'])->name('metodo_pago.index');
-Route::post('/metodo-pago/confirmar', [MetodoPagoController::class, 'store'])->name('metodo_pago.store');
+Route::post('/metodo-pago', [MetodoPagoController::class, 'store'])->name('metodo_pago.store');
 
-Route::get('/confirmacion', [MetodoPagoController::class, 'confirmacion'])->name('metodo_pago.confirmacion');
-
-Route::delete('/producto/{id_producto}/imagen/{id_imagen}', [ProductoController::class, 'eliminarImagen'])->name('producto.imagen.eliminar');

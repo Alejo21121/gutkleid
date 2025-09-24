@@ -18,6 +18,7 @@ class Usuario extends Model
         'id_persona',
         'documento',
         'id_tipo_documento',
+        'fecha_nacimiento',
         'nombres',
         'apellidos',
         'telefono',
