@@ -29,7 +29,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/registro', [RegistroController::class, 'mostrarFormulario'])->name('registro.form');
 Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.enviar');
 
-
 // --- Rutas para Vistas Estáticas ---
 Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
 Route::view('/contraseña', 'contraseña')->name('contraseña');
