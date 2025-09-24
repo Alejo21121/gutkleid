@@ -144,6 +144,12 @@ class UsuarioController extends Controller
                 'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/'
             ],
             'direccion' => 'required|string|max:100', // Mantenido
+            'fecha_nacimiento' => ['required', 'date', function ($attribute, $value, $fail) {
+                $edad = \Carbon\Carbon::parse($value)->age;
+                if ($edad < 18) {
+                    $fail('Debes tener al menos 18 años para registrarte.');
+                }
+            }]
         ], [
 
             // Mensajes personalizados
@@ -164,6 +170,7 @@ class UsuarioController extends Controller
             'id_tipo_documento' => $request->id_tipo_documento,
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
+            'fecha_nacimiento' => $request['fecha_nacimiento'],
             'telefono' => $request->telefono,
             'correo' => $request->correo,
             'contraseña' => Hash::make($request->contraseña),
