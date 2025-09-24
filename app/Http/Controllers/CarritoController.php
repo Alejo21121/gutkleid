@@ -59,14 +59,8 @@ class CarritoController extends Controller
 
     public function finalizar(Request $request)
     {
-        $carrito = session()->get('carrito', []);
+        $carrito = session('carrito', []);
         $usuario = session('usuario');
-
-        $tipoEntrega = $request->input('tipo_entrega');
-        $infoAdicional = $request->input('info_adicional');
-
-        $idMetodoPagoSeleccionado = $request->input('metodo_pago'); // Método elegido por el usuario
-        $idSubMetodoPagoSeleccionado = $request->input('sub_metodo_pago'); // Sub-método opcional (solo para mostrar en PDF)
 
         if (empty($carrito)) {
             return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
@@ -75,45 +69,44 @@ class CarritoController extends Controller
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar la compra.');
         }
 
-        DB::beginTransaction();
+        $envio = session('envio', []);
+        $tipoEntrega = $envio['tipo_entrega'] ?? 'domicilio';
+        $direccion = $envio['direccion'] ?? ($tipoEntrega === 'tienda' ? 'Tv 79 #68 Sur-98a' : ($usuario['direccion'] ?? 'No registrada'));
+        $infoAdicional = $envio['info_adicional'] ?? '';
 
+        DB::beginTransaction();
         try {
-            // 1️⃣ Crear factura (solo guardamos método principal)
+            // ID del método de pago
+            $idMetodoPagoSeleccionado = session('metodo_pago');
+            if (is_string($idMetodoPagoSeleccionado) && !is_numeric($idMetodoPagoSeleccionado)) {
+                $metodo = MetodoPago::where('nombre', $idMetodoPagoSeleccionado)->first();
+                $idMetodoPagoSeleccionado = $metodo->id_metodo_pago ?? MetodoPago::first()->id_metodo_pago ?? 1;
+            }
+
+            // Crear factura
             $factura = new FacturaVenta();
             $factura->fecha_venta = now();
             $factura->nit_tienda = '123456789';
             $factura->dire_tienda = 'Tv 79 #68 Sur-98a';
             $factura->telef_tienda = '3001234567';
             $factura->id_persona = $usuario['id_persona'];
-            $factura->id_metodo_pago = $idMetodoPagoSeleccionado ?? MetodoPago::first()->id_metodo_pago ?? 1;
+            $factura->id_metodo_pago = $idMetodoPagoSeleccionado;
+            $factura->info_adicional = $infoAdicional;
             $factura->total = 0;
             $factura->envio = 0;
-            $factura->info_adicional = $infoAdicional;
             $factura->save();
 
             $totalFactura = 0;
-
-            // 2️⃣ Procesar cada producto en el carrito
             foreach ($carrito as $item) {
                 $producto = Producto::find($item['id_producto']);
-                if (!$producto) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Producto no encontrado.');
-                }
+                if (!$producto) throw new \Exception('Producto no encontrado');
 
                 $tallaBuscada = strtoupper(trim($item['talla'] ?? ''));
-                if (empty($tallaBuscada)) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Debe seleccionar una talla para ' . $producto->nombre);
-                }
-
                 $tallaProducto = Talla::where('id_producto', $producto->id_producto)
                     ->where('talla', $tallaBuscada)
                     ->first();
-
                 if (!$tallaProducto || $tallaProducto->cantidad < $item['cantidad']) {
-                    DB::rollBack();
-                    return redirect()->route('carrito.index')->with('error', 'Stock insuficiente para ' . $producto->nombre . ' talla ' . $tallaBuscada);
+                    throw new \Exception("Stock insuficiente para {$producto->nombre} talla {$tallaBuscada}");
                 }
 
                 $cantidad = $item['cantidad'];
@@ -137,59 +130,35 @@ class CarritoController extends Controller
                 $totalFactura += $totalItem;
             }
 
-            // 3️⃣ Calcular envío
             $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($totalFactura >= 150000) ? 0 : 15000);
-
-            // 4️⃣ Guardar total y envío en la factura
             $factura->envio = $costoEnvio;
             $factura->total = $totalFactura + $costoEnvio + ($totalFactura * 0.19);
             $factura->save();
 
             DB::commit();
 
-            // 5️⃣ Cargar relaciones necesarias para PDF
-            $factura->load(['detalles.producto', 'cliente', 'detalles.talla']);
-
-            // Forzar nombres según lo que seleccionó el usuario
-            $metodo_pago = MetodoPago::find($idMetodoPagoSeleccionado)->nombre ?? '—';
-
-            // Solo para mostrar, no guardar en DB
-            $sub_metodo = null;
-            if (!empty($idSubMetodoPagoSeleccionado)) {
-                // Buscamos el nombre real del sub-método
-                $subMetodo = DB::table('sub_metodo_pagos')
-                    ->where('id_sub_metodo', $idSubMetodoPagoSeleccionado)
-                    ->first();
-                if ($subMetodo) {
-                    $sub_metodo = $subMetodo->nombre;
-                }
-            }
-
-            // Generar PDF
+            // Preparar PDF
             $pdf = Pdf::loadView('factura_pdf', [
                 'factura' => $factura,
-                'metodo_pago' => $metodo_pago,
-                'sub_metodo' => $sub_metodo
+                'metodo_pago' => MetodoPago::find($idMetodoPagoSeleccionado)->nombre ?? '—',
+                'sub_metodo' => session('sub_metodo_pago'),
+                'direccionCliente' => $direccion,
+                'tipoEntregaTexto' => ($tipoEntrega === 'tienda' ? 'Recoger en tienda' : 'Domicilio')
             ]);
+
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
             $rutaArchivo = 'facturas/' . $nombreArchivo;
-            $rutaCompleta = public_path($rutaArchivo);
+            if (!file_exists(public_path('facturas'))) mkdir(public_path('facturas'), 0777, true);
 
-            if (!file_exists(public_path('facturas'))) {
-                mkdir(public_path('facturas'), 0777, true);
-            }
-
-            $pdf->save($rutaCompleta);
+            $pdf->save(public_path($rutaArchivo));
             $factura->factura_pdf = $rutaArchivo;
             $factura->save();
 
-            // 8️⃣ Enviar correo al cliente
             if (!empty($usuario['correo'])) {
-                Mail::to($usuario['correo'])->send(new FacturaMail($factura, $rutaCompleta));
+                Mail::to($usuario['correo'])->send(new FacturaMail($factura, public_path($rutaArchivo)));
             }
 
-            // 9️⃣ Limpiar carrito
-            Session::forget('carrito');
+            session()->forget('carrito');
 
             return redirect()->route('confirmacion.final', ['id_factura' => $factura->id_factura_venta]);
         } catch (\Exception $e) {
@@ -283,9 +252,11 @@ class CarritoController extends Controller
 
         $carrito = session()->get('carrito', []);
         $usuario = session('usuario');
-        $envio = $request->only(['tipo_entrega', 'direccion', 'info_adicional']);
         $persona = Persona::find($usuario['id_persona']);
 
+        $envio = $request->only(['tipo_entrega', 'direccion', 'info_adicional']);
+
+        // Calcular subtotal
         $subtotal = 0;
         foreach ($carrito as $item) {
             $subtotal += $item['valor'] * $item['cantidad'];
@@ -293,6 +264,7 @@ class CarritoController extends Controller
 
         $ivaTotal = round($subtotal * $tasaIVA, 0);
 
+        // Calcular costo de envío
         $costoEnvio = 0;
         if ($envio['tipo_entrega'] === 'domicilio') {
             $costoEnvio = ($subtotal >= 150000) ? 0 : $costoEnvioDomicilio;
@@ -300,14 +272,25 @@ class CarritoController extends Controller
 
         $totalFinal = $subtotal + $ivaTotal + $costoEnvio;
 
-        // Guardar dirección real en sesión
-        $direccionReal = ($envio['tipo_entrega'] === 'tienda')
-            ? 'Recoger en tienda - Gut Kleid'
-            : ($usuario['direccion'] ?? 'No registrada');
+        // Determinar dirección real
+        if ($envio['tipo_entrega'] === 'tienda') {
+            $direccionReal = 'Tv 79 #68 Sur-98a';
+        } else {
+            // Solo actualizar si el usuario puso algo diferente a vacío y distinto de lo que ya está en la DB
+            $direccionReal = $envio['direccion'] ?? $persona->direccion; // si no escribió nada, dejamos la que estaba
+            if (!empty($envio['direccion']) && $envio['direccion'] !== $persona->direccion) {
+                $persona->direccion = $direccionReal;
+                $persona->save(); // ✅ Guardamos la nueva dirección en la base de datos
+                // Actualizamos también la sesión
+                $usuario['direccion'] = $direccionReal;
+                session(['usuario' => $usuario]);
+            }
+        }
 
         $envio['direccion'] = $direccionReal;
+        $envio['info_adicional'] = $envio['info_adicional'] ?? '';
 
-        // Guardar en sesión antes de ir a método de pago
+        // Guardar todo en sesión antes de ir a método de pago
         session([
             'carrito' => $carrito,
             'subtotal' => $subtotal,
@@ -318,9 +301,10 @@ class CarritoController extends Controller
             'envio' => $envio
         ]);
 
-        // 🔹 Ahora en vez de ir a confirmación, va a elegir método de pago
+        // Redirigir al método de pago
         return redirect()->route('metodo_pago.index');
     }
+
 
 
     public function generarFacturaPDF($id_factura)

@@ -89,20 +89,24 @@
                         <td>{{ $persona['telefono'] ?? '—' }}</td>
                     </tr>
                     <tr>
+                    <tr>
                         <td><strong>Tipo de entrega:</strong></td>
                         <td>{{ $tipoEntrega }}</td>
                     </tr>
                     <tr>
                         <td><strong>Dirección:</strong></td>
-                        <td>{{ $direccion }}</td>
+                        <td>{{ $tipoEntrega === 'tienda' ? 'La tienda (Tv 79 #68 Sur-98a)' : $direccion }}</td>
+                    </tr>
+
                     </tr>
                     <tr>
                         <th>Método de pago</th>
                         <td>
                             {{ $metodo_pago }}
-                            @if($banco && $metodo_pago !== 'Efectivo')
-                            {{ $banco }}
+                            @if($subMetodo && $metodo_pago !== 'Efectivo')
+                            {{ $subMetodo }}
                             @endif
+
                         </td>
                     </tr>
                     <tr>

@@ -110,16 +110,25 @@
             <th>Teléfono:</th>
             <td>{{ $factura->cliente->telefono }}</td>
         </tr>
-        @if ($factura->info_adicional)
         <tr>
-            <th>Direccion:</th>
-            <td>{{ $factura->cliente->direccion }}</td>
+            <th>Dirección:</th>
+            <td>{{ $direccionCliente }}</td>
         </tr>
         <tr>
-            <th>Información Adicional:</th>
-            <td>{{ $factura->info_adicional }}</td>
+            <th>Tipo de Entrega:</th>
+            <td>{{ $tipoEntregaTexto }}</td>
+        </tr>
+        <tr>
+            <th>Método de Pago:</th>
+            <td>{{ $metodo_pago }}</td>
+        </tr>
+        @if($sub_metodo)
+        <tr>
+            <th>Banco:</th>
+            <td>{{ $sub_metodo }}</td>
         </tr>
         @endif
+
     </table>
 
     <div class="seccion-titulo">Detalle de Productos</div>

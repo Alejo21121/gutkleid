@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
-use Illuminate\Support\Facades\Config;
 
 class EnvioController extends Controller
 {
@@ -14,8 +13,31 @@ class EnvioController extends Controller
         return view('envio');
     }
 
+    // Guardar selección de envío
+    public function guardar(Request $request)
+    {
+        $request->validate([
+            'tipo_entrega' => 'required|string', // tienda o domicilio
+            'direccion'    => 'nullable|string',
+            'info_adicional' => 'nullable|string',
+        ]);
 
-    // Confirmación de envío y preparación de pago Bold
+        // Guardamos valores consistentes en sesión
+        $tipoEntrega = $request->tipo_entrega === 'tienda' ? 'tienda' : 'domicilio';
+        $direccion = ($tipoEntrega === 'tienda') ? 'Tv 79 #68 Sur-98a' : $request->direccion;
+
+        session([
+            'envio' => [
+                'tipo_entrega'   => $tipoEntrega,
+                'direccion'      => $direccion,
+                'info_adicional' => $request->info_adicional ?? '',
+            ]
+        ]);
+
+        return redirect()->route('confirmacion.index');
+    }
+
+    // Confirmación de envío y cálculo de totales
     public function confirmacion()
     {
         $usuario = session('usuario');
@@ -28,9 +50,8 @@ class EnvioController extends Controller
         $carrito = session('carrito', []);
 
         $detallesCarrito = [];
-        $totalFinal = 0;
+        $subtotal = 0;
 
-        // **AQUÍ SE CALCULA $totalFinal**
         foreach ($carrito as $item) {
             $valor = $item['valor'] ?? 0;
             $totalItem = $valor * $item['cantidad'] * 1.19; // incluye IVA
@@ -39,38 +60,29 @@ class EnvioController extends Controller
                 'talla' => $item['talla'],
                 'color' => $item['color'],
                 'cantidad' => $item['cantidad'],
+                'valor' => $valor,
                 'total' => $totalItem,
             ];
-            $totalFinal += $totalItem;
+            $subtotal += $valor * $item['cantidad'];
         }
+        $tipoEntrega = $envio['tipo_entrega'] ?? 'domicilio'; // tienda o domicilio
+        $direccion   = $envio['direccion'] ?? ($tipoEntrega === 'tienda' ? 'Tv 79 #68 Sur-98a' : $usuario['direccion'] ?? 'No registrada');
+        $infoAdicional = $envio['info_adicional'] ?? '';
 
-        $costoEnvio = $totalFinal >= 150000 ? 0 : 15000;
-        $totalFinal += $costoEnvio;
-
-        // 🔹 Ahora que $totalFinal está definido, podemos usarlo para preparar los datos de Bold
-        $orderId = uniqid('orden_'); // ID único de la orden
-        
-        $publicKey = Config::get('services.bold.api_key'); 
-        $privateKey = Config::get('services.bold.private_key'); 
-
-        $amountInCents = intval($totalFinal * 100); 
-        $currency = 'COP';
-
-        $integritySignature = hash_hmac(
-            'sha256',
-            $orderId . $amountInCents . $currency,
-            $privateKey 
-        );
+        // Costo de envío
+        $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($subtotal * 1.19 >= 150000) ? 0 : 15000);
+        $totalFinal = ($subtotal * 1.19) + $costoEnvio;
 
         return view('confirmacion', compact(
             'persona',
-            'envio',
             'detallesCarrito',
+            'subtotal',
+            'costoEnvio',
             'totalFinal',
-            'orderId',
-            'integritySignature',
-            'amountInCents',
-            'publicKey'
+            'tipoEntrega',
+            'direccion',
+            'infoAdicional',
+            'envio'
         ));
     }
 }
