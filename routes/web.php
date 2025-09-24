@@ -30,15 +30,12 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/registro', [RegistroController::class, 'mostrarFormulario'])->name('registro.form');
 Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.enviar');
 
-<<<<<<< HEAD
-=======
 // --- Rutas de Productos ---
 // Exportaciones de productos
 Route::get('/producto/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('producto.exportarPDF');
 Route::get('/producto/exportar-excel', [ProductoController::class, 'exportarExcel'])->name('producto.exportarExcel');
 // CRUD completo de productos
 Route::resource('producto', ProductoController::class);
->>>>>>> 1c1ab74ed36ba0056e86f00d52a6134a83828c87
 
 // --- Rutas para Vistas Estáticas ---
 Route::view('/correo_cliente', 'correo_cliente')->name('correo_cliente');
@@ -52,16 +49,12 @@ Route::view('/reseñas', 'reseñas')->name('reseñas');
 Route::view('/tiendas', 'tiendas')->name('tiendas');
 Route::view('/redes', 'redes')->name('redes');
 
-<<<<<<< HEAD
-
 // --- Grupo solo para ADMIN (rol 1) ---
 Route::middleware(['role:1'])->group(function () {
-=======
 // --- Usuarios --- 
 // Rutas de exportación de usuarios (Mover estas rutas antes del resource)
 Route::get('/usuarios/exportar-excel', [UsuarioController::class, 'exportarExcel'])->name('usuarios.exportarExcel');
 Route::get('usuarios/exportarPDF', [UsuarioController::class, 'exportarPDF'])->name('usuarios.exportarPDF');
->>>>>>> 1c1ab74ed36ba0056e86f00d52a6134a83828c87
 
     // --- Rutas de Productos ---
     // Exportaciones de productos
@@ -147,8 +140,7 @@ Route::get('/compra/confirmacion', [ComprasController::class, 'confirmacion'])->
 Route::post('/venta/procesar', [CarritoController::class, 'procesarVenta'])->name('venta.procesar');
 Route::get('/confirmacion/final/{id_factura}', [CarritoController::class, 'mostrarConfirmacionFinal'])->name('confirmacion.final');
 Route::get('/factura/descargar/{id_factura}', [CarritoController::class, 'generarFacturaPDF'])->name('venta.descargarFactura');
-<<<<<<< HEAD
-=======
+
 
 Route::get('/inventario/exportar-pdf', [ProductoController::class, 'exportarPDF'])->name('inventario.exportarPDF');
 Route::get('/ventas/exportar-pdf', [CarritoController::class, 'exportarPDF'])->name('ventas.exportarPDF');
@@ -159,4 +151,3 @@ Route::post('/metodo-pago/confirmar', [MetodoPagoController::class, 'store'])->n
 Route::get('/confirmacion', [MetodoPagoController::class, 'confirmacion'])->name('metodo_pago.confirmacion');
 
 Route::delete('/producto/{id_producto}/imagen/{id_imagen}', [ProductoController::class, 'eliminarImagen'])->name('producto.imagen.eliminar');
->>>>>>> 1c1ab74ed36ba0056e86f00d52a6134a83828c87
