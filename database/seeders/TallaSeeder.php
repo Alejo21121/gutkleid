@@ -40,21 +40,86 @@ class TallaSeeder extends Seeder
             ['id_producto' => 6, 'talla' => '32', 'cantidad' => 10],
             ['id_producto' => 6, 'talla' => '34', 'cantidad' => 10],
 
-            ['id_producto' => 7, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 7, 'talla' => 'U', 'cantidad' => 15],
+
+
             ['id_producto' => 8, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 8, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 8, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 8, 'talla' => 'L', 'cantidad' => 15],
+
             ['id_producto' => 9, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 9, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 9, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 9, 'talla' => 'L', 'cantidad' => 15],
+
+
             ['id_producto' => 10, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 10, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 10, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 10, 'talla' => 'L', 'cantidad' => 15],
+
+            ['id_producto' => 11, 'talla' => 'XS', 'cantidad' => 15],
             ['id_producto' => 11, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 11, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 11, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 12, 'talla' => 'XS', 'cantidad' => 15],
             ['id_producto' => 12, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 12, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 12, 'talla' => 'L', 'cantidad' => 15],
+
+            ['id_producto' => 13, 'talla' => 'XS', 'cantidad' => 15],
             ['id_producto' => 13, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 13, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 13, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 14, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 14, 'talla' => 'S', 'cantidad' => 15],
             ['id_producto' => 14, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 14, 'talla' => 'L', 'cantidad' => 15],
+
+            ['id_producto' => 15, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 15, 'talla' => 'S', 'cantidad' => 15],
             ['id_producto' => 15, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 15, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 16, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 16, 'talla' => 'S', 'cantidad' => 15],
             ['id_producto' => 16, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 16, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 17, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 17, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 17, 'talla' => 'M', 'cantidad' => 15],
             ['id_producto' => 17, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 18, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 18, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 18, 'talla' => 'M', 'cantidad' => 15],
             ['id_producto' => 18, 'talla' => 'L', 'cantidad' => 15],
+
+
+            ['id_producto' => 19, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 19, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 19, 'talla' => 'M', 'cantidad' => 15],
             ['id_producto' => 19, 'talla' => 'L', 'cantidad' => 15],
+
+
             ['id_producto' => 20, 'talla' => 'XS', 'cantidad' => 15],
+            ['id_producto' => 20, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 20, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 20, 'talla' => 'L', 'cantidad' => 15],
+
+            ['id_producto' => 21, 'talla' => 'XS', 'cantidad' => 15],
             ['id_producto' => 21, 'talla' => 'S', 'cantidad' => 15],
+            ['id_producto' => 21, 'talla' => 'M', 'cantidad' => 15],
+            ['id_producto' => 21, 'talla' => 'L', 'cantidad' => 15],
         ]);
     }
 }

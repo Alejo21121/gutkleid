@@ -69,13 +69,6 @@
             text-align: center;
         }
 
-        .total {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
         .email-footer {
             background-color: #f0f0f0;
             padding: 15px;
@@ -117,21 +110,51 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                    $totalProductos = 0;
+                    @endphp
+
                     @foreach ($factura->detalles as $d)
+                    @php
+                    $valorUnitario = $d->producto->valor;
+                    $ivaUnit = $valorUnitario * 0.19;
+                    $valorUnitConIva = round($valorUnitario + $ivaUnit, -3); // mismo redondeo del carrito
+                    $totalLinea = $valorUnitConIva * $d->cantidad;
+                    $totalProductos += $totalLinea;
+                    @endphp
                     <tr>
                         <td>{{ $d->producto->nombre ?? 'Producto' }}</td>
                         <td>{{ $d->talla->talla ?? '-' }}</td>
                         <td>{{ $d->cantidad }}</td>
-                        <td>${{ number_format(($d->subtotal + $d->iva), 0, ',', '.') }}</td>
+                        <td>${{ number_format($totalLinea, 0, ',', '.') }}</td>
                     </tr>
                     @endforeach
+
+                    @php
+                    // Envío gratis si total >= 150.000
+                    $gastosEnvio = $totalProductos >= 150000 ? 0 : $factura->envio;
+                    $totalPagar = $totalProductos + $gastosEnvio;
+                    @endphp
+
+                    <tr>
+                        <td colspan="3" style="text-align: right; font-weight:bold;">Envío:</td>
+                        <td>${{ number_format($gastosEnvio, 0, ',', '.') }}</td>
+                    </tr>
+
+                    @if($gastosEnvio == 0)
+                    <tr>
+                        <td colspan="4" style="text-align: right; color: green; font-weight:bold;">
+                            🎉 ¡Felicidades! Tu envío es gratis
+                        </td>
+                    </tr>
+                    @endif
+
+                    <tr>
+                        <td colspan="3" style="text-align: right; font-weight:bold;">Total a pagar:</td>
+                        <td>${{ number_format($totalPagar, 0, ',', '.') }}</td>
+                    </tr>
                 </tbody>
             </table>
-
-            
-            <p class="total">Envío: ${{ number_format($factura->envio, 0, ',', '.') }}</p>
-            <p class="total">Total a pagar: ${{ number_format($factura->total, 0, ',', '.') }}</p>
-
 
             <p>Si necesitas ayuda, responde a este correo. ❤️</p>
         </div>

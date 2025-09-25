@@ -47,13 +47,20 @@ class MetodoPagoController extends Controller
         $detallesCarrito = session('carrito', []);
         $subtotal   = session('subtotal', 0);
         $ivaTotal   = session('ivaTotal', 0);
-        $costoEnvio = session('costoEnvio', 0);
-        $totalFinal = session('totalFinal', 0);
+
+        // ⚡ recalcular envío aquí
+        $tipoEntregaRaw = $envio['tipo_entrega'] ?? 'domicilio';
+        if ($tipoEntregaRaw === 'tienda') {
+            $costoEnvio = 0;
+        } else {
+            $costoEnvio = $subtotal >= 150000 ? 0 : 15000;
+        }
+
+        $totalFinal = $subtotal + $costoEnvio;
 
         $idMetodo = session('metodo_pago');
         $subMetodo = session('sub_metodo_pago');
         $direccion  = $envio['direccion'] ?? '';
-        $tipoEntregaRaw = $envio['tipo_entrega'] ?? '—';
         $infoAdicional = $envio['info_adicional'] ?? '';
 
         $tipoEntrega = match ($tipoEntregaRaw) {
@@ -79,7 +86,8 @@ class MetodoPagoController extends Controller
             'subMetodo',
             'direccion',
             'infoAdicional',
-            'tipoEntrega'
+            'tipoEntrega',
+            'tipoEntregaRaw' // 👈 agregado
         ));
     }
 }

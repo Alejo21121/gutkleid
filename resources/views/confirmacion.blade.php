@@ -89,15 +89,12 @@
                         <td>{{ $persona['telefono'] ?? '—' }}</td>
                     </tr>
                     <tr>
-                    <tr>
                         <td><strong>Tipo de entrega:</strong></td>
                         <td>{{ $tipoEntrega }}</td>
                     </tr>
                     <tr>
                         <td><strong>Dirección:</strong></td>
                         <td>{{ $tipoEntrega === 'tienda' ? 'La tienda (Tv 79 #68 Sur-98a)' : $direccion }}</td>
-                    </tr>
-
                     </tr>
                     <tr>
                         <th>Método de pago</th>
@@ -106,7 +103,6 @@
                             @if($subMetodo && $metodo_pago !== 'Efectivo')
                             {{ $subMetodo }}
                             @endif
-
                         </td>
                     </tr>
                     <tr>
@@ -116,6 +112,11 @@
                         </td>
                     </tr>
                 </table>
+
+                @php
+                $subtotal = 0;
+                $ivaTotal = 0;
+                @endphp
 
                 <table class="table table-bordered mt-2">
                     <thead>
@@ -129,29 +130,52 @@
                     </thead>
                     <tbody>
                         @foreach($detallesCarrito as $item)
+                        @php
+                        $unit = $item['valor'] ?? 0;
+                        $qty = $item['cantidad'] ?? 1;
+
+                        $ivaUnit = $unit * 0.19;
+                        $unitConIva = round($unit + $ivaUnit, -3);
+                        $totalItemConIva = $unitConIva * $qty;
+
+                        $subtotal += $unitConIva * $qty;
+                        $ivaTotal += $ivaUnit * $qty;
+                        @endphp
                         <tr>
                             <td>{{ $item['nombre'] }}</td>
                             <td>{{ $item['talla'] }}</td>
                             <td>{{ $item['color'] }}</td>
-                            <td>{{ $item['cantidad'] }}</td>
-                            <td>$ {{ number_format(round($item['valor'] * $item['cantidad'] * 1.19), 0, ",", ".") }}</td>
-
+                            <td>{{ $qty }}</td>
+                            <td>$ {{ number_format($totalItemConIva, 0, ",", ".") }}</td>
                         </tr>
                         @endforeach
+
+                        @php
+                        if ($tipoEntregaRaw === 'tienda') {
+                        $costoEnvio = 0;
+                        } else {
+                        $costoEnvio = $subtotal >= 150000 ? 0 : 15000;
+                        }
+                        $totalFinal = $subtotal + $costoEnvio;
+                        @endphp
+
+
                         <tr>
                             <th colspan="4" class="text-end">Subtotal</th>
-                            <td>$ {{ number_format(round($subtotal + $ivaTotal, -3), 0, ",", ".") }}</td>
+                            <td>$ {{ number_format($subtotal - $ivaTotal, 0, ",", ".") }}</td>
                         </tr>
+
                         <tr>
                             <th colspan="4" class="text-end">Gastos de envío</th>
                             <td>$ {{ number_format($costoEnvio, 0, ",", ".") }}</td>
                         </tr>
                         <tr>
                             <th colspan="4" class="text-end">Valor a pagar</th>
-                            <td><strong>$ {{ number_format(round($totalFinal, -3), 0, ",", ".") }}</strong></td>
+                            <td><strong>$ {{ number_format($totalFinal, 0, ",", ".") }}</strong></td>
                         </tr>
                     </tbody>
                 </table>
+
                 <div class="d-flex justify-content-center">
                     <a href="{{ route('carrito.index') }}" class="bottonvolver">
                         Volver al carrito

@@ -54,29 +54,42 @@ class EnvioController extends Controller
 
         foreach ($carrito as $item) {
             $valor = $item['valor'] ?? 0;
-            $totalItem = $valor * $item['cantidad'] * 1.19; // incluye IVA
+            $cantidad = $item['cantidad'] ?? 1;
+
             $detallesCarrito[] = [
-                'nombre' => $item['nombre'],
-                'talla' => $item['talla'],
-                'color' => $item['color'],
-                'cantidad' => $item['cantidad'],
-                'valor' => $valor,
-                'total' => $totalItem,
+                'nombre'   => $item['nombre'],
+                'talla'    => $item['talla'],
+                'color'    => $item['color'],
+                'cantidad' => $cantidad,
+                'valor'    => $valor,
+                'total'    => $valor * $cantidad, // sin IVA
             ];
-            $subtotal += $valor * $item['cantidad'];
+
+            $subtotal += $valor * $cantidad;
         }
-        $tipoEntrega = $envio['tipo_entrega'] ?? 'domicilio'; // tienda o domicilio
+
+        // IVA = 19% del subtotal
+        $ivaTotal = $subtotal * 0.19;
+
+        // Subtotal con IVA
+        $subtotalConIva = $subtotal + $ivaTotal;
+
+        $tipoEntrega = $envio['tipo_entrega'] ?? 'domicilio';
         $direccion   = $envio['direccion'] ?? ($tipoEntrega === 'tienda' ? 'Tv 79 #68 Sur-98a' : $usuario['direccion'] ?? 'No registrada');
         $infoAdicional = $envio['info_adicional'] ?? '';
 
-        // Costo de envío
-        $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($subtotal * 1.19 >= 150000) ? 0 : 15000);
-        $totalFinal = ($subtotal * 1.19) + $costoEnvio;
+        // Costo de envío (gratis si >= 150k)
+        $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($subtotalConIva >= 150000) ? 0 : 15000);
+
+        // Valor final a pagar
+        $totalFinal = $subtotalConIva + $costoEnvio;
 
         return view('confirmacion', compact(
             'persona',
             'detallesCarrito',
             'subtotal',
+            'ivaTotal',
+            'subtotalConIva',
             'costoEnvio',
             'totalFinal',
             'tipoEntrega',

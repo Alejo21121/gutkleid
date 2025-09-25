@@ -81,7 +81,7 @@
 
 <body>
 
-    <!-- Encabezado con Logo (izquierda) y datos (derecha) -->
+    <!-- Encabezado -->
     <div class="encabezado">
         <div>
             <img src="{{ public_path('IMG/LOGO3_cafe.jpg') }}" class="logo" alt="Logo Gut Kleid">
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <!-- Sección Cliente -->
+    <!-- Cliente -->
     <div class="seccion-titulo">Datos del Cliente</div>
     <table class="table-info">
         <tr>
@@ -114,12 +114,10 @@
             <th>Dirección:</th>
             <td>{{ $direccionCliente }}</td>
         </tr>
-
         <tr>
             <th>Información adicional:</th>
             <td>{{ $infoAdicional ?: '—' }}</td>
         </tr>
-
         <tr>
             <th>Tipo de Entrega:</th>
             <td>{{ $tipoEntregaTexto }}</td>
@@ -134,9 +132,9 @@
             <td>{{ $sub_metodo }}</td>
         </tr>
         @endif
-
     </table>
 
+    <!-- Productos -->
     <div class="seccion-titulo">Detalle de Productos</div>
     <table class="tabla-datos">
         <thead>
@@ -146,7 +144,7 @@
                 <th>Color</th>
                 <th>Cantidad</th>
                 <th>Valor Unitario</th>
-                <th>Subtotal</th>
+                <th>Subtotal (sin IVA)</th>
                 <th>IVA</th>
                 <th>Total</th>
             </tr>
@@ -161,9 +159,11 @@
             @php
             $cantidad = $detalle->cantidad;
             $valorUnitario = $detalle->producto->valor;
-            $subtotal = $valorUnitario * $cantidad;
-            $iva = round($subtotal * 0.19, 0); // Redondeo sin decimales
-            $total = $subtotal + $iva;
+            $ivaUnit = $valorUnitario * 0.19;
+            $valorUnitConIva = round($valorUnitario + $ivaUnit, -3); // mismo redondeo que en carrito
+            $subtotal = $valorUnitConIva * $cantidad;
+            $iva = ($valorUnitConIva - $valorUnitario) * $cantidad;
+            $total = $subtotal; // ya incluye IVA
 
             $subtotalGeneral += $subtotal;
             $ivaGeneral += $iva;
@@ -174,23 +174,32 @@
                 <td>{{ $detalle->color ?? 'N/A' }}</td>
                 <td>{{ $cantidad }}</td>
                 <td>${{ number_format($valorUnitario, 0, ',', '.') }}</td>
-                <td>${{ number_format($subtotal, 0, ',', '.') }}</td>
+                <td>${{ number_format($subtotal - $iva, 0, ',', '.') }}</td>
                 <td>${{ number_format($iva, 0, ',', '.') }}</td>
                 <td>${{ number_format($total, 0, ',', '.') }}</td>
+
             </tr>
             @endforeach
         </tbody>
     </table>
 
     <!-- Totales -->
+    @php
+    // Calcular total sin envío
+    $totalSinEnvio = $subtotalGeneral; // ya incluye IVA
+    // Si el total es mayor o igual a 150.000 no se cobra envío
+    $gastosEnvio = $totalSinEnvio >= 150000 ? 0 : $factura->envio;
+    $totalPagar = $totalSinEnvio + $gastosEnvio;
+    @endphp
+
     <div class="seccion-titulo">Totales</div>
     <div class="totales">
-        <p><strong>Subtotal:</strong> ${{ number_format($subtotalGeneral, 0, ',', '.') }}</p>
+        <p><strong>Subtotal:</strong> ${{ number_format($subtotalGeneral - $ivaGeneral, 0, ',', '.') }}</p>
         <p><strong>IVA Total:</strong> ${{ number_format($ivaGeneral, 0, ',', '.') }}</p>
-        <p><strong>Gastos de envío:</strong> ${{ number_format($factura->envio, 0, ',', '.') }}</p>
+        <p><strong>Gastos de envío:</strong> ${{ number_format($gastosEnvio, 0, ',', '.') }}</p>
         <p><strong>Total a pagar:</strong>
             <strong style="color:#6F4E37;">
-                ${{ number_format($subtotalGeneral + $ivaGeneral + $factura->envio, 0, ',', '.') }}
+                ${{ number_format($totalPagar, 0, ',', '.') }}
             </strong>
         </p>
     </div>
@@ -201,7 +210,6 @@
         Gracias por tu compra. Cualquier duda o reclamo escríbenos a soporte@gutkleid.com <br>
         © Gut Kleid 2025 – Todos los derechos reservados.
     </div>
-
 </body>
 
 </html>
