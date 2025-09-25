@@ -173,10 +173,14 @@ class CarritoController extends Controller
             $factura->info_adicional = $infoAdicional;
             $factura->total = 0;
             $factura->envio = 0;
+            $factura->entrega = $tipoEntrega;
             $factura->save();
 
-            // Subtotal sin IVA
-            $subtotal = 0;
+            // 🔹 Variables para acumular los totales generales
+            $subtotalGeneral = 0;
+            $ivaGeneral = 0;
+            $totalGeneral = 0;
+
             foreach ($carrito as $item) {
                 $producto = Producto::find($item['id_producto']);
                 if (!$producto) throw new \Exception('Producto no encontrado');
@@ -190,44 +194,56 @@ class CarritoController extends Controller
 
                 $cantidad = $item['cantidad'];
                 $valorUnitario = $item['valor'] ?? 0;
-                $totalItem = $valorUnitario * $cantidad;
-                $ivaItem = $totalItem * 0.19;
 
+                // ✅ Lógica de cálculo del PDF con redondeo
+                $ivaUnit = round($valorUnitario * 0.19, 0); // Redondea el IVA a un número entero
+                $valorUnitConIva = round($valorUnitario + $ivaUnit, -3); // Redondea el total unitario a la centena más cercana
+
+                // ✅ Calcular los totales para este ítem
+                $totalItem = $valorUnitConIva * $cantidad;
+                $subtotalItem = $valorUnitario * $cantidad;
+                $ivaItem = $totalItem - $subtotalItem;
+
+                // 🔹 Guardar detalle en BD
                 $detalle = new DetalleFacturaV();
                 $detalle->id_factura_venta = $factura->id_factura_venta;
                 $detalle->id_producto = $producto->id_producto;
                 $detalle->id_talla = $tallaProducto->id;
                 $detalle->cantidad = $cantidad;
-                $detalle->subtotal = $totalItem;
+                $detalle->subtotal = $subtotalItem;
                 $detalle->iva = $ivaItem;
                 $detalle->color = $item['color'] ?? 'N/A';
                 $detalle->save();
 
+                // 🔹 Restar stock
                 $tallaProducto->cantidad -= $cantidad;
                 $tallaProducto->save();
 
-                $subtotal += $totalItem; // sumamos al subtotal
+                // 🔹 Acumular los totales generales
+                $subtotalGeneral += $subtotalItem;
+                $ivaGeneral += $ivaItem;
+                $totalGeneral += $totalItem;
             }
 
-            // Costo de envío usando subtotal SIN IVA
-            $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($subtotal >= 150000) ? 0 : 15000);
+            // 🔹 Calcular costo de envío
+            $costoEnvio = ($tipoEntrega === 'tienda') ? 0 : (($totalGeneral >= 150000) ? 0 : 15000);
 
-            // Total = subtotal + IVA + envío
+            // 🔹 Guardar totales en la factura principal
             $factura->envio = $costoEnvio;
-            $factura->total = $subtotal + ($subtotal * 0.19) + $costoEnvio;
+            $factura->total = $totalGeneral + $costoEnvio;
             $factura->save();
 
             DB::commit();
 
+            // Generar PDF y enviar correo
             $pdf = Pdf::loadView('factura_pdf', [
-                'factura' => $factura->load(['detalles.producto', 'detalles.talla']), // 🔹 cargamos relaciones
+                'factura' => $factura->load(['detalles.producto', 'detalles.talla', 'cliente']),
                 'metodo_pago' => MetodoPago::find($idMetodoPagoSeleccionado)->nombre ?? '—',
                 'sub_metodo' => session('sub_metodo_pago'),
                 'direccionCliente' => $direccion,
                 'tipoEntregaTexto' => ($tipoEntrega === 'tienda' ? 'Recoger en tienda' : 'Domicilio'),
                 'infoAdicional' => $infoAdicional
             ]);
-
 
             $nombreArchivo = 'Factura_GutKleid_' . $factura->id_factura_venta . '.pdf';
             $rutaArchivo = 'facturas/' . $nombreArchivo;
